@@ -41,7 +41,12 @@ async def get_rate_limited(get_coro_fn: Callable[..., Awaitable[httpx.Response]]
     try:
         response.raise_for_status()
     except httpx.HTTPStatusError as exc:
-        print("rated limited with URL and headers:", exc.response.url, exc.response.headers, file=sys.stderr)
+        print(
+            "rate limited with URL and headers:",
+            exc.response.url,
+            exc.response.headers,
+            file=sys.stderr,
+        )
         if "Retry-After" in exc.response.headers:
             await asyncio.sleep(int(exc.response.headers["Retry-After"]))
             return await get_rate_limited(get_coro_fn)
