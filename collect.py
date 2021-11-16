@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import csv
 import os
-import sys
 from collections.abc import Awaitable
 from collections.abc import Callable
 from collections.abc import Mapping
@@ -14,6 +13,7 @@ from functools import partial
 from typing import Any
 
 import httpx
+from loguru import logger
 
 
 class ReleaseJsonFlavor(str, Enum):
@@ -31,48 +31,41 @@ class Project:
     flavors: frozenset[ReleaseJsonFlavor]
 
 
-async def get_rate_limited(get_coro_fn: Callable[..., Awaitable[httpx.Response]]):
-    print("fetching:", get_coro_fn.args[0], file=sys.stderr)
+async def get_rate_limited(get_coro_fn: Callable[..., Awaitable[httpx.Response]], count: int = 0):
     try:
         response = await get_coro_fn()
     except ValueError:
         return await get_rate_limited(get_coro_fn)  # Totally not an infinite loop.
 
+    logger.info(f"fetched {response.url}")
     try:
         response.raise_for_status()
-    except httpx.HTTPStatusError as exc:
-        print(
-            "rate limited with URL and headers:",
-            exc.response.url,
-            exc.response.headers,
-            file=sys.stderr,
-        )
-        if "Retry-After" in exc.response.headers:
-            await asyncio.sleep(int(exc.response.headers["Retry-After"]))
-            return await get_rate_limited(get_coro_fn)
-        raise
+    except httpx.HTTPStatusError:
+        # We might be rate limited but the headers say we aren't, so uh...
+        # just retry a couple of times then give up, I guess?
+        if count > 1:
+            raise
+
+        logger.exception("rate limited? sleeping for 60s")
+        await asyncio.sleep(60)
+        return await get_rate_limited(get_coro_fn, count + 1)
     else:
         return response
 
 
-async def find_release_json_repos(client: httpx.AsyncClient):
-    response_coro = partial(
-        client.get,
-        "search/code",
-        params={
-            "q": "path:.github/workflows bigwigsmods packager",
-            "per_page": 100,
-        },
-    )
-    while True:
-        response = await get_rate_limited(response_coro)
-        content = response.json()
-        yield [i["repository"] for i in content["items"]]
+async def find_release_json_repos(client: httpx.AsyncClient, queries: list[str]):
+    for response_coro in (
+        partial(client.get, "search/code", params={"q": q, "per_page": 100}) for q in queries
+    ):
+        while True:
+            response = await get_rate_limited(response_coro)
+            content = response.json()
+            yield [i["repository"] for i in content["items"]]
 
-        next_url = response.links.get("next")
-        if next_url is None:
-            break
-        response_coro = partial(client.get, next_url["url"])
+            next_url = response.links.get("next")
+            if next_url is None:
+                break
+            response_coro = partial(client.get, next_url["url"])
 
 
 async def parse_repo_has_release_json_releases(client: httpx.AsyncClient, repo: Mapping[str, Any]):
@@ -115,7 +108,10 @@ async def get_projects(token: str):
         },
         limits=httpx.Limits(max_connections=8, max_keepalive_connections=8),
     ) as client:
-        async for repos in find_release_json_repos(client):
+        async for repos in find_release_json_repos(
+            client,
+            ["path:.github/workflows bigwigsmods packager", "path:.github/workflows CF_API_KEY"],
+        ):
             for project_coro in asyncio.as_completed(
                 [parse_repo_has_release_json_releases(client, r) for r in repos]
             ):
