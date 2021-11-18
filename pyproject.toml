@@ -4,4 +4,3 @@ line_length = 99
 [tool.isort]
 profile = "black"
 line_length = 99
-force_single_line = true
