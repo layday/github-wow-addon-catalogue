@@ -1,1 +1,2 @@
-/http-cache.sqlite
+/http-cache.db
+__pycache__

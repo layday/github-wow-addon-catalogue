@@ -1,3 +1,29 @@
+[build-system]
+requires = ["flit-core >= 3.4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "collect"
+version = "0.1.0"
+description = "Script which collects WoW add-on metadata from GitHub"
+requires-python = ">= 3.9"
+dependencies = [
+  "aiohttp",
+  "aiohttp-client-cache",
+  "aiosqlite",
+  "loguru",
+  "yarl",
+]
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "isort",
+]
+
+[project.scripts]
+collect = "collect:main"
+
 [tool.black]
 line_length = 99
 

@@ -1,5 +1,0 @@
-aiohttp
-aiohttp-client-cache
-aiosqlite
-loguru
-yarl

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import asyncio
 import csv
 import io
@@ -7,7 +8,7 @@ import os
 from collections.abc import Callable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from itertools import count
 from typing import Any
@@ -110,7 +111,7 @@ async def extract_project_ids(
 
 async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]):
     async with get(
-        (API_URL / f"repos/{repo['full_name']}" / "releases").with_query(per_page=1)
+        (API_URL / "repos" / repo["full_name"] / "releases").with_query(per_page=1)
     ) as releases_response:
         releases = await releases_response.json()
 
@@ -143,7 +144,12 @@ async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]
 
 async def get_projects(token: str):
     async with CachedSession(
-        cache=SQLiteBackend("http-cache"),
+        cache=SQLiteBackend(
+            "http-cache.db",
+            urls_expire_after={
+                f"{API_URL.host}/search/code": timedelta(days=1),
+            },
+        ),
         connector=aiohttp.TCPConnector(limit_per_host=3),
         headers={
             "Accept": "application/vnd.github.v3+json",
@@ -177,9 +183,10 @@ async def get_projects(token: str):
                                 f"sleeping until {sleep_until.time().isoformat()} for {sleep_for}s"
                             )
                             await asyncio.sleep(sleep_for)
-                    elif attempt == 3 and not response.ok:
-                        response.raise_for_status()
                     else:
+                        if attempt == 3:
+                            response.raise_for_status()
+
                         yield response
                         break
 
@@ -206,10 +213,14 @@ async def get_projects(token: str):
 
 @logger.catch
 def main():
+    parser = argparse.ArgumentParser(description="Collect WoW add-on metadata from GitHub")
+    parser.add_argument("outcsv", nargs="?", default="addons.csv")
+    args = parser.parse_args()
+
     token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
     projects = asyncio.run(get_projects(token))
 
-    with open("addons.csv", "w", newline="") as csv_file:
+    with open(args.outcsv, "w", newline="") as csv_file:
         csv_writer = csv.writer(csv_file)
         csv_writer.writerow(
             (
