@@ -186,6 +186,8 @@ async def get_projects(token: str):
                     else:
                         if attempt == 3:
                             response.raise_for_status()
+                        elif not response.ok:
+                            continue
 
                         yield response
                         break
