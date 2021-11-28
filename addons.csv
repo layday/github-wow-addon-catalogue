@@ -277,9 +277,15 @@ sudo,Allows full access to wow api via weakauras #DeveloperMode,https://github.c
 DeathNote,World of Warcraft AddOn - Death analysis tool,https://github.com/casualshammy/DeathNote,2021-09-17T18:41:52+00:00,bcc,28314,VBNBxLKx,
 NameplateAuras,Addon for World of Warcraft that displays buffs/debuffs of players above their nameplates.,https://github.com/casualshammy/NameplateAuras,2021-11-14T19:02:05+00:00,mainline,101192,lQNl536e,
 NameplateCooldowns,This addon for World of Warcraft will show you cooldowns of an enemies above their nameplates,https://github.com/casualshammy/NameplateCooldowns,2021-11-14T19:03:34+00:00,mainline,66866,0mNwjlGo,
+soulshape-journal,Adds a tab in the Collections Journal to track your soulshape collection.,https://github.com/christopheml/soulshape-journal,2021-11-26T12:04:01+00:00,mainline,,,
 buff-overlay,,https://github.com/clicketz/buff-overlay,2021-07-05T08:01:00+00:00,"bcc,mainline",296067,,24683
 BagAppraiser,A libdatabroker plugin that provides valuation of bag contents using TSM data,https://github.com/clocklear/BagAppraiser,2021-11-03T01:22:44+00:00,mainline,434007,,25863
 ElvUI_FriendlyCastTimes,"Converts cast times greater than 60 seconds into more human-friendly representation (mm:ss or hh:mm, depending on duration)",https://github.com/clocklear/ElvUI_FriendlyCastTimes,2021-11-03T01:23:43+00:00,mainline,534316,,26159
+GreatVaultKeyInfo,,https://github.com/dekallo/GreatVaultKeyInfo,2021-11-21T18:16:13+00:00,mainline,448440,nQN5ePNB,
+HideButtonGlow,,https://github.com/dekallo/HideButtonGlow,2021-11-21T19:31:49+00:00,mainline,426069,RBKpVONE,
+MapPinTimers,,https://github.com/dekallo/MapPinTimers,2021-11-21T19:50:34+00:00,mainline,421901,WqKQDa6x,
+PetAuctionLevels,,https://github.com/dekallo/PetAuctionLevels,2021-11-21T19:58:18+00:00,mainline,414660,BO67eyG3,
+SilenceBanLu,,https://github.com/dekallo/SilenceBanLu,2021-11-21T20:11:32+00:00,mainline,419848,7x61eB61,
 ThreatClassic2,"A  simple threat meter for WoW Classic & TBC Classic, successor of ClassicThreatMeter.",https://github.com/dfherr/ThreatClassic2,2021-11-05T00:43:35+00:00,"bcc,classic",355497,pkNM1ONz,25966
 SharedMedia_Fontin,Inserts additional fonts from exljbris Font Foundry into SharedMediaLib's storage,https://github.com/dlecina/SharedMedia_Fontin,2021-08-07T17:09:42+00:00,"bcc,classic,mainline",513230,,
 Baggins,,https://github.com/doadin/Baggins,2021-11-03T03:14:58+00:00,"bcc,classic,mainline",13471,,
@@ -503,6 +509,7 @@ OmniCC,Cooldown count for everything,https://github.com/tullamods/OmniCC,2021-07
 tullaCC,Minimal addon for displaying cooldown text on buttons,https://github.com/tullamods/tullaCC,2021-05-06T22:42:23+00:00,"classic,mainline",,,
 tullaRange,Colors actionbuttons when out of range,https://github.com/tullamods/tullaRange,2021-07-02T20:09:44+00:00,"bcc,classic,mainline",,,
 nerien-ovale-scripts,Nerien's collection of Ovale scripts for various classes and specializations.,https://github.com/ultijlam/nerien-ovale-scripts,2021-09-07T15:23:38+00:00,mainline,42999,,25835
+SoftskinTotem,,https://github.com/valkyrnstudios/SoftskinTotem,2021-11-26T18:57:24+00:00,bcc,550214,,
 TankBuddy,,https://github.com/valkyrnstudios/TankBuddy,2021-11-01T23:01:22+00:00,bcc,491423,,
 Exquisiloot,,https://github.com/vtosh/Exquisiloot,2021-07-29T13:04:16+00:00,bcc,,,
 WagoAnalytics,,https://github.com/wagoio/WagoAnalytics,2021-09-23T20:11:04+00:00,"bcc,classic,mainline",,qv63o6bQ,
