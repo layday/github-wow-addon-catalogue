@@ -50,7 +50,7 @@ class Project:
     ids: ProjectIds
 
 
-def parse_toc_file(contents: str) -> dict[str, str]:
+def parse_toc_file(contents: str):
     return {
         k: v
         for e in contents.splitlines()
@@ -147,7 +147,7 @@ async def get_projects(token: str):
         cache=SQLiteBackend(
             "http-cache.db",
             urls_expire_after={
-                f"{API_URL.host}/search/code": timedelta(days=1),
+                f"{API_URL.host}/search/code": timedelta(hours=1),
             },
         ),
         connector=aiohttp.TCPConnector(limit_per_host=3),
@@ -161,15 +161,15 @@ async def get_projects(token: str):
 
         @asynccontextmanager
         async def get(url: str | URL):
-            for attempt in count(1):
-                if not client.cache.has_url(str(url)):
-                    # Sophisticated secondary rate limiting prevention
-                    await asyncio.sleep(1)
+            if not await client.cache.has_url(str(url)):
+                # Sophisticated secondary rate limiting prevention
+                await asyncio.sleep(1)
 
+            for attempt in count(1):
                 async with client.get(url) as response:
                     logger.info(
-                        f"fetched {response.url}, "
-                        f"{response.headers.get('X-RateLimit-Remaining') or '?'} requests remaining"
+                        f"fetched {response.url}"
+                        f"\n\t{response.headers.get('X-RateLimit-Remaining') or '?'} requests remaining"
                     )
                     if response.status == 403:
                         logger.error(await response.text())
