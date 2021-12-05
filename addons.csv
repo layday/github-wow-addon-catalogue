@@ -102,6 +102,7 @@ BigInputBox,A really big chat input box. Because why not.,https://github.com/Gol
 ChatCleaner,,https://github.com/GoldpawsStuff/ChatCleaner,2021-11-17T10:12:53+00:00,"bcc,classic,mainline",531109,baNDwAGo,
 ClassicWorldMapEnhanced,Enhanced WorldMap for WoW Classic,https://github.com/GoldpawsStuff/ClassicWorldMapEnhanced,2021-11-17T10:14:00+00:00,"bcc,classic",340120,vEGPZk61,
 MapShrinker,"A small addon that centers, shrinks, adds coordinates and nicely style the fullscreen retail WorldMap.",https://github.com/GoldpawsStuff/MapShrinker,2021-11-03T11:52:35+00:00,mainline,469972,Rn6VOWKd,
+PorousStoneDestroyer,It destroys porous stones. ,https://github.com/GoldpawsStuff/PorousStoneDestroyer,2021-12-01T11:58:07+00:00,mainline,551522,RXKqDl6y,
 SharedMedia_Goldpaw,Various textures and media used in addons by Goldpaw and Blakmane!,https://github.com/GoldpawsStuff/SharedMedia_Goldpaw,2021-11-17T10:15:06+00:00,"bcc,classic,mainline",93875,R4N2lmKL,
 SimpleClassPower,Class resource addon for World of Warcraft Retail.,https://github.com/GoldpawsStuff/SimpleClassPower,2021-11-17T10:16:51+00:00,"bcc,classic,mainline",296245,qv63j7Nb,
 Unmasked,We hate masks.,https://github.com/GoldpawsStuff/Unmasked,2021-11-13T12:40:59+00:00,mainline,544432,WL6JZO6v,
@@ -186,6 +187,7 @@ Chinchilla,WoW Addon - Minimap addon of awesomeness.,https://github.com/Ravendwy
 HandyNotes_SummerFestival,WoW Addon - Marks the locations of Midsummer Fire Festival bonfires on the worldmap and minimap.,https://github.com/Ravendwyr/HandyNotes_SummerFestival,2021-07-03T19:38:18+00:00,mainline,45903,Xb6Xxw6p,
 PetEmote,WoW Addon - Allows you to send emotes from your character's pet.,https://github.com/Ravendwyr/PetEmote,2021-07-03T11:18:03+00:00,"bcc,classic,mainline",40916,xZKxwd6k,17349
 ElvUI_DynamicStatusIcons,"Adds various status icons to ElvUI UnitFrames that show if you are in combat, resting, or just running around dead as a ghost!",https://github.com/Repooc/ElvUI_DynamicStatusIcons,2021-07-08T19:49:44+00:00,"bcc,classic,mainline",492330,2jK8oq6y,
+ElvUI_RatioMinimapAuras,"Adds the ability to give your ElvUI Auras located by the minimap, separate width and height sizes.",https://github.com/Repooc/ElvUI_RatioMinimapAuras,2021-12-05T07:06:42+00:00,"bcc,classic,mainline",552534,qv63epGb,
 ElvUI_SplitActionBars,,https://github.com/Repooc/ElvUI_SplitActionBars,2021-11-15T01:08:57+00:00,"bcc,classic,mainline",547225,WYK9eVKL,
 ItemRack,ItemRack working for WoW Classic,https://github.com/Rottenbeer/ItemRack,2021-10-16T15:00:38+00:00,"bcc,classic",340903,,
 AceGUI-3.0_SFX-Widgets,Custom widgets for AceGUI-3.0 and AceConfigDialog-3.0.,https://github.com/SFX-WoW/AceGUI-3.0_SFX-Widgets,2021-11-18T06:58:30+00:00,"bcc,classic,mainline",340803,RaN0zvKj,25658
@@ -222,6 +224,9 @@ Total-RP-3,The best roleplaying add-on for World of Warcraft.,https://github.com
 Total-RP-3-Extended,"Extended module for the Total RP 3 add-on for World of Warcraft, adding creation tools.",https://github.com/Total-RP/Total-RP-3-Extended,2021-11-03T00:24:53+00:00,mainline,,,
 Annene,,https://github.com/Urtgard/Annene,2021-07-07T12:01:47+00:00,mainline,92404,,23879
 WQAchievements,,https://github.com/Urtgard/WQAchievements,2021-11-07T20:20:52+00:00,mainline,272039,,24566
+wow-addon-chatemotes,,https://github.com/Vladinator89/wow-addon-chatemotes,2021-12-04T18:19:05+00:00,mainline,551565,PANzvjN4,26188
+wow-addon-chatemotes-discord,,https://github.com/Vladinator89/wow-addon-chatemotes-discord,2021-12-04T18:19:48+00:00,mainline,551603,anKW2W6E,26189
+wow-addon-chatemotes-twitch,,https://github.com/Vladinator89/wow-addon-chatemotes-twitch,2021-12-04T18:20:29+00:00,mainline,551604,kRNLZ8Ko,26190
 wow-addon-miniloot,,https://github.com/Vladinator89/wow-addon-miniloot,2021-06-08T08:45:06+00:00,mainline,43440,,19598
 WeakAuras2,World of Warcraft addon that provides a powerful framework to display customizable graphics on your screen.,https://github.com/WeakAuras/WeakAuras2,2021-11-02T19:03:17+00:00,"bcc,classic,mainline",65387,VBNBxKx5,24910
 CovenantMacro,A simple addon to automatically update macros when switching covenant.,https://github.com/Witnesscm/CovenantMacro,2021-11-18T03:04:00+00:00,mainline,545495,ME6g23N1,
@@ -249,9 +254,9 @@ xanMortarPestle,Mill/Prospect/Disenchant using (Alt + Right-Click) on an item.,h
 xanSoundAlerts,Plays a sound when your health or mana is low.,https://github.com/Xruptor/xanSoundAlerts,2021-09-19T14:16:42+00:00,"bcc,classic,mainline",299032,,24732
 xanTooltipHoudini,A very simple addon that hides the game tooltip while in combat.,https://github.com/Xruptor/xanTooltipHoudini,2021-09-19T14:10:17+00:00,"bcc,classic,mainline",28601,,19112
 OwnGearScore,,https://github.com/ZergRael/OwnGearScore,2021-06-09T22:45:33+00:00,bcc,,,
-A-Deal-with-de-Loa---Bwonsamdi,,https://github.com/Zottelchen/A-Deal-with-de-Loa---Bwonsamdi,2021-07-02T17:17:39+00:00,mainline,301964,ZQ6a976W,25823
-ZandalariMoneyTracker,,https://github.com/Zottelchen/ZandalariMoneyTracker,2021-07-02T16:50:19+00:00,mainline,317735,2jK8vlNy,25824
-adibags-shadowlands,,https://github.com/Zottelchen/adibags-shadowlands,2021-07-25T14:30:18+00:00,mainline,423029,ZQ6a976W,25821
+A-Deal-with-de-Loa---Bwonsamdi,An Addon that plays Bwonsamdi voicelines when you die.,https://github.com/Zottelchen/A-Deal-with-de-Loa---Bwonsamdi,2021-07-02T17:17:39+00:00,mainline,301964,ZQ6a976W,25823
+ZandalariMoneyTracker,"Tracks the bonus money you've got thanks to the Zandalari racial ""Golden City"".",https://github.com/Zottelchen/ZandalariMoneyTracker,2021-07-02T16:50:19+00:00,mainline,317735,2jK8vlNy,25824
+adibags-shadowlands,Adds a multiple (optionally colored) categories for the most common Shadowlands items in AdiBags,https://github.com/Zottelchen/adibags-shadowlands,2021-07-25T14:30:18+00:00,mainline,423029,ZQ6a976W,25821
 AlreadyKnown,WoW-addon // Puts green tint on already known scrolls/pets/other learnable items on vendors.,https://github.com/ahakola/AlreadyKnown,2021-11-08T00:19:49+00:00,"bcc,classic,mainline",,,
 AzeritePowerWeights,WoW-addon // Tells players best Azerite Power to pick for their Azerite gear based on Default or Custom weight scales.,https://github.com/ahakola/AzeritePowerWeights,2021-11-08T00:20:54+00:00,mainline,,,
 ClassicGuildFrame,WoW-addon // Restoring the old GuildUI for BfA with the Chat from the new CommunitiesUI,https://github.com/ahakola/ClassicGuildFrame,2021-11-08T00:21:39+00:00,mainline,,,
@@ -360,6 +365,7 @@ SpellNotifications,A reupload of Veevs original SpellNotifications,https://githu
 bigdebuffs,,https://github.com/jordonwow/bigdebuffs,2021-09-01T15:06:23+00:00,"bcc,classic,mainline",82697,WYK98e6L,26006
 omnibar,,https://github.com/jordonwow/omnibar,2021-10-18T20:43:12+00:00,"bcc,classic,mainline",85814,BO678XK3,23235
 safequeue,,https://github.com/jordonwow/safequeue,2021-09-23T02:04:19+00:00,"bcc,classic,mainline",29171,0mKOq1Nx,19494
+HonorSpy,World of Warcraft: Classic HonorSpy addon,https://github.com/kakysha/HonorSpy,2021-12-03T23:18:32+00:00,classic,348370,,
 wow-appearancetooltip,World of Warcraft addon: fancy tooltip for previewing item appearances,https://github.com/kemayo/wow-appearancetooltip,2021-08-19T01:52:53+00:00,mainline,101155,,
 wow-bankstack,"World of Warcraft addon to move items around in your inventory, bank, and guild bank",https://github.com/kemayo/wow-bankstack,2021-05-29T16:35:51+00:00,"bcc,classic,mainline",13494,,7761
 wow-dropthecheapestthing,World of Warcraft addon to drop/sell the cheapest thing you're carrying,https://github.com/kemayo/wow-dropthecheapestthing,2021-06-03T03:04:49+00:00,"bcc,classic,mainline",17852,,
