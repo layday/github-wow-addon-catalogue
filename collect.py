@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from itertools import count
-from typing import Any
+from typing import Any, Literal
 from zipfile import ZipFile
 
 import aiohttp
@@ -60,15 +60,17 @@ def parse_toc_file(contents: str):
     }
 
 
-async def find_release_json_repos(get: Get, queries: Sequence[str]):
-    for query in queries:
-        search_url = (API_URL / "search" / "code").with_query(q=query, per_page=100)
+async def find_addon_repos(
+    get: Get, queries_by_kind: Sequence[tuple[Literal["code", "repositories"], str]]
+):
+    for kind, query in queries_by_kind:
+        search_url = (API_URL / "search" / kind).with_query(q=query, per_page=100)
         while True:
             async with get(search_url) as response:
                 content = await response.json()
 
             for i in content["items"]:
-                yield i["repository"]
+                yield (i["repository"] if kind == "code" else i)
 
             next_url = response.links.get("next")
             if next_url is None:
@@ -194,11 +196,12 @@ async def get_projects(token: str):
 
         deduped_repos = {
             r["full_name"]: r
-            async for r in find_release_json_repos(
+            async for r in find_addon_repos(
                 get,
                 [
-                    "path:.github/workflows bigwigsmods packager",
-                    "path:.github/workflows CF_API_KEY",
+                    ("code", "path:.github/workflows bigwigsmods packager"),
+                    ("code", "path:.github/workflows CF_API_KEY"),
+                    ("repositories", "topic:wow-addon"),
                 ],
             )
         }
