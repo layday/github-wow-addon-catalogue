@@ -24,7 +24,7 @@ API_URL = URL("https://api.github.com/")
 
 USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-addon-catalogue)"
 
-Get = Callable[[str | URL], AbstractAsyncContextManager[aiohttp.ClientResponse]]
+Get = Callable[["str | URL"], AbstractAsyncContextManager[aiohttp.ClientResponse]]
 
 
 class ReleaseJsonFlavor(str, Enum):
@@ -43,8 +43,9 @@ class ProjectIds:
 @dataclass(frozen=True)
 class Project:
     name: str
-    description: str | None
+    full_name: str
     url: str
+    description: str | None
     last_updated: datetime
     flavors: frozenset[ReleaseJsonFlavor]
     ids: ProjectIds
@@ -132,8 +133,9 @@ async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]
 
             return Project(
                 repo["name"],
-                repo["description"],
+                repo["full_name"],
                 repo["html_url"],
+                repo["description"],
                 datetime.fromisoformat(f"{release['published_at'].rstrip('Z')}+00:00"),
                 frozenset(
                     ReleaseJsonFlavor(m["flavor"])
@@ -230,8 +232,9 @@ def main():
         csv_writer.writerow(
             (
                 "name",
-                "description",
+                "full_name",
                 "url",
+                "description",
                 "last_updated",
                 "flavors",
                 "curse_id",
@@ -242,8 +245,9 @@ def main():
         csv_writer.writerows(
             (
                 p.name,
-                p.description,
+                p.full_name,
                 p.url,
+                p.description,
                 p.last_updated.isoformat(),
                 ",".join(sorted(p.flavors)),
                 p.ids.curse_id,
