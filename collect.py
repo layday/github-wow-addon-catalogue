@@ -49,6 +49,7 @@ class Project:
     last_updated: datetime
     flavors: frozenset[ReleaseJsonFlavor]
     ids: ProjectIds
+    has_release_json: bool
 
 
 def parse_toc_file(contents: str):
@@ -79,14 +80,8 @@ async def find_addon_repos(
             search_url = next_url["url"]
 
 
-async def extract_project_ids(
-    get: Get, release: Mapping[str, Any], release_json: Mapping[str, Any]
-):
-    first_filename = release_json["releases"][0]["filename"]
-    first_file_url = next(
-        a["browser_download_url"] for a in release["assets"] if a["name"] == first_filename
-    )
-    async with get(first_file_url) as file_response:
+async def extract_project_ids(get: Get, url: str):
+    async with get(url) as file_response:
         file = await file_response.read()
 
     with ZipFile(io.BytesIO(file)) as addon_zip:
@@ -112,6 +107,15 @@ async def extract_project_ids(
     return project_ids
 
 
+def zip_suffix_to_flavor(filename: str):
+    if filename.endswith("-classic.zip"):
+        return ReleaseJsonFlavor.classic
+    elif filename.endswith("-bcc.zip"):
+        return ReleaseJsonFlavor.bcc
+    else:
+        return ReleaseJsonFlavor.mainline
+
+
 async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]):
     async with get(
         (API_URL / "repos" / repo["full_name"] / "releases").with_query(per_page=1)
@@ -120,30 +124,55 @@ async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]
 
     if releases:
         (release,) = releases
-        release_json_asset = next(
+        maybe_release_json_asset = next(
             (a for a in release["assets"] if a["name"] == "release.json"), None
         )
-        if release_json_asset is not None:
-            async with get(release_json_asset["browser_download_url"]) as release_json_response:
+        if maybe_release_json_asset is not None:
+            async with get(
+                maybe_release_json_asset["browser_download_url"]
+            ) as release_json_response:
                 release_json = await release_json_response.json(content_type=None)
 
-            project_ids = await extract_project_ids(get, release, release_json)
-            if project_ids is None:
-                project_ids = ProjectIds(*(None,) * 3)
-
-            return Project(
-                repo["name"],
-                repo["full_name"],
-                repo["html_url"],
-                repo["description"],
-                datetime.fromisoformat(f"{release['published_at'].rstrip('Z')}+00:00"),
-                frozenset(
-                    ReleaseJsonFlavor(m["flavor"])
-                    for r in release_json["releases"]
-                    for m in r["metadata"]
-                ),
-                project_ids,
+            flavours = frozenset(
+                ReleaseJsonFlavor(m["flavor"])
+                for r in release_json["releases"]
+                for m in r["metadata"]
             )
+            project_ids = await extract_project_ids(
+                get,
+                next(
+                    a["browser_download_url"]
+                    for a in release["assets"]
+                    if a["name"] == release_json["releases"][0]["filename"]
+                ),
+            )
+
+        else:
+            release_archives = [
+                a
+                for a in release["assets"]
+                if a["content_type"] in {"application/zip", "application/x-zip-compressed"}
+                and a["name"].endswith(".zip")
+            ]
+            if not release_archives:
+                # Not a downloadable add-on
+                return
+
+            flavours = frozenset(zip_suffix_to_flavor(a["name"]) for a in release_archives)
+            project_ids = await extract_project_ids(
+                get, release_archives[0]["browser_download_url"]
+            )
+
+        return Project(
+            repo["name"],
+            repo["full_name"],
+            repo["html_url"],
+            repo["description"],
+            datetime.fromisoformat(f"{release['published_at'].rstrip('Z')}+00:00"),
+            flavours,
+            project_ids or ProjectIds(None, None, None),
+            maybe_release_json_asset is not None,
+        )
 
 
 async def get_projects(token: str):
@@ -170,7 +199,7 @@ async def get_projects(token: str):
         async def rate_limit():
             async with search_lock:
                 yield
-                await asyncio.sleep(4)
+                await asyncio.sleep(3)
 
         @asynccontextmanager
         async def noop():
@@ -178,13 +207,10 @@ async def get_projects(token: str):
 
         @asynccontextmanager
         async def get(url: str | URL):
-            is_search_url = URL(url).path.startswith("/search") and not await client.cache.has_url(
-                url
-            )
             for attempt in count(1):
-                async with (rate_limit() if is_search_url else noop()), client.get(
-                    url
-                ) as response:
+                async with (
+                    rate_limit() if URL(url).path.startswith("/search") else noop()
+                ), client.get(url) as response:
                     logger.info(
                         f"fetched {response.url}"
                         f"\n\t{response.headers.get('X-RateLimit-Remaining') or '?'} requests remaining"
@@ -254,6 +280,7 @@ def main():
                 "curse_id",
                 "wago_id",
                 "wowi_id",
+                "has_release_json",
             )
         )
         csv_writer.writerows(
@@ -267,6 +294,7 @@ def main():
                 p.ids.curse_id,
                 p.ids.wago_id,
                 p.ids.wowi_id,
+                p.has_release_json,
             )
             for p in sorted(projects, key=lambda p: p.url)
         )
