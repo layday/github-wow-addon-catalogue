@@ -79,6 +79,7 @@ DBM-Retail,DeadlyBossMods/DBM-Retail,https://github.com/DeadlyBossMods/DBM-Retai
 DBM-SMGEventsPack,DeadlyBossMods/DBM-SMGEventsPack,https://github.com/DeadlyBossMods/DBM-SMGEventsPack,Several media files for DBM encounter Event feature.,2021-11-02T17:38:02+00:00,"bcc,classic,mainline",289632,Rn6VeENd,
 DBM-SoundEventsPack,DeadlyBossMods/DBM-SoundEventsPack,https://github.com/DeadlyBossMods/DBM-SoundEventsPack,Several media files for DBM encounter Event feature.,2021-11-02T17:37:40+00:00,"bcc,classic,mainline",289311,qv63WD6b,
 DBM-SpellTimers,DeadlyBossMods/DBM-SpellTimers,https://github.com/DeadlyBossMods/DBM-SpellTimers,Addon that uses DBM timers to show spell cooldowns from raid members. It is fully configurable through a simple GUI so you can easily add new spells.,2021-11-02T17:38:35+00:00,"bcc,classic,mainline",18712,,
+DBM-TBC-Classic,DeadlyBossMods/DBM-TBC-Classic,https://github.com/DeadlyBossMods/DBM-TBC-Classic,"The ultimate encounter helper (for TBC) to give you fight info that's easy to process at a glance. DBM aims to focus on what's happening to you, and what YOU need to do about it.",2021-11-02T14:21:38+00:00,bcc,3358,qv633o6b,8814
 DBM-WoD,DeadlyBossMods/DBM-WoD,https://github.com/DeadlyBossMods/DBM-WoD,Deadly Boss Mods (DBM) - WoD mods,2021-11-02T17:39:46+00:00,mainline,101956,LvNAkBKo,24535
 DBM-WotLK,DeadlyBossMods/DBM-WotLK,https://github.com/DeadlyBossMods/DBM-WotLK,Deadly Boss Mods (DBM) - WotLK mods,2021-11-02T17:39:32+00:00,mainline,43970,WqKQg7Nx,21522
 Instance-Achievement-Tracker,Dragnogd/Instance-Achievement-Tracker,https://github.com/Dragnogd/Instance-Achievement-Tracker,Track the completion and failure of achievements in raids and dungeons,2021-11-02T21:26:14+00:00,mainline,286675,RBKpXaKE,24756
@@ -247,7 +248,6 @@ RightClickSelfCast,Xruptor/RightClickSelfCast,https://github.com/Xruptor/RightCl
 XanChat,Xruptor/XanChat,https://github.com/Xruptor/XanChat,My own personal modifications to the Chat Frame.,2021-09-19T14:13:43+00:00,mainline,28603,,18787
 XanTooltipIcon,Xruptor/XanTooltipIcon,https://github.com/Xruptor/XanTooltipIcon,Adds an icon to tooltips for achievement or item chat links.,2021-09-19T14:09:41+00:00,"bcc,classic,mainline",28605,,19201
 xanAchievementMover,Xruptor/xanAchievementMover,https://github.com/Xruptor/xanAchievementMover,A simple addon that allows the user to move the Achievement and Dungeon notifications.,2021-09-19T14:12:36+00:00,mainline,39397,,21087
-xanBuffTimers,Xruptor/xanBuffTimers,https://github.com/Xruptor/xanBuffTimers,A small text based progress bar system for tracking buffs (player/target/focus),2021-09-19T14:13:06+00:00,"bcc,classic,mainline",28655,,19255
 xanDebuffTimers,Xruptor/xanDebuffTimers,https://github.com/Xruptor/xanDebuffTimers,A small text based progress bar system for target debuffs.,2021-09-19T14:14:19+00:00,"bcc,classic,mainline",22071,,15683
 xanDurability,Xruptor/xanDurability,https://github.com/Xruptor/xanDurability,A small window that displays the total current armour durability.,2021-09-19T14:14:32+00:00,"bcc,classic,mainline",28561,,16915
 xanEXP,Xruptor/xanEXP,https://github.com/Xruptor/xanEXP,A small window display current xp and other xp information,2021-09-19T14:15:21+00:00,"bcc,classic,mainline",22072,,15353
@@ -459,6 +459,7 @@ QuickQuest,p3lim-wow/QuickQuest,https://github.com/p3lim-wow/QuickQuest,Quest au
 Talentless,p3lim-wow/Talentless,https://github.com/p3lim-wow/Talentless,Improvements the talent UI and auto-equipping sets per specialization,2021-11-03T18:19:07+00:00,mainline,102216,,19184
 oUF_Experience,p3lim-wow/oUF_Experience,https://github.com/p3lim-wow/oUF_Experience,Experience Bar support for oUF layouts.,2021-11-03T18:17:35+00:00,mainline,20343,,10647
 oUF_Reputation,p3lim-wow/oUF_Reputation,https://github.com/p3lim-wow/oUF_Reputation,Reputation Bar support for oUF layouts,2021-11-03T18:18:06+00:00,mainline,20341,,12017
+PajMinimapArrow,pajlada/PajMinimapArrow,https://github.com/pajlada/PajMinimapArrow,,2021-09-01T14:14:09+00:00,"bcc,classic,mainline",366766,,
 LibDogTag-3.0,parnic/LibDogTag-3.0,https://github.com/parnic/LibDogTag-3.0,WoW addon library,2021-06-29T13:12:07+00:00,"bcc,classic,mainline",14280,,
 LibDogTag-Unit-3.0,parnic/LibDogTag-Unit-3.0,https://github.com/parnic/LibDogTag-Unit-3.0,,2021-06-29T13:12:13+00:00,"bcc,classic,mainline",14282,,
 RepairBroker,parnic/RepairBroker,https://github.com/parnic/RepairBroker,,2021-11-11T18:59:47+00:00,"bcc,classic,mainline",16139,,
@@ -521,8 +522,8 @@ OmniCC,tullamods/OmniCC,https://github.com/tullamods/OmniCC,Cooldown count for e
 tullaCC,tullamods/tullaCC,https://github.com/tullamods/tullaCC,Minimal addon for displaying cooldown text on buttons,2021-05-06T22:42:23+00:00,"classic,mainline",,,
 tullaRange,tullamods/tullaRange,https://github.com/tullamods/tullaRange,Colors actionbuttons when out of range,2021-07-02T20:09:44+00:00,"bcc,classic,mainline",,,
 nerien-ovale-scripts,ultijlam/nerien-ovale-scripts,https://github.com/ultijlam/nerien-ovale-scripts,Nerien's collection of Ovale scripts for various classes and specializations.,2021-09-07T15:23:38+00:00,mainline,42999,,25835
+RankSentinel,valkyrnstudios/RankSentinel,https://github.com/valkyrnstudios/RankSentinel,,2021-12-26T06:28:42+00:00,bcc,560210,,
 SoftskinTotem,valkyrnstudios/SoftskinTotem,https://github.com/valkyrnstudios/SoftskinTotem,,2021-11-26T18:57:24+00:00,bcc,550214,,
-SpellSentinel,valkyrnstudios/SpellSentinel,https://github.com/valkyrnstudios/SpellSentinel,,2021-12-17T05:34:46+00:00,bcc,557732,,
 TankBuddy,valkyrnstudios/TankBuddy,https://github.com/valkyrnstudios/TankBuddy,,2021-11-01T23:01:22+00:00,bcc,491423,,
 Exquisiloot,vtosh/Exquisiloot,https://github.com/vtosh/Exquisiloot,,2021-07-29T13:04:16+00:00,bcc,,,
 WagoAnalytics,wagoio/WagoAnalytics,https://github.com/wagoio/WagoAnalytics,,2021-09-23T20:11:04+00:00,"bcc,classic,mainline",,qv63o6bQ,
