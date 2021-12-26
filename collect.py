@@ -152,6 +152,7 @@ async def get_projects(token: str):
             "http-cache.db",
             urls_expire_after={
                 f"{API_URL.host}/search": timedelta(hours=1),
+                f"{API_URL.host}/repos/*/releases": timedelta(days=1),
             },
         ),
         connector=aiohttp.TCPConnector(limit_per_host=8),
@@ -177,7 +178,9 @@ async def get_projects(token: str):
 
         @asynccontextmanager
         async def get(url: str | URL):
-            is_search_url = URL(url).path.startswith("/search")
+            is_search_url = URL(url).path.startswith("/search") and not await client.cache.has_url(
+                url
+            )
             for attempt in count(1):
                 async with (rate_limit() if is_search_url else noop()), client.get(
                     url
