@@ -24,7 +24,7 @@ API_URL = URL("https://api.github.com/")
 
 USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-addon-catalogue)"
 
-Get = Callable[["str | URL"], AbstractAsyncContextManager[aiohttp.ClientResponse]]
+Get = Callable[[str | URL], AbstractAsyncContextManager[aiohttp.ClientResponse]]
 
 
 class ReleaseJsonFlavor(str, Enum):
@@ -151,10 +151,10 @@ async def get_projects(token: str):
         cache=SQLiteBackend(
             "http-cache.db",
             urls_expire_after={
-                f"{API_URL.host}/search/code": timedelta(hours=1),
+                f"{API_URL.host}/search": timedelta(hours=1),
             },
         ),
-        connector=aiohttp.TCPConnector(limit_per_host=3),
+        connector=aiohttp.TCPConnector(limit_per_host=8),
         headers={
             "Accept": "application/vnd.github.v3+json",
             "Authorization": f"token {token}",
@@ -163,14 +163,25 @@ async def get_projects(token: str):
         timeout=aiohttp.ClientTimeout(sock_connect=10, sock_read=10),
     ) as client:
 
+        search_lock = asyncio.Lock()
+
+        @asynccontextmanager
+        async def rate_limit():
+            async with search_lock:
+                yield
+                await asyncio.sleep(4)
+
+        @asynccontextmanager
+        async def noop():
+            yield
+
         @asynccontextmanager
         async def get(url: str | URL):
-            if not await client.cache.has_url(str(url)):
-                # Sophisticated secondary rate limiting prevention
-                await asyncio.sleep(1)
-
+            is_search_url = URL(url).path.startswith("/search")
             for attempt in count(1):
-                async with client.get(url) as response:
+                async with (rate_limit() if is_search_url else noop()), client.get(
+                    url
+                ) as response:
                     logger.info(
                         f"fetched {response.url}"
                         f"\n\t{response.headers.get('X-RateLimit-Remaining') or '?'} requests remaining"
