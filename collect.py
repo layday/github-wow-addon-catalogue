@@ -24,7 +24,7 @@ API_URL = URL("https://api.github.com/")
 
 USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-addon-catalogue)"
 
-Get = Callable[[str | URL], AbstractAsyncContextManager[aiohttp.ClientResponse]]
+Get = Callable[["str | URL"], AbstractAsyncContextManager[aiohttp.ClientResponse]]
 
 
 class ReleaseJsonFlavor(str, Enum):
