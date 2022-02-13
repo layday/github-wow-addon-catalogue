@@ -296,7 +296,7 @@ def main():
                 p.ids.wowi_id,
                 p.has_release_json,
             )
-            for p in sorted(projects, key=lambda p: p.url)
+            for p in sorted(projects, key=lambda p: p.url.lower())
         )
 
 
