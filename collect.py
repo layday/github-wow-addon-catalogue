@@ -262,12 +262,35 @@ async def get_projects(token: str):
 def main():
     parser = argparse.ArgumentParser(description="Collect WoW add-on metadata from GitHub")
     parser.add_argument("outcsv", nargs="?", default="addons.csv")
+    parser.add_argument("--merge", action="store_true")
     args = parser.parse_args()
 
     token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
     projects = asyncio.run(get_projects(token))
 
-    with open(args.outcsv, "w", newline="") as csv_file:
+    rows = {
+        p.url: (
+            p.name,
+            p.full_name,
+            p.url,
+            p.description,
+            p.last_updated.isoformat(),
+            ",".join(sorted(p.flavors)),
+            p.ids.curse_id,
+            p.ids.wago_id,
+            p.ids.wowi_id,
+            p.has_release_json,
+        )
+        for p in projects
+    }
+
+    if args.merge:
+        with open(args.outcsv, "r", encoding="utf-8", newline="") as csv_file:
+            csv_reader = csv.reader(csv_file)
+            next(csv_reader)  # Skip header.
+            rows = {p[2]: p for p in csv_reader} | rows
+
+    with open(args.outcsv, "w", encoding="utf-8", newline="") as csv_file:
         csv_writer = csv.writer(csv_file)
         csv_writer.writerow(
             (
@@ -283,21 +306,7 @@ def main():
                 "has_release_json",
             )
         )
-        csv_writer.writerows(
-            (
-                p.name,
-                p.full_name,
-                p.url,
-                p.description,
-                p.last_updated.isoformat(),
-                ",".join(sorted(p.flavors)),
-                p.ids.curse_id,
-                p.ids.wago_id,
-                p.ids.wowi_id,
-                p.has_release_json,
-            )
-            for p in sorted(projects, key=lambda p: p.url.lower())
-        )
+        csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
 
 
 if __name__ == "__main__":
