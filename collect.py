@@ -33,6 +33,26 @@ class ReleaseJsonFlavor(str, Enum):
     bcc = "bcc"
 
 
+GAME_FLAVOURS_TO_INTERFACE_RANGES = {
+    ReleaseJsonFlavor.mainline: range(10000, 100000),
+    ReleaseJsonFlavor.classic: range(11300, 20000),
+    ReleaseJsonFlavor.bcc: range(20500, 30000),
+}
+
+INTERFACE_RANGES_SANS_RETAIL = frozenset(
+    {
+        GAME_FLAVOURS_TO_INTERFACE_RANGES[k]
+        for k in GAME_FLAVOURS_TO_INTERFACE_RANGES.keys() - {ReleaseJsonFlavor.mainline}
+    }
+)
+
+TOC_SUFFIXES_TO_GAME_FLAVOURS = {
+    ("_mainline.toc", "-mainline.toc"): ReleaseJsonFlavor.mainline,
+    ("_vanilla.toc", "-vanilla.toc", "_classic.toc", "-classic.toc"): ReleaseJsonFlavor.classic,
+    ("_tbc.toc", "-tbc.toc", "_bcc.toc", "-bcc.toc"): ReleaseJsonFlavor.bcc,
+}
+
+
 @dataclass(frozen=True)
 class ProjectIds:
     curse_id: str | None
@@ -80,20 +100,23 @@ async def find_addon_repos(
             search_url = next_url["url"]
 
 
-async def extract_project_ids(get: Get, url: str):
+async def extract_project_ids_from_toc_files(get: Get, url: str):
     async with get(url) as file_response:
         file = await file_response.read()
 
     with ZipFile(io.BytesIO(file)) as addon_zip:
-        item_names = (
-            n for n in addon_zip.namelist() if n.lower().endswith(".toc") and n.count("/") == 1
-        )
-        items = [addon_zip.read(n).decode() for n in item_names]
+        unparsed_tocs = [
+            addon_zip.read(n).decode("utf-8-sig")
+            for n in addon_zip.namelist()
+            if n.count("/") == 1
+            and n.lower().endswith(".toc")
+            and str.startswith(*reversed(n.split("/")))  # pyright: ignore
+        ]
 
-    if not items:
+    if not unparsed_tocs:
         return
 
-    tocs = (parse_toc_file(c) for c in items)
+    tocs = (parse_toc_file(c) for c in unparsed_tocs)
     toc_ids = (
         (
             t.get("X-Curse-Project-ID"),
@@ -107,13 +130,44 @@ async def extract_project_ids(get: Get, url: str):
     return project_ids
 
 
-def zip_suffix_to_flavor(filename: str):
-    if filename.endswith("-classic.zip"):
-        return ReleaseJsonFlavor.classic
-    elif filename.endswith("-bcc.zip"):
-        return ReleaseJsonFlavor.bcc
-    else:
-        return ReleaseJsonFlavor.mainline
+async def extract_game_flavours_from_toc_files(get: Get, release_archives: Sequence[Any]):
+    for release_archive in release_archives:
+        async with get(release_archive["browser_download_url"]) as file_response:
+            file = await file_response.read()
+
+        with ZipFile(io.BytesIO(file)) as addon_zip:
+            toc_names = [
+                n
+                for n in addon_zip.namelist()
+                if n.count("/") == 1
+                and n.lower().endswith(".toc")
+                and str.startswith(*reversed(n.split("/")))  # pyright: ignore
+            ]
+            flavours_from_filenames = {
+                f
+                for n in toc_names
+                for s, f in TOC_SUFFIXES_TO_GAME_FLAVOURS.items()
+                if n.lower().endswith(s)
+            }
+            if flavours_from_filenames:
+                yield flavours_from_filenames
+                continue
+
+            tocs = (parse_toc_file(addon_zip.read(n).decode("utf-8-sig")) for n in toc_names)
+            interface_versions = (int(i) for t in tocs for i in (t.get("Interface"),) if i)
+            flavours_from_interface_versions = {
+                f
+                for v in interface_versions
+                for f, r in GAME_FLAVOURS_TO_INTERFACE_RANGES.items()
+                if v in r
+                and not any(
+                    v in r
+                    for r in (
+                        INTERFACE_RANGES_SANS_RETAIL if f is ReleaseJsonFlavor.mainline else ()
+                    )
+                )
+            }
+            yield flavours_from_interface_versions
 
 
 async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]):
@@ -138,7 +192,7 @@ async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]
                 for r in release_json["releases"]
                 for m in r["metadata"]
             )
-            project_ids = await extract_project_ids(
+            project_ids = await extract_project_ids_from_toc_files(
                 get,
                 next(
                     a["browser_download_url"]
@@ -158,8 +212,14 @@ async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]
                 # Not a downloadable add-on
                 return
 
-            flavours = frozenset(zip_suffix_to_flavor(a["name"]) for a in release_archives)
-            project_ids = await extract_project_ids(
+            flavours = frozenset(
+                {
+                    f
+                    async for a in extract_game_flavours_from_toc_files(get, release_archives)
+                    for f in a
+                }
+            )
+            project_ids = await extract_project_ids_from_toc_files(
                 get, release_archives[0]["browser_download_url"]
             )
 
@@ -180,7 +240,7 @@ async def get_projects(token: str):
         cache=SQLiteBackend(
             "http-cache.db",
             urls_expire_after={
-                f"{API_URL.host}/search": timedelta(hours=1),
+                f"{API_URL.host}/search": timedelta(hours=2),
                 f"{API_URL.host}/repos/*/releases": timedelta(days=1),
             },
         ),
@@ -199,7 +259,7 @@ async def get_projects(token: str):
         async def rate_limit():
             async with search_lock:
                 yield
-                await asyncio.sleep(3)
+                await asyncio.sleep(5)
 
         @asynccontextmanager
         async def noop():
