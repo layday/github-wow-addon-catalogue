@@ -25,6 +25,10 @@ dev = [
 [project.scripts]
 collect = "collect:main"
 
+[tool.pyright]
+strict = true
+src = ["collect.py"]
+
 [tool.black]
 line_length = 99
 
