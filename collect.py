@@ -27,6 +27,16 @@ USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-
 Get = Callable[["str | URL"], AbstractAsyncContextManager[aiohttp.ClientResponse]]
 
 
+EXCLUDES = frozenset(
+    {
+        "alchem1ster/AddOns-Update-Tool",
+        "BilboTheGreedy/Azerite",
+        "livepeer/livepeer-com",
+        "mdd3/WCLRanks-Firemaw-EU-Alliance",
+    }
+)
+
+
 class ReleaseJsonFlavor(str, Enum):
     mainline = "mainline"
     classic = "classic"
