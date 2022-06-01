@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from itertools import count
+from operator import eq
 from typing import Any, Literal
 from zipfile import ZipFile
 
@@ -92,6 +93,14 @@ def parse_toc_file(contents: str):
     }
 
 
+def is_top_level_addon_toc(zip_path: str):
+    return (
+        zip_path.count("/") == 1
+        and zip_path.lower().endswith(".toc")
+        and eq(*zip_path.lower().removesuffix(".toc").split("/"))
+    )
+
+
 async def find_addon_repos(
     get: Get, queries_by_kind: Sequence[tuple[Literal["code", "repositories"], str]]
 ):
@@ -118,9 +127,7 @@ async def extract_project_ids_from_toc_files(get: Get, url: str):
         unparsed_tocs = [
             addon_zip.read(n).decode("utf-8-sig")
             for n in addon_zip.namelist()
-            if n.count("/") == 1
-            and n.lower().endswith(".toc")
-            and str.startswith(*reversed(n.split("/")))  # pyright: ignore
+            if is_top_level_addon_toc(n)
         ]
 
     if not unparsed_tocs:
@@ -146,13 +153,7 @@ async def extract_game_flavours_from_toc_files(get: Get, release_archives: Seque
             file = await file_response.read()
 
         with ZipFile(io.BytesIO(file)) as addon_zip:
-            toc_names = [
-                n
-                for n in addon_zip.namelist()
-                if n.count("/") == 1
-                and n.lower().endswith(".toc")
-                and str.startswith(*reversed(n.split("/")))  # pyright: ignore
-            ]
+            toc_names = [n for n in addon_zip.namelist() if is_top_level_addon_toc(n)]
             flavours_from_filenames = {
                 f
                 for n in toc_names
@@ -316,6 +317,7 @@ async def get_projects(token: str):
                     ("repositories", "topic:wow-addon"),
                 ],
             )
+            if r["full_name"] not in EXCLUDES
         }
         projects = {
             r
