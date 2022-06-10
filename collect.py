@@ -44,23 +44,18 @@ class ReleaseJsonFlavor(str, Enum):
     bcc = "bcc"
 
 
-GAME_FLAVOURS_TO_INTERFACE_RANGES = {
-    ReleaseJsonFlavor.mainline: range(10000, 100000),
-    ReleaseJsonFlavor.classic: range(11300, 20000),
-    ReleaseJsonFlavor.bcc: range(20500, 30000),
+FLAVORS_TO_INTERFACE_RANGES = {
+    # fmt: off
+    ReleaseJsonFlavor.mainline: (range(1_00_00, 1_13_00), range(2_00_00, 2_05_00), range(3_00_00, 11_00_00),),
+    # fmt: on
+    ReleaseJsonFlavor.classic: (range(1_13_00, 2_00_00),),
+    ReleaseJsonFlavor.bcc: (range(2_05_00, 3_00_00),),
 }
 
-INTERFACE_RANGES_SANS_RETAIL = frozenset(
-    {
-        GAME_FLAVOURS_TO_INTERFACE_RANGES[k]
-        for k in GAME_FLAVOURS_TO_INTERFACE_RANGES.keys() - {ReleaseJsonFlavor.mainline}
-    }
-)
-
-TOC_SUFFIXES_TO_GAME_FLAVOURS = {
-    ("_mainline.toc", "-mainline.toc"): ReleaseJsonFlavor.mainline,
-    ("_vanilla.toc", "-vanilla.toc", "_classic.toc", "-classic.toc"): ReleaseJsonFlavor.classic,
-    ("_tbc.toc", "-tbc.toc", "_bcc.toc", "-bcc.toc"): ReleaseJsonFlavor.bcc,
+FLAVORS_TO_TOC_SUFFIXES = {
+    ReleaseJsonFlavor.mainline: ("_mainline.toc", "-mainline.toc"),
+    ReleaseJsonFlavor.classic: ("_vanilla.toc", "-vanilla.toc", "_classic.toc", "-classic.toc"),
+    ReleaseJsonFlavor.bcc: ("_tbc.toc", "-tbc.toc", "_bcc.toc", "-bcc.toc"),
 }
 
 
@@ -157,7 +152,7 @@ async def extract_game_flavours_from_toc_files(get: Get, release_archives: Seque
             flavours_from_filenames = {
                 f
                 for n in toc_names
-                for s, f in TOC_SUFFIXES_TO_GAME_FLAVOURS.items()
+                for f, s in FLAVORS_TO_TOC_SUFFIXES.items()
                 if n.lower().endswith(s)
             }
             if flavours_from_filenames:
@@ -169,14 +164,8 @@ async def extract_game_flavours_from_toc_files(get: Get, release_archives: Seque
             flavours_from_interface_versions = {
                 f
                 for v in interface_versions
-                for f, r in GAME_FLAVOURS_TO_INTERFACE_RANGES.items()
-                if v in r
-                and not any(
-                    v in r
-                    for r in (
-                        INTERFACE_RANGES_SANS_RETAIL if f is ReleaseJsonFlavor.mainline else ()
-                    )
-                )
+                for f, r in FLAVORS_TO_INTERFACE_RANGES.items()
+                if any(v in i for i in r)
             }
             yield flavours_from_interface_versions
 
