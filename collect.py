@@ -32,8 +32,10 @@ EXCLUDES = frozenset(
     {
         "alchem1ster/AddOns-Update-Tool",
         "BilboTheGreedy/Azerite",
+        "HappyRot/AddOns",
         "livepeer/livepeer-com",
         "mdd3/WCLRanks-Firemaw-EU-Alliance",
+        "wagyourtail/JsMacros",
     }
 )
 
