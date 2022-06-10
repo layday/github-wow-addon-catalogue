@@ -315,6 +315,7 @@ async def get_projects(token: str):
                     ("code", "path:.github/workflows bigwigsmods packager"),
                     ("code", "path:.github/workflows CF_API_KEY"),
                     ("repositories", "topic:wow-addon"),
+                    ("repositories", "topics:>2 topic:world-of-warcraft topic:addon"),
                 ],
             )
             if r["full_name"] not in EXCLUDES
