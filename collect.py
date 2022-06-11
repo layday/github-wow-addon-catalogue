@@ -5,13 +5,13 @@ import asyncio
 import csv
 import io
 import os
+import re
 from collections.abc import Callable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from itertools import count
-from operator import eq
 from typing import Any, Literal
 from zipfile import ZipFile
 
@@ -45,6 +45,22 @@ class ReleaseJsonFlavor(str, Enum):
     classic = "classic"
     bcc = "bcc"
 
+    # TOC aliases
+    vanilla = classic
+    tbc = bcc
+
+
+class _UnknownFlavor(Enum):
+    UNK = "UNK"
+
+
+UNK = _UnknownFlavor.UNK
+
+match_top_level_toc_name = re.compile(
+    r"^(?P<name>[^\/]+)[\/](?P=name)(?:[-|_](?P<flavor>mainline|classic|vanilla|bcc|tbc))?\.toc$",
+    flags=re.I,
+)
+
 
 FLAVORS_TO_INTERFACE_RANGES = {
     # fmt: off
@@ -52,12 +68,6 @@ FLAVORS_TO_INTERFACE_RANGES = {
     # fmt: on
     ReleaseJsonFlavor.classic: (range(1_13_00, 2_00_00),),
     ReleaseJsonFlavor.bcc: (range(2_05_00, 3_00_00),),
-}
-
-FLAVORS_TO_TOC_SUFFIXES = {
-    ReleaseJsonFlavor.mainline: ("_mainline.toc", "-mainline.toc"),
-    ReleaseJsonFlavor.classic: ("_vanilla.toc", "-vanilla.toc", "_classic.toc", "-classic.toc"),
-    ReleaseJsonFlavor.bcc: ("_tbc.toc", "-tbc.toc", "_bcc.toc", "-bcc.toc"),
 }
 
 
@@ -91,11 +101,9 @@ def parse_toc_file(contents: str):
 
 
 def is_top_level_addon_toc(zip_path: str):
-    return (
-        zip_path.count("/") == 1
-        and zip_path.lower().endswith(".toc")
-        and eq(*zip_path.lower().removesuffix(".toc").split("/"))
-    )
+    match = match_top_level_toc_name.match(zip_path)
+    if match:
+        return ReleaseJsonFlavor.__members__.get(match["flavor"], UNK)
 
 
 async def find_addon_repos(
@@ -150,26 +158,27 @@ async def extract_game_flavours_from_toc_files(get: Get, release_archives: Seque
             file = await file_response.read()
 
         with ZipFile(io.BytesIO(file)) as addon_zip:
-            toc_names = [n for n in addon_zip.namelist() if is_top_level_addon_toc(n)]
-            flavours_from_filenames = {
-                f
-                for n in toc_names
-                for f, s in FLAVORS_TO_TOC_SUFFIXES.items()
-                if n.lower().endswith(s)
-            }
-            if flavours_from_filenames:
-                yield flavours_from_filenames
-                continue
+            toc_names = [
+                (n, f) for n in addon_zip.namelist() for f in (is_top_level_addon_toc(n),) if f
+            ]
+            flavours_from_toc_names = {f for _, f in toc_names if f is not UNK}
+            if flavours_from_toc_names:
+                yield flavours_from_toc_names
 
-            tocs = (parse_toc_file(addon_zip.read(n).decode("utf-8-sig")) for n in toc_names)
-            interface_versions = (int(i) for t in tocs for i in (t.get("Interface"),) if i)
-            flavours_from_interface_versions = {
-                f
-                for v in interface_versions
-                for f, r in FLAVORS_TO_INTERFACE_RANGES.items()
-                if any(v in i for i in r)
-            }
-            yield flavours_from_interface_versions
+            unk_flavor_toc_names = [n for n, f in toc_names if f is UNK]
+            if unk_flavor_toc_names:
+                tocs = (
+                    parse_toc_file(addon_zip.read(n).decode("utf-8-sig"))
+                    for n in unk_flavor_toc_names
+                )
+                interface_versions = (int(i) for t in tocs for i in (t.get("Interface"),) if i)
+                flavours_from_interface_versions = {
+                    f
+                    for v in interface_versions
+                    for f, r in FLAVORS_TO_INTERFACE_RANGES.items()
+                    if any(v in i for i in r)
+                }
+                yield flavours_from_interface_versions
 
 
 async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]):
