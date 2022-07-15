@@ -174,7 +174,9 @@ async def extract_game_flavours_from_toc_files(get: Get, release_archives: Seque
                     parse_toc_file(addon_zip.read(n).decode("utf-8-sig"))
                     for n in unk_flavor_toc_names
                 )
-                interface_versions = (int(i) for t in tocs for i in (t.get("Interface"),) if i)
+                interface_versions = (
+                    int(i) for t in tocs for i in (t.get("Interface"),) if i and i.isdigit()
+                )
                 flavours_from_interface_versions = {
                     f
                     for v in interface_versions
