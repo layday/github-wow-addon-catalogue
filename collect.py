@@ -45,6 +45,7 @@ class ReleaseJsonFlavor(str, Enum):
     mainline = "mainline"
     classic = "classic"
     bcc = "bcc"
+    wrath = "wrath"
 
     # TOC aliases
     vanilla = classic
@@ -64,11 +65,12 @@ match_top_level_toc_name = re.compile(
 
 
 FLAVORS_TO_INTERFACE_RANGES = {
-    # fmt: off
-    ReleaseJsonFlavor.mainline: (range(1_00_00, 1_13_00), range(2_00_00, 2_05_00), range(3_00_00, 11_00_00),),
-    # fmt: on
+    ReleaseJsonFlavor.mainline: (
+        range(1_00_00, 1_13_00), range(2_00_00, 2_05_00), range(3_00_00, 3_04_00), range(4_00_00, 11_00_00)  # fmt: skip
+    ),
     ReleaseJsonFlavor.classic: (range(1_13_00, 2_00_00),),
     ReleaseJsonFlavor.bcc: (range(2_05_00, 3_00_00),),
+    ReleaseJsonFlavor.wrath: (range(2_05_00, 3_00_00),),
 }
 
 
