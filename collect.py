@@ -70,7 +70,7 @@ FLAVORS_TO_INTERFACE_RANGES = {
     ),
     ReleaseJsonFlavor.classic: (range(1_13_00, 2_00_00),),
     ReleaseJsonFlavor.bcc: (range(2_05_00, 3_00_00),),
-    ReleaseJsonFlavor.wrath: (range(2_05_00, 3_00_00),),
+    ReleaseJsonFlavor.wrath: (range(3_04_00, 4_00_00),),
 }
 
 
