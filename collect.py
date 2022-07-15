@@ -59,7 +59,9 @@ class _UnknownFlavor(Enum):
 UNK = _UnknownFlavor.UNK
 
 match_top_level_toc_name = re.compile(
-    r"^(?P<name>[^\/]+)[\/](?P=name)(?:[-|_](?P<flavor>mainline|classic|vanilla|bcc|tbc))?\.toc$",
+    r"^(?P<name>[^\/]+)[\/](?P=name)(?:[-|_]"
+    rf"(?P<flavor>{'|'.join(map(re.escape, ReleaseJsonFlavor.__members__))}))?"
+    r"\.toc$",
     flags=re.I,
 )
 
