@@ -28,15 +28,16 @@ USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-
 Get = Callable[["str | URL"], AbstractAsyncContextManager[aiohttp.ClientResponse]]
 
 
-EXCLUDES = frozenset(
-    {
-        "alchem1ster/AddOns-Update-Tool",
-        "BilboTheGreedy/Azerite",
-        "HappyRot/AddOns",
-        "livepeer/livepeer-com",
-        "mdd3/WCLRanks-Firemaw-EU-Alliance",
-        "wagyourtail/JsMacros",
-    }
+EXCLUDES = (
+    "alchem1ster/AddOns-Update-Tool",
+    "BilboTheGreedy/Azerite",
+    "DaMitchell/HelloWorld",
+    "HappyRot/AddOns",
+    "hippuli/",
+    "JsMacros/",
+    "livepeer/",
+    "mdd3/WCLRanks-Firemaw-EU-Alliance",
+    "wagyourtail/JsMacros",
 )
 
 
@@ -318,7 +319,7 @@ async def get_projects(token: str):
                     ("repositories", "topics:>2 topic:world-of-warcraft topic:addon"),
                 ],
             )
-            if r["full_name"] not in EXCLUDES
+            if not r["full_name"].startswith(EXCLUDES)
         }
         projects = {
             r
