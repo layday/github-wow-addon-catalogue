@@ -2,7 +2,7 @@ name,full_name,url,description,last_updated,flavors,curse_id,wago_id,wowi_id,has
 premade-applicants-filter,0xbs/premade-applicants-filter,https://github.com/0xbs/premade-applicants-filter,Allows filtering of premade applicants using advanced filter expressions.,2021-12-26T09:40:18+00:00,mainline,,,,True
 premade-groups-filter,0xbs/premade-groups-filter,https://github.com/0xbs/premade-groups-filter,A World of Warcraft addon for powerful filtering of premade group listings.,2022-08-03T07:25:28+00:00,mainline,,,,True
 premade-regions,0xbs/premade-regions,https://github.com/0xbs/premade-regions,Provides region information in the premade groups and applicants listings as well as to other addons.,2021-07-09T18:02:33+00:00,mainline,,,,True
-NoteworthyII,28/NoteworthyII,https://github.com/28/NoteworthyII,Fully featured and configurable notepad utility for WoW,2022-06-09T12:03:47+00:00,classic,,,,False
+NoteworthyII,28/NoteworthyII,https://github.com/28/NoteworthyII,Fully featured and configurable notepad utility for WoW,2022-08-23T11:36:59+00:00,mainline,,,,False
 Buvvs,2CDeez/Buvvs,https://github.com/2CDeez/Buvvs,Buff Frame Customizer,2020-06-08T21:34:16+00:00,,,,,False
 LootRollLedger,4bitfocus/LootRollLedger,https://github.com/4bitfocus/LootRollLedger,Simple loot roll monitor and tracker for World of Warcraft,2022-05-25T00:03:11+00:00,mainline,402978,,25732,True
 HandyNotes_MoleMachine,AcidWeb/HandyNotes_MoleMachine,https://github.com/AcidWeb/HandyNotes_MoleMachine,Display locations of Dark Iron Dwarf mole machines.,2022-08-17T14:41:06+00:00,mainline,,baNDD4No,24766,True
@@ -13,7 +13,7 @@ REHack,AcidWeb/REHack,https://github.com/AcidWeb/REHack,Notebook/coding framewor
 REKeys,AcidWeb/REKeys,https://github.com/AcidWeb/REKeys,Collect information about keystones owned by your friends.,2022-08-17T14:42:56+00:00,mainline,,XrNke8Ka,24510,True
 REPorter,AcidWeb/REPorter,https://github.com/AcidWeb/REPorter,Provide proper battleground map.,2022-08-17T14:44:19+00:00,mainline,,Xb6X0o6p,21089,True
 RETabBinder,AcidWeb/RETabBinder,https://github.com/AcidWeb/RETabBinder,Handle automatic change of targeting keybind,2022-08-17T14:41:44+00:00,mainline,,Rn6Ve8Nd,19089,True
-AdiBags,AdiAddons/AdiBags,https://github.com/AdiAddons/AdiBags,WoW Addon — Adirelle's bag addon.,2022-08-21T03:49:58+00:00,mainline,,,,True
+AdiBags,AdiAddons/AdiBags,https://github.com/AdiAddons/AdiBags,WoW Addon — Adirelle's bag addon.,2022-08-26T14:25:47+00:00,"bcc,classic,mainline,wrath",,,,True
 AdiButtonAuras,AdiAddons/AdiButtonAuras,https://github.com/AdiAddons/AdiButtonAuras,WoW addon - Display auras on action buttons.,2022-05-15T14:16:48+00:00,mainline,68441,,,True
 LibPlayerSpells-1.0,AdiAddons/LibPlayerSpells-1.0,https://github.com/AdiAddons/LibPlayerSpells-1.0,WoW addon library - additional information about player spells.,2022-05-15T14:14:13+00:00,mainline,72228,,,True
 oUF_Adirelle,Adirelle/oUF_Adirelle,https://github.com/Adirelle/oUF_Adirelle,WoW addon: oUF-based unit and raid frames.,2021-03-18T10:30:47+00:00,mainline,21613,,,False
@@ -62,12 +62,13 @@ ProtoformReagentStatus,ArekosAddons/ProtoformReagentStatus,https://github.com/Ar
 arkautolootbop,arkayenro/arkautolootbop,https://github.com/arkayenro/arkautolootbop,,2022-02-15T13:19:06+00:00,mainline,25692,7x617VG1,,True
 arktest,arkayenro/arktest,https://github.com/arkayenro/arktest,packager testing,2022-03-05T04:11:37+00:00,"bcc,classic,mainline",581591,5bGo1860,26238,True
 AdventureDataCollector,Artamus/AdventureDataCollector,https://github.com/Artamus/AdventureDataCollector,"World of Warcraft Addon to collect follower team composition, enemy composition and success data",2021-01-02T17:52:28+00:00,mainline,,,,False
-MovementSpeed,Arxareon/MovementSpeed,https://github.com/Arxareon/MovementSpeed,"World of Warcraft Addon allowing you to view your character's current speed in a movable and customizable display, or anyone else's in the inspect tooltip with fast updates.",2022-08-20T17:53:59+00:00,"bcc,classic,mainline,wrath",,,,False
+MovementSpeed,Arxareon/MovementSpeed,https://github.com/Arxareon/MovementSpeed,"World of Warcraft Addon allowing you to view your character's current speed in a movable and customizable display, or anyone else's in the inspect tooltip with fast updates.",2022-08-21T10:05:09+00:00,"bcc,classic,mainline,wrath",,,,False
+RemainingXP,Arxareon/RemainingXP,https://github.com/Arxareon/RemainingXP,"World of Warcraft Addon showing the XP amount needed to level up. It offers a custom XP bar, text integration for the default XP bar, Rested XP accumulation tracking, chat notifications & more.",2022-08-21T10:50:02+00:00,"bcc,classic,mainline,wrath",,,,False
 LibDogTag-Stats-3.0,ascott18/LibDogTag-Stats-3.0,https://github.com/ascott18/LibDogTag-Stats-3.0,A WoW library to provide tags for player combat stats to LibDogTag-3.0,2021-08-21T03:55:35+00:00,"bcc,classic,mainline",58908,,,True
 TellMeWhen,ascott18/TellMeWhen,https://github.com/ascott18/TellMeWhen,TellMeWhen is a combat tracking AddOn for World of Warcraft Retail and Classic,2022-05-17T23:25:53+00:00,mainline,8025,ZQ6aZqKW,10855,True
 TodoChecklister,AssisrMatheus/TodoChecklister,https://github.com/AssisrMatheus/TodoChecklister,A todolist/checklist AddOn for World of Warcraft classic,2019-09-25T21:18:52+00:00,"classic,mainline",,,,False
 AstralAnalytics,astralguild/AstralAnalytics,https://github.com/astralguild/AstralAnalytics,,2022-08-16T23:40:04+00:00,mainline,573967,RBKpPOKE,,True
-AstralKeys,astralguild/AstralKeys,https://github.com/astralguild/AstralKeys,,2022-08-16T23:37:34+00:00,mainline,265199,baNDZoKo,,True
+AstralKeys,astralguild/AstralKeys,https://github.com/astralguild/AstralKeys,,2022-08-21T11:54:13+00:00,mainline,265199,baNDZoKo,,True
 AstralMailer,astralguild/AstralMailer,https://github.com/astralguild/AstralMailer,,2022-08-16T23:39:24+00:00,mainline,634319,xZKxgp6k,,True
 AstralSharedMedia,astralguild/AstralSharedMedia,https://github.com/astralguild/AstralSharedMedia,,2022-08-16T23:38:37+00:00,mainline,628753,LvNA0BGo,,True
 Auctionator,Auctionator/Auctionator,https://github.com/Auctionator/Auctionator,The Auctionator addon for World of Warcraft.,2022-08-05T18:20:40+00:00,"bcc,classic,mainline,wrath",,,,True
@@ -76,11 +77,11 @@ Journalator,Auctionator/Journalator,https://github.com/Auctionator/Journalator,W
 PointBlankSniper,Auctionator/PointBlankSniper,https://github.com/Auctionator/PointBlankSniper,World of Warcraft addon for retail. Fast sniper using a shopping list,2022-07-08T19:58:16+00:00,mainline,,,,True
 YaHT,Aviana/YaHT,https://github.com/Aviana/YaHT,Yet another Hunter Timer for WoW Classic,2021-06-19T07:30:34+00:00,bcc,,,,False
 Instigator-Quotes,awallclock/Instigator-Quotes,https://github.com/awallclock/Instigator-Quotes,Who is munyanyo?,2022-03-22T22:47:30+00:00,bcc,585514,R4N2a0GL,,True
-AddOnSkins,Azilroka/AddOnSkins,https://github.com/Azilroka/AddOnSkins,,2022-01-01T00:46:09+00:00,"bcc,classic,mainline",54541,RXKqy5Ky,,True
+AddOnSkins,Azilroka/AddOnSkins,https://github.com/Azilroka/AddOnSkins,,2022-08-24T23:58:29+00:00,"bcc,classic,mainline",54541,RXKqy5Ky,,True
 ClassTactics,Azilroka/ClassTactics,https://github.com/Azilroka/ClassTactics,,2022-01-01T00:47:48+00:00,"bcc,classic,mainline",473120,rkGrqrKy,,True
 ElvUI_TinkerToolbox,Azilroka/ElvUI_TinkerToolbox,https://github.com/Azilroka/ElvUI_TinkerToolbox,,2022-02-13T02:21:59+00:00,"bcc,classic,mainline",473233,Xb6X8o6p,,True
 ProjectAzilroka,Azilroka/ProjectAzilroka,https://github.com/Azilroka/ProjectAzilroka,,2022-01-01T22:33:07+00:00,"bcc,classic,mainline",311661,baNDy46o,,True
-PallyPower,AznamirWoW/PallyPower,https://github.com/AznamirWoW/PallyPower,The official repository of PallyPower for retail version of World of Warcraft Classic/TBC,2022-08-21T04:39:27+00:00,"bcc,classic,wrath",2703,,,True
+PallyPower,AznamirWoW/PallyPower,https://github.com/AznamirWoW/PallyPower,The official repository of PallyPower for retail version of World of Warcraft Classic/TBC,2022-08-26T16:22:20+00:00,"bcc,classic,wrath",2703,,,True
 Skillet,b-morgan/Skillet,https://github.com/b-morgan/Skillet,World of Warcraft addon,2022-06-07T11:30:56+00:00,mainline,445339,,7571,True
 Skillet-Classic,b-morgan/Skillet-Classic,https://github.com/b-morgan/Skillet-Classic,World of Warcraft Classic addon,2022-08-19T21:55:36+00:00,"bcc,classic",447401,,25287,True
 ThreatPlates,Backupiseasy/ThreatPlates,https://github.com/Backupiseasy/ThreatPlates,Nameplate addon for World of Warcraft,2022-08-19T19:41:42+00:00,"bcc,classic,mainline",21217,RqGZkkNd,15749,True
@@ -99,7 +100,7 @@ ProfessionMailer,Beast-Masters-addons/ProfessionMailer,https://github.com/Beast-
 TomTomTargetArrow,Beast-Masters-addons/TomTomTargetArrow,https://github.com/Beast-Masters-addons/TomTomTargetArrow,,2022-04-02T20:09:38+00:00,mainline,313741,qv63zZNb,25895,True
 Alignment-Grid,BendyWalker/Alignment-Grid,https://github.com/BendyWalker/Alignment-Grid,A World of Warcraft AddOn that overlays a grid on-screen to aid in aligning the user interface.,2019-09-26T08:37:37+00:00,mainline,,,,False
 PantheonDKP,Bengejd/PantheonDKP,https://github.com/Bengejd/PantheonDKP,DKP Addon for the Blaumeux server guild: Pantheon!,2022-06-24T04:14:46+00:00,bcc,367232,,,True
-BigWigs,BigWigsMods/BigWigs,https://github.com/BigWigsMods/BigWigs,"Modular, lightweight, non-intrusive approach to boss encounter warnings.",2022-08-18T01:34:50+00:00,mainline,2382,,5086,True
+BigWigs,BigWigsMods/BigWigs,https://github.com/BigWigsMods/BigWigs,"Modular, lightweight, non-intrusive approach to boss encounter warnings.",2022-08-23T03:03:21+00:00,mainline,2382,,5086,True
 BigWigs_BattleForAzeroth,BigWigsMods/BigWigs_BattleForAzeroth,https://github.com/BigWigsMods/BigWigs_BattleForAzeroth,A collection of BigWigs modules from the Battle for Azeroth era.,2022-06-01T05:41:41+00:00,mainline,420598,,25791,True
 BigWigs_BurningCrusade,BigWigsMods/BigWigs_BurningCrusade,https://github.com/BigWigsMods/BigWigs_BurningCrusade,A collection of BigWigs modules from the Burning Crusade era.,2022-06-01T05:42:51+00:00,mainline,50688,,22096,True
 BigWigs_Cataclysm,BigWigsMods/BigWigs_Cataclysm,https://github.com/BigWigsMods/BigWigs_Cataclysm,A collection of BigWigs modules from the Cataclysm era.,2022-06-01T05:43:45+00:00,mainline,45694,,21755,True
@@ -143,7 +144,7 @@ sudo,caffeineaddiction/sudo,https://github.com/caffeineaddiction/sudo,Allows ful
 hammer,casperstorm/hammer,https://github.com/casperstorm/hammer,Dead simple World of Warcraft addon to auto repair your gear,2021-03-10T08:55:18+00:00,mainline,,,,False
 overshields,casperstorm/overshields,https://github.com/casperstorm/overshields,Overshields will provice permanent feedback on total shielding amounts regardless of whether the shielded person's HP is full or not.,2021-11-18T14:00:17+00:00,mainline,,,,False
 DeathNote,casualshammy/DeathNote,https://github.com/casualshammy/DeathNote,World of Warcraft AddOn - Death analysis tool,2022-07-03T21:04:32+00:00,mainline,28314,VBNBxLKx,,True
-NameplateAuras,casualshammy/NameplateAuras,https://github.com/casualshammy/NameplateAuras,Addon for World of Warcraft that displays buffs/debuffs of players above their nameplates.,2022-08-15T21:32:14+00:00,mainline,101192,lQNl536e,,True
+NameplateAuras,casualshammy/NameplateAuras,https://github.com/casualshammy/NameplateAuras,Addon for World of Warcraft that displays buffs/debuffs of players above their nameplates.,2022-08-21T12:31:08+00:00,mainline,101192,lQNl536e,,True
 NameplateCooldowns,casualshammy/NameplateCooldowns,https://github.com/casualshammy/NameplateCooldowns,This addon for World of Warcraft will show you cooldowns of an enemies above their nameplates,2022-08-15T21:33:04+00:00,mainline,66866,0mNwjlGo,,True
 CraftPresence-Wow-Edition,CDAGaming/CraftPresence-Wow-Edition,https://github.com/CDAGaming/CraftPresence-Wow-Edition,Port of https://gitlab.com/CDAGaming/CraftPresence for World of Warcraft (Mirrored to Github from Gitlab),2022-08-16T16:36:51+00:00,"bcc,classic,mainline,wrath",457334,R4N2naNL,25986,True
 WowLua,CDAGaming/WowLua,https://github.com/CDAGaming/WowLua,Lua in Wow,2021-03-10T16:47:45+00:00,"classic,mainline",,,,False
@@ -169,6 +170,7 @@ XpCounter,coolmodi/XpCounter,https://github.com/coolmodi/XpCounter,A very hastil
 GuildRosterExport,CruelDrool/GuildRosterExport,https://github.com/CruelDrool/GuildRosterExport,"World of Warcraft addon for exporting the guild roster to CSV, JSON, XML or YAML",2022-08-17T05:19:32+00:00,"bcc,classic,mainline",,,,True
 NPCScan,CruelDrool/NPCScan,https://github.com/CruelDrool/NPCScan,"A version of NPCScan with rares in the Shadowlands zones, Darkshore, Nazjatar, Mechagon, N'Zoth assaults in Uldum/Vale of Eternal Blossoms.",2022-08-17T05:18:38+00:00,mainline,,,,True
 AngrySinstones,csmith/AngrySinstones,https://github.com/csmith/AngrySinstones,World of Warcraft addon to quickly link to sinstones and their corresponding locations,2021-01-01T20:06:39+00:00,mainline,,,25859,False
+D4KiR-MoveAndImprove,d4kir92/D4KiR-MoveAndImprove,https://github.com/d4kir92/D4KiR-MoveAndImprove,,2022-08-24T08:03:31+00:00,"bcc,classic,mainline,wrath",405674,Mj6jd5GR,,True
 SpellAndItemID,darhanger/SpellAndItemID,https://github.com/darhanger/SpellAndItemID,SpellAndItemID,2021-11-02T11:30:35+00:00,mainline,,,,False
 SpoofName,darhanger/SpoofName,https://github.com/darhanger/SpoofName,SpoofName,2021-05-31T07:59:29+00:00,mainline,,,,False
 ElvUI-Microbar-Enhancement,DarthPredator/ElvUI-Microbar-Enhancement,https://github.com/DarthPredator/ElvUI-Microbar-Enhancement,﻿A plugin providing additional features for ElvUI's Microbar,2022-02-02T16:10:36+00:00,mainline,35686,,,True
@@ -184,12 +186,12 @@ DBM-Challenges,DeadlyBossMods/DBM-Challenges,https://github.com/DeadlyBossMods/D
 DBM-Classic,DeadlyBossMods/DBM-Classic,https://github.com/DeadlyBossMods/DBM-Classic,"The ultimate encounter helper (for Classic) to give you fight info that's easy to process at a glance. DBM aims to focus on what's happening to you, and what YOU need to do about it.",2022-08-02T03:31:16+00:00,classic,3358,qv633o6b,8814,True
 DBM-CountPack-HotS,DeadlyBossMods/DBM-CountPack-HotS,https://github.com/DeadlyBossMods/DBM-CountPack-HotS,A collection of Heroes of the Storm countdown sound options for use with Deadly Boss Mods.,2022-08-20T02:05:18+00:00,"bcc,classic,mainline,wrath",267646,XrNkewKa,,True
 DBM-CountPack-Overwatch,DeadlyBossMods/DBM-CountPack-Overwatch,https://github.com/DeadlyBossMods/DBM-CountPack-Overwatch,A collection of Overwatch countdown sound options for use with Deadly Boss Mods.,2022-08-20T02:05:34+00:00,"bcc,classic,mainline,wrath",267605,kRNLxQNo,,True
-DBM-Dungeons,DeadlyBossMods/DBM-Dungeons,https://github.com/DeadlyBossMods/DBM-Dungeons,"Adds support for 5 man Dungeons to Retail WoW, spanning Vanilla all the way to Dragonflight, to Deadly Boss Mods.",2022-08-16T16:18:39+00:00,mainline,314994,xZKxZENk,24904,True
+DBM-Dungeons,DeadlyBossMods/DBM-Dungeons,https://github.com/DeadlyBossMods/DBM-Dungeons,"Adds support for 5 man Dungeons to Retail WoW, spanning Vanilla all the way to Dragonflight, to Deadly Boss Mods.",2022-08-23T22:43:30+00:00,mainline,314994,xZKxZENk,24904,True
 DBM-Legion,DeadlyBossMods/DBM-Legion,https://github.com/DeadlyBossMods/DBM-Legion,Deadly Boss Mods (DBM) - Legion mods,2022-08-16T16:22:33+00:00,mainline,301324,lQNlbaKe,24905,True
 DBM-MoP,DeadlyBossMods/DBM-MoP,https://github.com/DeadlyBossMods/DBM-MoP,Deadly Boss Mods (DBM) - MoP mods,2022-08-16T16:22:01+00:00,mainline,85688,0mNwz4Go,23199,True
 DBM-PvP,DeadlyBossMods/DBM-PvP,https://github.com/DeadlyBossMods/DBM-PvP,This mod adds support for PvP battlegrounds and arena to Deadly Boss Mods.,2022-08-16T16:22:59+00:00,"bcc,classic,mainline,wrath",61882,Xb6Xe0Kp,,True
 DBM-RaidLeadTools,DeadlyBossMods/DBM-RaidLeadTools,https://github.com/DeadlyBossMods/DBM-RaidLeadTools,Raid Leader tools für DBM,2021-06-29T17:16:41+00:00,mainline,21364,,,True
-DBM-Retail,DeadlyBossMods/DBM-Retail,https://github.com/DeadlyBossMods/DBM-Retail,"The ultimate encounter helper (for Retail) to give you fight info that's easy to process at a glance. DBM aims to focus on what's happening to you, and what YOU need to do about it.",2022-08-16T16:17:56+00:00,mainline,3358,qv633o6b,8814,True
+DBM-Retail,DeadlyBossMods/DBM-Retail,https://github.com/DeadlyBossMods/DBM-Retail,"The ultimate encounter helper (for Retail) to give you fight info that's easy to process at a glance. DBM aims to focus on what's happening to you, and what YOU need to do about it.",2022-08-23T22:43:07+00:00,mainline,3358,qv633o6b,8814,True
 DBM-SMGEventsPack,DeadlyBossMods/DBM-SMGEventsPack,https://github.com/DeadlyBossMods/DBM-SMGEventsPack,Several media files for DBM encounter Event feature.,2022-08-20T02:06:04+00:00,"bcc,classic,mainline,wrath",289632,Rn6VeENd,,True
 DBM-SoundEventsPack,DeadlyBossMods/DBM-SoundEventsPack,https://github.com/DeadlyBossMods/DBM-SoundEventsPack,Several media files for DBM encounter Event feature.,2022-08-20T02:05:51+00:00,"bcc,classic,mainline,wrath",289311,qv63WD6b,,True
 DBM-SpellTimers,DeadlyBossMods/DBM-SpellTimers,https://github.com/DeadlyBossMods/DBM-SpellTimers,Addon that uses DBM timers to show spell cooldowns from raid members. It is fully configurable through a simple GUI so you can easily add new spells.,2022-08-20T02:06:18+00:00,"bcc,classic,mainline,wrath",18712,,,True
@@ -198,24 +200,24 @@ DBM-Voicepack-Demo,DeadlyBossMods/DBM-Voicepack-Demo,https://github.com/DeadlyBo
 DBM-WoD,DeadlyBossMods/DBM-WoD,https://github.com/DeadlyBossMods/DBM-WoD,Deadly Boss Mods (DBM) - WoD mods,2022-08-16T16:22:15+00:00,mainline,101956,LvNAkBKo,24535,True
 DBM-WotLK,DeadlyBossMods/DBM-WotLK,https://github.com/DeadlyBossMods/DBM-WotLK,Deadly Boss Mods (DBM) - WotLK mods,2022-08-16T16:21:30+00:00,mainline,43970,WqKQg7Nx,21522,True
 DBM-WoTLKC,DeadlyBossMods/DBM-WoTLKC,https://github.com/DeadlyBossMods/DBM-WoTLKC,"The ultimate encounter helper (for Wrath Classic) to give you fight info that's easy to process at a glance. DBM aims to focus on what's happening to you, and what YOU need to do about it.",2022-08-02T03:31:52+00:00,wrath,314994,WqKQg7Nx,24904,True
-GreatVaultKeyInfo,dekallo/GreatVaultKeyInfo,https://github.com/dekallo/GreatVaultKeyInfo,Displays more info about your Mythic+ dungeons run in the Great Vault.,2022-08-03T20:34:34+00:00,mainline,448440,nQN5ePNB,26180,True
-HideButtonGlow,dekallo/HideButtonGlow,https://github.com/dekallo/HideButtonGlow,"Prevents addons (Bartender, etc) from making your action buttons glow. Can disable button glow for certain spells or just prevent all button glow.",2022-06-01T05:40:55+00:00,mainline,426069,RBKpVONE,26179,True
-MapPinTimers,dekallo/MapPinTimers,https://github.com/dekallo/MapPinTimers,"Enhances the Blizzard Map Pin UI, including showing time until you reach your destination.",2022-06-01T05:49:04+00:00,mainline,421901,WqKQDa6x,26181,True
-PetAuctionLevels,dekallo/PetAuctionLevels,https://github.com/dekallo/PetAuctionLevels,Provides enhancements to the default Auction House UI when auctioning pets.,2022-06-01T06:00:38+00:00,mainline,414660,BO67eyG3,26182,True
-SilenceBanLu,dekallo/SilenceBanLu,https://github.com/dekallo/SilenceBanLu,"Turns Ban-Lu into a regular mount, without all the extra stuff.",2022-06-01T05:53:24+00:00,mainline,419848,7x61eB61,26183,True
+GreatVaultKeyInfo,dekallo/GreatVaultKeyInfo,https://github.com/dekallo/GreatVaultKeyInfo,Displays more info about your Mythic+ dungeons run in the Great Vault.,2022-08-22T02:03:13+00:00,mainline,448440,nQN5ePNB,26180,True
+HideButtonGlow,dekallo/HideButtonGlow,https://github.com/dekallo/HideButtonGlow,"Prevents addons (Bartender, etc) from making your action buttons glow. Can disable button glow for certain spells or just prevent all button glow.",2022-08-22T02:04:03+00:00,mainline,426069,RBKpVONE,26179,True
+MapPinTimers,dekallo/MapPinTimers,https://github.com/dekallo/MapPinTimers,"Enhances the Blizzard Map Pin UI, including showing time until you reach your destination.",2022-08-22T02:04:46+00:00,mainline,421901,WqKQDa6x,26181,True
+PetAuctionLevels,dekallo/PetAuctionLevels,https://github.com/dekallo/PetAuctionLevels,Provides enhancements to the default Auction House UI when auctioning pets.,2022-08-22T02:05:31+00:00,mainline,414660,BO67eyG3,26182,True
+SilenceBanLu,dekallo/SilenceBanLu,https://github.com/dekallo/SilenceBanLu,"Turns Ban-Lu into a regular mount, without all the extra stuff.",2022-08-22T02:06:18+00:00,mainline,419848,7x61eB61,26183,True
 farmlog,dendanskealice/farmlog,https://github.com/dendanskealice/farmlog,A tiny World of Warcraft add-on that tracks your inventory's worth in gold.,2020-08-03T17:55:21+00:00,,,,,False
 LucidKeystone,DerHiraz/LucidKeystone,https://github.com/DerHiraz/LucidKeystone,Mythic Plus Timer,2021-07-13T20:31:58+00:00,mainline,437490,,,False
 ThreatClassic2,dfherr/ThreatClassic2,https://github.com/dfherr/ThreatClassic2,"A  simple threat meter for WoW Classic & TBC Classic, successor of ClassicThreatMeter.",2022-07-31T23:01:56+00:00,"bcc,classic,wrath",355497,pkNM1ONz,25966,True
-AllTheThings,DFortun81/AllTheThings,https://github.com/DFortun81/AllTheThings,ALL THE THINGS - Addon for Tracking Collections & Account Completion in World of Warcraft,2022-08-16T19:43:58+00:00,mainline,267285,yQKyY5K7,,True
+AllTheThings,DFortun81/AllTheThings,https://github.com/DFortun81/AllTheThings,ALL THE THINGS - Addon for Tracking Collections & Account Completion in World of Warcraft,2022-08-22T22:25:57+00:00,mainline,267285,yQKyY5K7,,True
 Ghost,diff3/Ghost,https://github.com/diff3/Ghost,"This addon will create a hidden button bar, which can be shown under  the mouse cursor. It's working just like an actionbar so you only need to drag your spells to it.",2017-05-27T19:52:57+00:00,mainline,,,,False
 ElvUI_NoBorders,dlecina/ElvUI_NoBorders,https://github.com/dlecina/ElvUI_NoBorders,A reduced version of CustomTweaks to remove the borders in ElvUI.,2022-05-23T09:16:31+00:00,"bcc,classic,mainline",,XrNkbzGa,,True
 SharedMedia_Fontin,dlecina/SharedMedia_Fontin,https://github.com/dlecina/SharedMedia_Fontin,Inserts additional fonts from exljbris Font Foundry into SharedMediaLib's storage,2022-05-23T09:16:10+00:00,"bcc,classic,mainline",513230,Rn6VVL6d,,True
 Baggins,doadin/Baggins,https://github.com/doadin/Baggins,,2022-08-16T23:47:37+00:00,"bcc,classic,mainline,wrath",13471,,,True
-DoKeys,doadin/DoKeys,https://github.com/doadin/DoKeys,,2022-08-16T23:49:09+00:00,mainline,554554,,,True
-DoReady,doadin/DoReady,https://github.com/doadin/DoReady,,2022-08-16T23:49:37+00:00,mainline,554551,,,True
+DoKeys,doadin/DoKeys,https://github.com/doadin/DoKeys,,2022-08-27T00:47:03+00:00,mainline,554554,,,True
+DoReady,doadin/DoReady,https://github.com/doadin/DoReady,,2022-08-26T23:38:15+00:00,mainline,554551,,,True
 EasyReport,doadin/EasyReport,https://github.com/doadin/EasyReport,Easily Report Players,2022-08-16T23:50:56+00:00,"bcc,classic,mainline",333070,,25148,True
 Plexus,doadin/Plexus,https://github.com/doadin/Plexus,,2022-08-16T23:53:15+00:00,"bcc,classic,mainline,wrath",338710,,,True
-PlexusAutoFrameSize,doadin/PlexusAutoFrameSize,https://github.com/doadin/PlexusAutoFrameSize,,2022-08-05T05:16:20+00:00,"bcc,classic,mainline,wrath",418810,,,True
+PlexusAutoFrameSize,doadin/PlexusAutoFrameSize,https://github.com/doadin/PlexusAutoFrameSize,,2022-08-16T23:53:09+00:00,"bcc,classic,mainline,wrath",418810,,,True
 PlexusBuffIcons,doadin/PlexusBuffIcons,https://github.com/doadin/PlexusBuffIcons,,2022-08-16T23:53:34+00:00,"bcc,classic,mainline,wrath",416367,,,True
 PlexusClickSets,doadin/PlexusClickSets,https://github.com/doadin/PlexusClickSets,,2022-08-16T23:54:28+00:00,"bcc,classic,mainline,wrath",416218,,,True
 PlexusCustomLayouts,doadin/PlexusCustomLayouts,https://github.com/doadin/PlexusCustomLayouts,,2022-08-16T23:55:18+00:00,"bcc,classic,mainline",506844,,,True
@@ -251,7 +253,7 @@ SkuAudioData_en,Duugu/SkuAudioData_en,https://github.com/Duugu/SkuAudioData_en,,
 SkuBeaconSoundsets,Duugu/SkuBeaconSoundsets,https://github.com/Duugu/SkuBeaconSoundsets,,2022-05-23T16:10:15+00:00,bcc,,,,True
 SkuBeaconSoundsets-WotLK,Duugu/SkuBeaconSoundsets-WotLK,https://github.com/Duugu/SkuBeaconSoundsets-WotLK,,2022-07-20T19:35:57+00:00,mainline,,,,True
 SkuFluegel,Duugu/SkuFluegel,https://github.com/Duugu/SkuFluegel,,2022-07-16T04:42:33+00:00,bcc,,,,True
-wow_menu,Duugu/wow_menu,https://github.com/Duugu/wow_menu,,2022-08-14T18:04:36+00:00,bcc,,,,True
+wow_menu,Duugu/wow_menu,https://github.com/Duugu/wow_menu,,2022-08-24T21:31:57+00:00,bcc,,,,True
 Details_Elitism,edusperoni/Details_Elitism,https://github.com/edusperoni/Details_Elitism,,2022-08-18T22:40:50+00:00,mainline,381128,nQN5VP6B,,True
 _AutoBG,EinBaum/_AutoBG,https://github.com/EinBaum/_AutoBG,"WoW 1.12.1 Addon: Battleground auto-queue, join, leave, release spirit",2018-11-13T16:22:04+00:00,mainline,,,,False
 AnnounceKick,EinBaum/AnnounceKick,https://github.com/EinBaum/AnnounceKick,WoW 1.12.1 Addon: Announces rogue's Kick in say chat,2019-03-28T21:34:52+00:00,mainline,,,,False
@@ -271,15 +273,15 @@ AutoLooter,Eliote/AutoLooter,https://github.com/Eliote/AutoLooter,WoW Addon to m
 BrokerAnything,Eliote/BrokerAnything,https://github.com/Eliote/BrokerAnything,Addon for World of Warcraft to create a data broker for any ID,2021-07-03T18:02:04+00:00,"bcc,mainline",332601,,,True
 TitanReputation,Eliote/TitanReputation,https://github.com/Eliote/TitanReputation,Titan Panel plugin that shows your Reputations,2021-07-03T19:01:01+00:00,"bcc,mainline",95571,,,True
 Storyline,Ellypse/Storyline,https://github.com/Ellypse/Storyline,A World of Warcraft add-on that improves the questing experience by replacing the default dialog frame by a more immersive frame with 3D models.,2021-01-25T22:00:45+00:00,mainline,92398,,23782,False
-eltruism,eltreum0/eltruism,https://github.com/eltreum0/eltruism,An ElvUI Plugin containing many features not available in ElvUI alongside DPS/Tank/Healer profiles and settings for other addons,2022-08-16T20:12:26+00:00,"bcc,classic,mainline,wrath",459494,vEGPqEN1,,True
+eltruism,eltreum0/eltruism,https://github.com/eltreum0/eltruism,An ElvUI Plugin containing many features not available in ElvUI alongside DPS/Tank/Healer profiles and settings for other addons,2022-08-27T04:28:37+00:00,"bcc,classic,mainline,wrath",459494,vEGPqEN1,,True
 GoldMakers,emersonsm/GoldMakers,https://github.com/emersonsm/GoldMakers,WoW helper addon for goldmakers!,2019-08-21T22:55:09+00:00,mainline,,,,False
 Archivist,emptyrivers/Archivist,https://github.com/emptyrivers/Archivist,,2021-07-23T18:47:52+00:00,mainline,354259,,,True
 Raiduku,En-Roue-Libre/Raiduku,https://github.com/En-Roue-Libre/Raiduku,Minimalist World of Warcraft addon to help raid leaders managing loots in Burning Crusade Classic.,2022-06-20T20:41:22+00:00,bcc,,,,False
-Cell,enderneko/Cell,https://github.com/enderneko/Cell,A World of Warcraft raid frame addon.,2022-08-17T10:22:10+00:00,mainline,409666,qv63LLKb,26244,True
+Cell,enderneko/Cell,https://github.com/enderneko/Cell,A World of Warcraft raid frame addon.,2022-08-26T19:43:34+00:00,"mainline,wrath",409666,qv63LLKb,26244,True
 AutoHideBinds,erikbrgn/AutoHideBinds,https://github.com/erikbrgn/AutoHideBinds,"AutoHideBinds is a WoW addon used for hiding binds and macro names. On mouseover both are shown, making it easy to refresh your memory without the ugliness of showing them at all times.",2022-01-24T19:02:49+00:00,mainline,,,,True
 Farm-PvP,erikbrgn/Farm-PvP,https://github.com/erikbrgn/Farm-PvP,Farm PvP is a World of Warcraft addon for tracking how much honor and conquest are needed for a full seasonal set of PvP gear.,2022-08-20T11:04:04+00:00,mainline,,,,True
 ClippyAssist,ErythroGuild/ClippyAssist,https://github.com/ErythroGuild/ClippyAssist,It looks like you're trying to play WoW. Would you like some help with that?,2020-10-20T01:41:30+00:00,mainline,,,,False
-ShestakUI_Classic,EsreverWoW/ShestakUI_Classic,https://github.com/EsreverWoW/ShestakUI_Classic,"ShestakUI for Wrath Classic (3.4.0), Burning Crusade Classic (2.5.4), and WoW Classic (1.14.3)",2022-07-25T01:07:02+00:00,"bcc,classic,wrath",468754,WqKQbyGx,25934,True
+ShestakUI_Classic,EsreverWoW/ShestakUI_Classic,https://github.com/EsreverWoW/ShestakUI_Classic,"ShestakUI for Wrath Classic (3.4.0), Burning Crusade Classic (2.5.4), and WoW Classic (1.14.3)",2022-08-27T00:52:53+00:00,"bcc,classic,wrath",468754,WqKQbyGx,25934,True
 RCLootCouncil_ExtraUtilities,evil-morfar/RCLootCouncil_ExtraUtilities,https://github.com/evil-morfar/RCLootCouncil_ExtraUtilities,Extra Utilities for RCLootCouncil,2021-11-11T17:34:31+00:00,mainline,257427,,,True
 RCLootCouncil_GroupGear,evil-morfar/RCLootCouncil_GroupGear,https://github.com/evil-morfar/RCLootCouncil_GroupGear,A simple module for showing group/guild ilvl and number of artifact traits.,2021-11-11T17:35:12+00:00,mainline,102435,,,True
 TradeFilter,Evonder/TradeFilter,https://github.com/Evonder/TradeFilter,A World of Warcraft spam filter.,2020-05-18T05:15:57+00:00,mainline,16408,,13784,False
@@ -293,18 +295,19 @@ StoredAnimaCounter,Falx/StoredAnimaCounter,https://github.com/Falx/StoredAnimaCo
 StoredResearchCounter,Falx/StoredResearchCounter,https://github.com/Falx/StoredResearchCounter,,2021-08-01T21:48:32+00:00,mainline,508565,,26119,True
 ElvUI_WindTools,fang2hou/ElvUI_WindTools,https://github.com/fang2hou/ElvUI_WindTools,💯 Maybe the BEST ElvUI plugin to enhance your game experience.,2022-08-18T13:59:08+00:00,mainline,300361,lQNlD9Ne,25687,True
 LibNPCInfo,fang2hou/LibNPCInfo,https://github.com/fang2hou/LibNPCInfo,A WoW lua library for providing ability of getting NPC information by its ID.,2022-05-31T23:01:53+00:00,mainline,618664,XrNkV3Ga,26290,True
-WindDungeonHelper,fang2hou/WindDungeonHelper,https://github.com/fang2hou/WindDungeonHelper,Dungeon helper.,2022-08-18T11:27:58+00:00,mainline,304072,kRNLYX6o,25532,True
+WindDungeonHelper,fang2hou/WindDungeonHelper,https://github.com/fang2hou/WindDungeonHelper,Dungeon helper.,2022-08-25T15:56:08+00:00,mainline,304072,kRNLYX6o,25532,True
 PremadeRegionsEU,Faydz/PremadeRegionsEU,https://github.com/Faydz/PremadeRegionsEU,PremadeRegionsEU shows region information next to groups in the premade groups listing and applicant which is particulary useful for players in Europe.,2022-07-15T13:12:06+00:00,mainline,,,,False
 JackJack,fechan/JackJack,https://github.com/fechan/JackJack,"WoW addon that adds TomTom waypoints by name (such as ""Orgrimmar"").",2022-04-17T08:04:54+00:00,mainline,,,26250,False
 DruidMacroHelper,ForsakenNGS/DruidMacroHelper,https://github.com/ForsakenNGS/DruidMacroHelper,,2022-05-22T14:57:33+00:00,bcc,,,,False
 LogTracker,ForsakenNGS/LogTracker,https://github.com/ForsakenNGS/LogTracker,LogTracker (TBC Classic) Main Addon,2022-05-24T12:49:56+00:00,"bcc,mainline",612005,e56nOAK9,,True
 LogTracker_BaseData,ForsakenNGS/LogTracker_BaseData,https://github.com/ForsakenNGS/LogTracker_BaseData,LogTracker (TBC Classic) Realm Data,2022-05-22T23:11:58+00:00,"bcc,mainline",612007,5bGokqG0,,True
-LogTracker_CharacterData_CN,ForsakenNGS/LogTracker_CharacterData_CN,https://github.com/ForsakenNGS/LogTracker_CharacterData_CN,LogTracker (TBC Classic) Character Data CN,2022-08-13T09:58:40+00:00,classic,612015,XrNkbwGa,,True
-LogTracker_CharacterData_EU,ForsakenNGS/LogTracker_CharacterData_EU,https://github.com/ForsakenNGS/LogTracker_CharacterData_EU,LogTracker (TBC Classic) Character Data EU,2022-08-20T15:10:09+00:00,"bcc,classic",612009,rkGrDY6y,,True
-LogTracker_CharacterData_KR,ForsakenNGS/LogTracker_CharacterData_KR,https://github.com/ForsakenNGS/LogTracker_CharacterData_KR,LogTracker (TBC Classic) Character Data KR,2022-08-21T07:01:42+00:00,"bcc,classic",612016,9rN4jvKD,,True
+LogTracker_CharacterData_CN,ForsakenNGS/LogTracker_CharacterData_CN,https://github.com/ForsakenNGS/LogTracker_CharacterData_CN,LogTracker (TBC Classic) Character Data CN,2022-08-26T10:56:27+00:00,classic,612015,XrNkbwGa,,True
+LogTracker_CharacterData_EU,ForsakenNGS/LogTracker_CharacterData_EU,https://github.com/ForsakenNGS/LogTracker_CharacterData_EU,LogTracker (TBC Classic) Character Data EU,2022-08-26T15:10:48+00:00,"bcc,classic",612009,rkGrDY6y,,True
+LogTracker_CharacterData_KR,ForsakenNGS/LogTracker_CharacterData_KR,https://github.com/ForsakenNGS/LogTracker_CharacterData_KR,LogTracker (TBC Classic) Character Data KR,2022-08-26T07:01:19+00:00,"bcc,classic",612016,9rN4jvKD,,True
 LogTracker_CharacterData_TW,ForsakenNGS/LogTracker_CharacterData_TW,https://github.com/ForsakenNGS/LogTracker_CharacterData_TW,LogTracker (TBC Classic) Character Data TW,2022-08-21T06:31:27+00:00,"bcc,classic",612018,vEGPbO61,,True
-LogTracker_CharacterData_US,ForsakenNGS/LogTracker_CharacterData_US,https://github.com/ForsakenNGS/LogTracker_CharacterData_US,LogTracker (TBC Classic) Character Data US,2022-08-20T20:08:13+00:00,"bcc,classic",612013,R4N2y4GL,,True
+LogTracker_CharacterData_US,ForsakenNGS/LogTracker_CharacterData_US,https://github.com/ForsakenNGS/LogTracker_CharacterData_US,LogTracker (TBC Classic) Character Data US,2022-08-26T20:06:19+00:00,"bcc,classic",612013,R4N2y4GL,,True
 DingPics,fouronnes/DingPics,https://github.com/fouronnes/DingPics,World of Warcraft add-on to automatically screenshot when you level up,2022-07-26T18:47:38+00:00,bcc,,,,True
+TallyUp,friarbison/TallyUp,https://github.com/friarbison/TallyUp,A small addon for displaying resources gathered/harvested in Azeroth,2022-08-26T02:53:27+00:00,mainline,,,,False
 LFG_MatchMaker_TBC,fs86/LFG_MatchMaker_TBC,https://github.com/fs86/LFG_MatchMaker_TBC,An easy to use LFG/LFM chat-monitoring WoW addon to find dungeon groups.,2022-05-14T21:30:01+00:00,bcc,,,,True
 world-boss-timers,fstenstrom/world-boss-timers,https://github.com/fstenstrom/world-boss-timers,,2022-02-26T08:07:41+00:00,mainline,,,,True
 BadBoy,funkydude/BadBoy,https://github.com/funkydude/BadBoy,A simple spam blocker & reporter for World of Warcraft.,2022-06-01T06:16:59+00:00,"bcc,classic,mainline",5547,,8736,True
@@ -357,6 +360,7 @@ BlizzardBags_Garbage,GoldpawsStuff/BlizzardBags_Garbage,https://github.com/Goldp
 BlizzardBags_ItemLevel,GoldpawsStuff/BlizzardBags_ItemLevel,https://github.com/GoldpawsStuff/BlizzardBags_ItemLevel,Shows item levels in the default blizzard bags.,2022-08-17T12:38:45+00:00,"bcc,classic,mainline,wrath",651894,qv63bnNb,,True
 ChatCleaner,GoldpawsStuff/ChatCleaner,https://github.com/GoldpawsStuff/ChatCleaner,"Makes system chat messages prettier and tidier, and reduces the need for multiple chat windows.",2022-08-17T12:39:50+00:00,"bcc,classic,mainline,wrath",531109,baNDwAGo,,True
 ClassicWorldMapEnhanced,GoldpawsStuff/ClassicWorldMapEnhanced,https://github.com/GoldpawsStuff/ClassicWorldMapEnhanced,Enhanced WorldMap for WoW Classic,2022-07-09T14:00:12+00:00,"bcc,classic",340120,vEGPZk61,,True
+DiabolicUI,GoldpawsStuff/DiabolicUI,https://github.com/GoldpawsStuff/DiabolicUI,Action-RPG inspired user interface for World of Warcraft (Retail),2022-08-24T16:33:40+00:00,mainline,100658,WqKQBaGx,,True
 DiabolicUI2,GoldpawsStuff/DiabolicUI2,https://github.com/GoldpawsStuff/DiabolicUI2,Action-RPG inspired user interface for World of Warcraft (Retail),2022-08-17T23:31:24+00:00,mainline,100658,WqKQBaGx,,True
 MapShrinker,GoldpawsStuff/MapShrinker,https://github.com/GoldpawsStuff/MapShrinker,"A small addon that centers, shrinks, adds coordinates and nicely style the fullscreen retail WorldMap.",2022-08-17T12:44:24+00:00,mainline,469972,Rn6VOWKd,,True
 PorousStoneDestroyer,GoldpawsStuff/PorousStoneDestroyer,https://github.com/GoldpawsStuff/PorousStoneDestroyer,It destroys porous stones. ,2022-08-17T12:44:23+00:00,mainline,551522,RXKqDl6y,,True
@@ -364,7 +368,7 @@ SharedMedia_Goldpaw,GoldpawsStuff/SharedMedia_Goldpaw,https://github.com/Goldpaw
 SimpleClassPower,GoldpawsStuff/SimpleClassPower,https://github.com/GoldpawsStuff/SimpleClassPower,Class resource addon for World of Warcraft Retail.,2022-05-31T17:19:04+00:00,"bcc,classic,mainline",296245,qv63j7Nb,,True
 Unmasked,GoldpawsStuff/Unmasked,https://github.com/GoldpawsStuff/Unmasked,We hate masks.,2022-08-17T12:45:23+00:00,mainline,544432,WL6JZO6v,,True
 GuildGreet-Extended,gOOvER/GuildGreet-Extended,https://github.com/gOOvER/GuildGreet-Extended,A Greeting Addon for WoW,2022-04-10T15:39:26+00:00,mainline,7529,WL6JA9Nv,21709,True
-GDLauncher,gorilla-devs/GDLauncher,https://github.com/gorilla-devs/GDLauncher,"GDLauncher is a simple, yet powerful Minecraft custom launcher with a strong focus on the user experience",2022-06-16T23:29:14+00:00,,,,,False
+GDLauncher,gorilla-devs/GDLauncher,https://github.com/gorilla-devs/GDLauncher,"GDLauncher is a simple, yet powerful Minecraft custom launcher with a strong focus on the user experience",2022-07-24T01:10:33+00:00,,,,,False
 AshToAsh_BlizzardSkin,GreenhairTurtle/AshToAsh_BlizzardSkin,https://github.com/GreenhairTurtle/AshToAsh_BlizzardSkin,,2022-03-27T15:28:53+00:00,"bcc,classic,mainline",522904,Xb6XqBKp,,True
 ImprovedAddonList,GreenhairTurtle/ImprovedAddonList,https://github.com/GreenhairTurtle/ImprovedAddonList,,2022-04-03T05:43:03+00:00,"bcc,classic,mainline",515814,baNDLJNo,,True
 PinyinSearch,GreenhairTurtle/PinyinSearch,https://github.com/GreenhairTurtle/PinyinSearch,,2022-01-11T11:30:34+00:00,mainline,561654,,,True
@@ -381,10 +385,10 @@ Juwe,Haselnussbomber/Juwe,https://github.com/Haselnussbomber/Juwe,Juwe is a modi
 LFRNPCHelper,Haselnussbomber/LFRNPCHelper,https://github.com/Haselnussbomber/LFRNPCHelper,"Changes dialog options from wing names to raid name, bosses and if they are defeated.",2022-05-13T15:59:28+00:00,mainline,,,,True
 QuestNotifier,Haselnussbomber/QuestNotifier,https://github.com/Haselnussbomber/QuestNotifier,Notifies the player when an item was looted which begins a quest.,2022-05-13T15:54:25+00:00,"bcc,classic,mainline",,,,True
 TradeGoodsExpansionTooltip,Haselnussbomber/TradeGoodsExpansionTooltip,https://github.com/Haselnussbomber/TradeGoodsExpansionTooltip,Adds a hint in the tooltip in which expansion a reagent was added to the game.,2022-06-04T01:01:53+00:00,mainline,,,,True
-hekili,Hekili/hekili,https://github.com/Hekili/hekili,Hekili Priority Helper for DPS and Tanks (WoW Retail),2022-08-15T02:03:16+00:00,mainline,69254,WYK9WXNL,24608,True
-hero-dbc,herotc/hero-dbc,https://github.com/herotc/hero-dbc,Tools to extract information from the DBC and making it available as JSON and WoW Addon.,2022-07-13T17:55:23+00:00,mainline,,,,False
-hero-lib,herotc/hero-lib,https://github.com/herotc/hero-lib,"WoW Addon - Core Library used by HeroRotation and AethysTools, can also be used by others 3rd-Party Addons.",2022-07-13T17:45:28+00:00,mainline,,,,False
-hero-rotation,herotc/hero-rotation,https://github.com/herotc/hero-rotation,WoW Addon - Attempt to provide the useful and precise information to execute the best possible DPS rotation in every situation.,2022-07-26T04:19:48+00:00,mainline,,,,False
+hekili,Hekili/hekili,https://github.com/Hekili/hekili,Hekili Priority Helper for DPS and Tanks (WoW Retail),2022-08-22T00:04:52+00:00,mainline,69254,WYK9WXNL,24608,True
+hero-dbc,herotc/hero-dbc,https://github.com/herotc/hero-dbc,Tools to extract information from the DBC and making it available as JSON and WoW Addon.,2022-08-22T02:52:48+00:00,mainline,,,,False
+hero-lib,herotc/hero-lib,https://github.com/herotc/hero-lib,"WoW Addon - Core Library used by HeroRotation and AethysTools, can also be used by others 3rd-Party Addons.",2022-08-22T02:45:20+00:00,mainline,,,,False
+hero-rotation,herotc/hero-rotation,https://github.com/herotc/hero-rotation,WoW Addon - Attempt to provide the useful and precise information to execute the best possible DPS rotation in every situation.,2022-08-22T02:45:40+00:00,mainline,,,,False
 AFK_Fullscreen,hizuro/AFK_Fullscreen,https://github.com/hizuro/AFK_Fullscreen,,2022-05-13T11:12:42+00:00,"bcc,classic,mainline",74749,,,True
 BestSellButton,hizuro/BestSellButton,https://github.com/hizuro/BestSellButton,,2022-05-27T09:50:45+00:00,mainline,78943,,,True
 Broker_Everything,hizuro/Broker_Everything,https://github.com/hizuro/Broker_Everything,"A collection of module to display informations about own character, friends, guild and more on minimap or panel addons like Bazooka, ChcolateBar, TitanPanel and more.",2022-05-23T03:51:05+00:00,"bcc,classic,mainline",28750,nQN5r76B,18883,True
@@ -396,7 +400,7 @@ AuctionSellers,HizurosWoWAddOns/AuctionSellers,https://github.com/HizurosWoWAddO
 BestSellButton,HizurosWoWAddOns/BestSellButton,https://github.com/HizurosWoWAddOns/BestSellButton,,2022-06-15T18:32:20+00:00,"bcc,classic,mainline",78943,,,True
 Broker_Everything,HizurosWoWAddOns/Broker_Everything,https://github.com/HizurosWoWAddOns/Broker_Everything,"A collection of module to display informations about own character, friends, guild and more on minimap or panel addons like Bazooka, ChcolateBar, TitanPanel and more.",2022-08-08T10:35:33+00:00,"bcc,classic,mainline",28750,nQN5r76B,18883,True
 CommunityInfo,HizurosWoWAddOns/CommunityInfo,https://github.com/HizurosWoWAddOns/CommunityInfo,,2022-06-12T00:58:56+00:00,mainline,323095,,,True
-FarmHud,HizurosWoWAddOns/FarmHud,https://github.com/HizurosWoWAddOns/FarmHud,Turn your minimap into a hud for farming ore / herb.,2022-07-25T08:28:37+00:00,"bcc,classic,mainline",29767,RaN0DANj,,True
+FarmHud,HizurosWoWAddOns/FarmHud,https://github.com/HizurosWoWAddOns/FarmHud,Turn your minimap into a hud for farming ore / herb.,2022-08-26T10:30:26+00:00,"bcc,classic,mainline",29767,RaN0DANj,,True
 FollowerLocationInfo,HizurosWoWAddOns/FollowerLocationInfo,https://github.com/HizurosWoWAddOns/FollowerLocationInfo,,2022-06-10T13:16:58+00:00,mainline,85399,,,True
 GarrisonRandomNPCs,HizurosWoWAddOns/GarrisonRandomNPCs,https://github.com/HizurosWoWAddOns/GarrisonRandomNPCs,"Dislay the ""trader of the day"" from draenor garrison.",2022-04-21T13:27:13+00:00,mainline,,,,True
 LibColors-1.0,HizurosWoWAddOns/LibColors-1.0,https://github.com/HizurosWoWAddOns/LibColors-1.0,,2022-06-03T11:05:05+00:00,"bcc,classic,mainline",83930,,,True
@@ -440,7 +444,7 @@ bigdebuffs,jordonwow/bigdebuffs,https://github.com/jordonwow/bigdebuffs,,2022-08
 omnibar,jordonwow/omnibar,https://github.com/jordonwow/omnibar,,2022-08-01T21:38:26+00:00,"bcc,classic,mainline,wrath",85814,BO678XK3,23235,True
 safequeue,jordonwow/safequeue,https://github.com/jordonwow/safequeue,,2022-08-01T22:35:47+00:00,"bcc,classic,mainline,wrath",29171,0mKOq1Nx,19494,True
 NameplateSCT,Justw8/NameplateSCT,https://github.com/Justw8/NameplateSCT,Add Personal SCT to NameplateSCT,2022-02-27T21:17:02+00:00,mainline,269544,,,True
-DBM-CountPack-Asmongold,kaandemiroz/DBM-CountPack-Asmongold,https://github.com/kaandemiroz/DBM-CountPack-Asmongold,A simple DBM countdown pack for ya boi Asmongold.,2022-08-17T02:17:02+00:00,mainline,385685,,,False
+DBM-CountPack-Asmongold,kaandemiroz/DBM-CountPack-Asmongold,https://github.com/kaandemiroz/DBM-CountPack-Asmongold,A simple DBM countdown pack for ya boi Asmongold.,2022-08-23T04:33:34+00:00,mainline,385685,,,False
 HonorSpy,kakysha/HonorSpy,https://github.com/kakysha/HonorSpy,World of Warcraft: Classic HonorSpy addon,2022-04-19T14:23:37+00:00,classic,348370,7nGvBqGx,,True
 LUA_AstronaX,kantmn/LUA_AstronaX,https://github.com/kantmn/LUA_AstronaX,WotLK / WoW 3.3.5a Multi Character Addon Optimization,2022-03-03T15:21:12+00:00,mainline,ace3,,7919,False
 ImprovedBlizzardUI,kaytotes/ImprovedBlizzardUI,https://github.com/kaytotes/ImprovedBlizzardUI,General improvements to the Blizzard UI,2021-07-18T23:42:58+00:00,mainline,103336,,23299,False
@@ -527,20 +531,22 @@ ChatLinkTest,KyrosKrane/ChatLinkTest,https://github.com/KyrosKrane/ChatLinkTest,
 DigDug,KyrosKrane/DigDug,https://github.com/KyrosKrane/DigDug,WoW Addon to correctly show nine segments in the archaeology dig site progress bar,2022-02-23T16:26:28+00:00,mainline,392710,,25615,True
 DrillSergeant,KyrosKrane/DrillSergeant,https://github.com/KyrosKrane/DrillSergeant,World of Warcraft addon that informs you which mob will be activated by a Mechagon drill rig,2022-02-23T16:27:53+00:00,mainline,341287,,25290,True
 TradeSkillUIImproved,lamboley/TradeSkillUIImproved,https://github.com/lamboley/TradeSkillUIImproved,TradeSkillUIImproved is a WOW addon which improve the default TradeSkill UI.,2019-10-24T21:42:42+00:00,mainline,331728,,,False
-PermoksAccountManager,Lardeck/PermoksAccountManager,https://github.com/Lardeck/PermoksAccountManager,,2022-08-03T14:52:53+00:00,mainline,582886,25NRoe63,,True
+PermoksAccountManager,Lardeck/PermoksAccountManager,https://github.com/Lardeck/PermoksAccountManager,,2022-08-21T16:25:51+00:00,mainline,582886,25NRoe63,,True
 TooltipToSimc,Lardeck/TooltipToSimc,https://github.com/Lardeck/TooltipToSimc,,2022-03-18T15:00:27+00:00,mainline,386581,,,True
-broker_leveltime,laric/broker_leveltime,https://github.com/laric/broker_leveltime,,2022-07-11T06:40:40+00:00,"bcc,classic,mainline",24724,PANzL0K4,17194,True
+broker_leveltime,laric/broker_leveltime,https://github.com/laric/broker_leveltime,,2022-08-26T11:14:04+00:00,"bcc,classic,mainline,wrath",24724,PANzL0K4,17194,True
 elvui-kotja-datatexts,lauenchr/elvui-kotja-datatexts,https://github.com/lauenchr/elvui-kotja-datatexts,,2022-04-08T20:02:47+00:00,bcc,,,,True
 wow-addon-template,layday/wow-addon-template,https://github.com/layday/wow-addon-template,World of Warcraft add-on template,2020-11-21T01:27:25+00:00,mainline,[number],,[number],False
-leatrix-maps,leatrix/leatrix-maps,https://github.com/leatrix/leatrix-maps,Leatrix Maps (Shadowlands),2022-08-17T06:24:02+00:00,mainline,298842,,,True
+leatrix-maps,leatrix/leatrix-maps,https://github.com/leatrix/leatrix-maps,Leatrix Maps (Shadowlands),2022-08-24T08:34:49+00:00,mainline,298842,,,True
 leatrix-maps-bcc,leatrix/leatrix-maps-bcc,https://github.com/leatrix/leatrix-maps-bcc,Leatrix Maps (BCC and Wrath Classic),2022-08-17T06:42:25+00:00,"bcc,wrath",463868,,,True
 leatrix-maps-classic,leatrix/leatrix-maps-classic,https://github.com/leatrix/leatrix-maps-classic,Leatrix Maps (Classic Era and SoM),2022-08-17T06:48:05+00:00,classic,324034,,,True
-leatrix-plus,leatrix/leatrix-plus,https://github.com/leatrix/leatrix-plus,Leatrix Plus (Shadowlands),2022-08-20T21:36:31+00:00,mainline,94855,,,True
+leatrix-plus,leatrix/leatrix-plus,https://github.com/leatrix/leatrix-plus,Leatrix Plus (Shadowlands),2022-08-26T08:49:33+00:00,mainline,94855,,,True
 leatrix-plus-bcc,leatrix/leatrix-plus-bcc,https://github.com/leatrix/leatrix-plus-bcc,Leatrix Plus (BCC and Wrath Classic),2022-08-20T21:15:53+00:00,"bcc,wrath",463863,,,True
-leatrix-plus-classic,leatrix/leatrix-plus-classic,https://github.com/leatrix/leatrix-plus-classic,Leatrix Plus (Classic Era and SoM),2022-08-20T21:24:38+00:00,classic,322362,,,True
-leatrix-sounds,leatrix/leatrix-sounds,https://github.com/leatrix/leatrix-sounds,Leatrix Sounds (Shadowlands),2022-08-17T06:36:25+00:00,mainline,304659,,,True
+leatrix-plus-classic,leatrix/leatrix-plus-classic,https://github.com/leatrix/leatrix-plus-classic,Leatrix Plus (Classic Era and SoM),2022-08-26T08:46:51+00:00,classic,322362,,,True
+leatrix-plus-wrath,leatrix/leatrix-plus-wrath,https://github.com/leatrix/leatrix-plus-wrath,Leatrix Plus (Wrath Classic & BCC),2022-08-26T08:44:11+00:00,wrath,463863,,,True
+leatrix-sounds,leatrix/leatrix-sounds,https://github.com/leatrix/leatrix-sounds,Leatrix Sounds (Shadowlands),2022-08-24T08:36:50+00:00,mainline,304659,,,True
 leatrix-sounds-bcc,leatrix/leatrix-sounds-bcc,https://github.com/leatrix/leatrix-sounds-bcc,Leatrix Sounds (BCC and Wrath Classic),2022-08-17T06:44:02+00:00,"bcc,wrath",463920,,,True
 leatrix-sounds-classic,leatrix/leatrix-sounds-classic,https://github.com/leatrix/leatrix-sounds-classic,Leatrix Sounds (Classic Era and SoM),2022-08-17T06:49:36+00:00,classic,323023,,,True
+leatrix-sounds-wrath,leatrix/leatrix-sounds-wrath,https://github.com/leatrix/leatrix-sounds-wrath,Leatrix Sounds (Wrath Classic & BCC),2022-08-24T21:23:13+00:00,wrath,463920,,,True
 DirectedByRobertBWeide,LenweSaralonde/DirectedByRobertBWeide,https://github.com/LenweSaralonde/DirectedByRobertBWeide,"WoW add-on that plays the end credits from the ""Curb Your Enthusiasm"" show a.k.a. ""Directed By Robert B. Weide""  when you die.",2022-08-16T21:17:32+00:00,"bcc,classic,mainline,wrath",,,,False
 Musician,LenweSaralonde/Musician,https://github.com/LenweSaralonde/Musician,Add-on for World of Warcraft to perform music in game.,2022-08-16T21:05:35+00:00,"bcc,classic,mainline,wrath",,,,False
 MusicianList,LenweSaralonde/MusicianList,https://github.com/LenweSaralonde/MusicianList,Load and save music in game for Musician,2022-08-16T21:05:38+00:00,"bcc,classic,mainline,wrath",,,,False
@@ -573,7 +579,7 @@ asc_RatingBuster,mattcapazz/asc_RatingBuster,https://github.com/mattcapazz/asc_R
 PocketPlot,mattcapazz/PocketPlot,https://github.com/mattcapazz/PocketPlot,PocketPlot provides minimap customization.,2022-08-14T13:38:05+00:00,,,,,False
 TorghastTeams,maxheyn/TorghastTeams,https://github.com/maxheyn/TorghastTeams,"TorghastTeams is the best tool to use when you're running Torghast, Tower of the Damned, with friends, guildmates, or randoms. See what anima powers they pick up and what their builds look like in a simple-to-understand display. https://www.curseforge.com/wow/addons/torghastteams",2021-01-09T21:14:50+00:00,mainline,429730,,25845,False
 LibFrameFade,Meorawr/LibFrameFade,https://github.com/Meorawr/LibFrameFade,World of Warcraft library that attempts to fix UIFrameFade taint.,2021-09-14T20:15:27+00:00,"bcc,classic,mainline",523855,e56nRD69,26143,True
-ElvUI_MerathilisUI,Merathilis/ElvUI_MerathilisUI,https://github.com/Merathilis/ElvUI_MerathilisUI,MerathilisUI is an external ElvUI Mod. It adds some usefull and probably not some usefull (lol) additions to ElvUI.,2022-08-18T10:50:35+00:00,"bcc,classic,mainline,wrath",97589,VBNBZVNx,24117,True
+ElvUI_MerathilisUI,Merathilis/ElvUI_MerathilisUI,https://github.com/Merathilis/ElvUI_MerathilisUI,MerathilisUI is an external ElvUI Mod. It adds some usefull and probably not some usefull (lol) additions to ElvUI.,2022-08-21T09:33:59+00:00,"bcc,classic,mainline,wrath",97589,VBNBZVNx,24117,True
 MezUI,Mezula-WoW/MezUI,https://github.com/Mezula-WoW/MezUI,,2022-05-16T02:37:44+00:00,mainline,,,,True
 CharacterTooltip,mhco/CharacterTooltip,https://github.com/mhco/CharacterTooltip,"Adds information to the tooltip about a character, including: class color, guild name, guild rank, level, race, and more!",2022-07-27T04:43:47+00:00,bcc,,,,True
 MoveTooltip,mhco/MoveTooltip,https://github.com/mhco/MoveTooltip,Move the tooltip to a different location on your screen,2022-07-27T04:41:23+00:00,bcc,,,,True
@@ -604,7 +610,7 @@ MAMA-multiboxing,mooreatv/MAMA-multiboxing,https://github.com/mooreatv/MAMA-mult
 NeatMinimap,mooreatv/NeatMinimap,https://github.com/mooreatv/NeatMinimap,Neat Minimap cleans your WoW minimap by auto hiding buttons when your mouse is not near the minimap,2022-07-17T19:48:40+00:00,"bcc,classic,mainline,wrath",341067,9rN47yGD,25284,True
 PixelPerfectAlign,mooreatv/PixelPerfectAlign,https://github.com/mooreatv/PixelPerfectAlign,Pixel perfect alignment and measuring tape WoW addon,2022-07-17T20:04:00+00:00,"bcc,classic,mainline,wrath",331518,vEGP55N1,25071,True
 RandomGenerator,mooreatv/RandomGenerator,https://github.com/mooreatv/RandomGenerator,Random token generator for World of Warcraft,2019-06-28T09:34:19+00:00,mainline,,,,False
-GW2_UI,Mortalknight/GW2_UI,https://github.com/Mortalknight/GW2_UI,g,2022-08-10T20:37:36+00:00,mainline,94310,Mj6jXpGR,,True
+GW2_UI,Mortalknight/GW2_UI,https://github.com/Mortalknight/GW2_UI,g,2022-08-23T10:58:36+00:00,mainline,94310,Mj6jXpGR,,True
 EZDownRank,mrbuds/EZDownRank,https://github.com/mrbuds/EZDownRank,WoW Classic Click Healing overlay,2021-12-04T01:05:36+00:00,"bcc,classic",383394,Rn6VPLGd,25592,True
 EZPoolSize,mrbuds/EZPoolSize,https://github.com/mrbuds/EZPoolSize,,2020-10-10T15:07:12+00:00,classic,401033,,,False
 ZurichoUI,MrExillion/ZurichoUI,https://github.com/MrExillion/ZurichoUI,,2020-12-16T21:53:03+00:00,mainline,,,,False
@@ -612,13 +618,13 @@ Project_Molevia,MtechnikX/Project_Molevia,https://github.com/MtechnikX/Project_M
 SEquipment,MuYuehe/SEquipment,https://github.com/MuYuehe/SEquipment,"Equipment observation plug-in, currently only supports simplified Chinese",2022-04-24T06:00:24+00:00,mainline,,,,True
 adibags-archaeology,Myrroddin/adibags-archaeology,https://github.com/Myrroddin/adibags-archaeology,,2022-08-16T16:27:11+00:00,mainline,275546,RqGZxb6d,24455,True
 adibags-hearthstones,Myrroddin/adibags-hearthstones,https://github.com/Myrroddin/adibags-hearthstones,,2022-08-16T16:35:54+00:00,mainline,102083,,24173,True
-elvui_progressive_databars_colours,Myrroddin/elvui_progressive_databars_colours,https://github.com/Myrroddin/elvui_progressive_databars_colours,,2022-05-31T11:34:26+00:00,"bcc,classic,mainline",280393,xZKxmqGk,24498,True
+elvui_progressive_databars_colours,Myrroddin/elvui_progressive_databars_colours,https://github.com/Myrroddin/elvui_progressive_databars_colours,,2022-08-16T16:42:53+00:00,"bcc,classic,mainline",280393,xZKxmqGk,24498,True
 feedtillers,Myrroddin/feedtillers,https://github.com/Myrroddin/feedtillers,,2022-08-16T16:39:27+00:00,mainline,48246,LvNARp6o,21973,True
 hideminimapbutton,Myrroddin/hideminimapbutton,https://github.com/Myrroddin/hideminimapbutton,,2022-08-16T16:40:48+00:00,"bcc,classic,mainline,wrath",344084,Qb6mVyKP,25353,True
 libaboutpanel-2.0,Myrroddin/libaboutpanel-2.0,https://github.com/Myrroddin/libaboutpanel-2.0,,2022-08-16T16:37:55+00:00,"bcc,classic,mainline,wrath",102269,ZQ6aya6W,25392,True
 MrBigglesworthDeath,Myrroddin/MrBigglesworthDeath,https://github.com/Myrroddin/MrBigglesworthDeath,,2022-08-16T16:44:39+00:00,"bcc,classic,mainline,wrath",17919,lQNlL8Ne,13033,True
-price-answer,Myrroddin/price-answer,https://github.com/Myrroddin/price-answer,,2022-08-19T20:54:14+00:00,"bcc,classic,mainline",661710,lQNlxYNe,26382,True
-repbyzone,Myrroddin/repbyzone,https://github.com/Myrroddin/repbyzone,,2022-08-16T16:50:24+00:00,"bcc,classic,mainline",348072,q96dZlGO,25407,True
+price-answer,Myrroddin/price-answer,https://github.com/Myrroddin/price-answer,,2022-08-25T17:44:26+00:00,"bcc,classic,mainline",661710,lQNlxYNe,26382,True
+repbyzone,Myrroddin/repbyzone,https://github.com/Myrroddin/repbyzone,,2022-08-26T16:07:49+00:00,"bcc,classic,mainline",348072,q96dZlGO,25407,True
 sharedmedia-classicalfonts,Myrroddin/sharedmedia-classicalfonts,https://github.com/Myrroddin/sharedmedia-classicalfonts,,2022-08-16T16:46:36+00:00,"bcc,classic,mainline,wrath",57737,kaNedMG2,22318,True
 tradeskillmaster-string-converter,Myrroddin/tradeskillmaster-string-converter,https://github.com/Myrroddin/tradeskillmaster-string-converter,,2022-08-16T16:48:25+00:00,"bcc,classic,mainline",311361,,24876,True
 oUF_Nine,myzb/oUF_Nine,https://github.com/myzb/oUF_Nine,A layout for the World of Warcraft unit frame addon oUF,2022-02-19T11:01:32+00:00,mainline,0,,0,True
@@ -697,7 +703,7 @@ GKickCommand,Numynum/GKickCommand,https://github.com/Numynum/GKickCommand,,2022-
 HandyNotes_FerryNetwork,Numynum/HandyNotes_FerryNetwork,https://github.com/Numynum/HandyNotes_FerryNetwork,WoW addon,2022-08-17T09:54:10+00:00,mainline,317860,RXKqkwNy,,True
 InviteOnWhisper,Numynum/InviteOnWhisper,https://github.com/Numynum/InviteOnWhisper,WoW addon,2022-08-17T09:54:18+00:00,"bcc,classic,mainline,wrath",280284,PANz22N4,,True
 LazyCurve,Numynum/LazyCurve,https://github.com/Numynum/LazyCurve,LazyCurve WoW addon,2022-08-17T09:54:32+00:00,mainline,290074,XrNk086a,,True
-MythicPlusPullReEstimated,Numynum/MythicPlusPullReEstimated,https://github.com/Numynum/MythicPlusPullReEstimated,,2022-08-19T19:18:28+00:00,mainline,431246,anKWEqNE,,True
+MythicPlusPullReEstimated,Numynum/MythicPlusPullReEstimated,https://github.com/Numynum/MythicPlusPullReEstimated,,2022-08-24T12:36:54+00:00,mainline,431246,anKWEqNE,,True
 MythicPlusTweaks,Numynum/MythicPlusTweaks,https://github.com/Numynum/MythicPlusTweaks,,2022-08-20T12:34:35+00:00,mainline,646999,,,True
 RecipeLinkFix,Numynum/RecipeLinkFix,https://github.com/Numynum/RecipeLinkFix,WoW addon,2022-08-17T09:54:47+00:00,mainline,280290,kRNLw0Go,,True
 ResearchViewer,Numynum/ResearchViewer,https://github.com/Numynum/ResearchViewer,,2022-08-17T09:54:58+00:00,mainline,627862,,,True
@@ -709,7 +715,7 @@ wow-linked-text,olivernybo/wow-linked-text,https://github.com/olivernybo/wow-lin
 PeaMacros,oneCof5/PeaMacros,https://github.com/oneCof5/PeaMacros,An addon for World of Warcraft to set personal action bar preferences,2020-12-30T16:48:29+00:00,mainline,428079,,,False
 CollectionExporter,Oppzippy/CollectionExporter,https://github.com/Oppzippy/CollectionExporter,,2020-10-15T06:07:37+00:00,mainline,,,,False
 CopyAnything,Oppzippy/CopyAnything,https://github.com/Oppzippy/CopyAnything,World of Warcraft addon to copy text from any visible frame.,2022-08-17T03:12:40+00:00,"bcc,classic,mainline",341960,9rN40xND,25626,True
-GlobalSearch,Oppzippy/GlobalSearch,https://github.com/Oppzippy/GlobalSearch,"World of Warcraft addon that provides a global search, similar to what you'd find in an IDE.",2022-08-21T06:34:26+00:00,"bcc,classic,mainline",638729,vEGPPkG1,26354,True
+GlobalSearch,Oppzippy/GlobalSearch,https://github.com/Oppzippy/GlobalSearch,"World of Warcraft addon that provides a global search, similar to what you'd find in an IDE.",2022-08-26T08:41:07+00:00,"bcc,classic,mainline",638729,vEGPPkG1,26354,True
 GoldStockSummary,Oppzippy/GoldStockSummary,https://github.com/Oppzippy/GoldStockSummary,World of Warcaft addon that tracks gold across all characters on an account.,2022-08-17T03:12:54+00:00,"bcc,classic,mainline",650309,XrNkE8Ka,26374,True
 LibCopyPaste,Oppzippy/LibCopyPaste,https://github.com/Oppzippy/LibCopyPaste,World of Warcraft addon library for enabling users to copy and paste blocks of text,2020-10-14T00:36:49+00:00,"classic,mainline",310719,,,False
 TankMD,Oppzippy/TankMD,https://github.com/Oppzippy/TankMD,World of Warcraft addon for easily casting Misdirection on tanks.,2022-08-17T03:12:21+00:00,mainline,258204,xZKxpqKk,25625,True
@@ -779,7 +785,7 @@ Questie,Questie/Questie,https://github.com/Questie/Questie,Questie: the vanilla 
 FlatBarTexture,raethkcj/FlatBarTexture,https://github.com/raethkcj/FlatBarTexture,"World of Warcraft Addon that simply adds a blank, flat statusbar texture to LibSharedMedia",2021-07-08T16:10:53+00:00,bcc,,,,True
 Possessed,raethkcj/Possessed,https://github.com/raethkcj/Possessed,Possession bars for Classic WoW,2022-04-30T01:12:41+00:00,"bcc,classic",,WqKQLD6x,26279,True
 RatingBuster,raethkcj/RatingBuster,https://github.com/raethkcj/RatingBuster,An item comparison tool for WoW Classic.,2022-08-21T01:03:52+00:00,"bcc,classic,wrath",,,26235,True
-raiderio-addon,RaiderIO/raiderio-addon,https://github.com/RaiderIO/raiderio-addon,RaiderIO AddOn,2022-08-21T06:45:28+00:00,mainline,279257,,,True
+raiderio-addon,RaiderIO/raiderio-addon,https://github.com/RaiderIO/raiderio-addon,RaiderIO AddOn,2022-08-26T06:51:01+00:00,mainline,279257,,,True
 HandyNotes_TimelessTreasures,Rainrider/HandyNotes_TimelessTreasures,https://github.com/Rainrider/HandyNotes_TimelessTreasures,"HandyNotes plugin for the Treasure, Treasure Everywhere achievement",2022-04-03T16:27:50+00:00,mainline,68329,Xb6XDO6p,,True
 oUF_ArtifactPower,Rainrider/oUF_ArtifactPower,https://github.com/Rainrider/oUF_ArtifactPower,WoW AddOn / Artifact power bar support for oUF layouts,2021-10-19T11:37:14+00:00,mainline,100339,,23974,True
 oUF_Dispellable,Rainrider/oUF_Dispellable,https://github.com/Rainrider/oUF_Dispellable,oUF element for highlighting debuffs that are dispelable by the player,2022-04-03T13:15:36+00:00,mainline,285395,baNDRgKo,24540,True
@@ -800,7 +806,7 @@ ElvUI_FunStuff,Repooc/ElvUI_FunStuff,https://github.com/Repooc/ElvUI_FunStuff,Br
 ElvUI_KeybindDisplay,Repooc/ElvUI_KeybindDisplay,https://github.com/Repooc/ElvUI_KeybindDisplay,Adds ability to select which keybind is shown as well as replace the text to display something else on ElvUI Buttons.,2022-01-21T06:17:55+00:00,"bcc,classic,mainline",557231,5bGo2YK0,,True
 ElvUI_RatioMinimapAuras,Repooc/ElvUI_RatioMinimapAuras,https://github.com/Repooc/ElvUI_RatioMinimapAuras,"Adds the ability to give your ElvUI Auras located by the minimap, separate width and height sizes.",2022-06-30T20:51:38+00:00,"bcc,classic,mainline",552534,qv63epGb,,True
 ElvUI_SplitActionBars,Repooc/ElvUI_SplitActionBars,https://github.com/Repooc/ElvUI_SplitActionBars,,2022-01-21T06:11:54+00:00,"bcc,classic,mainline",547225,WYK9eVKL,,True
-RXPGuides,RestedXP/RXPGuides,https://github.com/RestedXP/RXPGuides,RXPGuides is a platform to write in-game leveling guides for WoW Classic,2022-08-18T00:30:06+00:00,"bcc,classic,wrath",486246,,,True
+RXPGuides,RestedXP/RXPGuides,https://github.com/RestedXP/RXPGuides,RXPGuides is a platform to write in-game leveling guides for WoW Classic,2022-08-26T01:11:57+00:00,"bcc,classic,wrath",486246,,,True
 Aptechka,rgd87/Aptechka,https://github.com/rgd87/Aptechka,WoW Addon - Raid Frames,2022-08-20T06:12:17+00:00,"bcc,classic,mainline,wrath",280790,5bGoY160,14339,True
 AutoUnsheath,rgd87/AutoUnsheath,https://github.com/rgd87/AutoUnsheath,Keep weapon unsheathed for selected specs,2020-10-29T16:16:25+00:00,mainline,,,25749,False
 ClassicAuraDurations,rgd87/ClassicAuraDurations,https://github.com/rgd87/ClassicAuraDurations,Using LibClassicDurations for Compact Unit Frames and default Target Frame,2021-09-15T00:38:50+00:00,bcc,323806,,25006,True
@@ -830,7 +836,7 @@ CIUI,salindersidhu/CIUI,https://github.com/salindersidhu/CIUI,A World of Warcraf
 Mgrler,salindersidhu/Mgrler,https://github.com/salindersidhu/Mgrler,A World of Warcraft addon that translates text into Murloc language.,2021-03-13T18:08:27+00:00,mainline,,,,False
 lua-eventsourcing,SamMousa/lua-eventsourcing,https://github.com/SamMousa/lua-eventsourcing,,2022-06-07T11:45:49+00:00,bcc,457141,,,False
 Profession-Capper,SamuelLira99/Profession-Capper,https://github.com/SamuelLira99/Profession-Capper,World of Warcraft(3.3.5) addon that shows the easiest way to level a crafting profession to its cap (450),2021-12-14T19:35:19+00:00,mainline,,,,False
-BuffTimers,sandervspl/BuffTimers,https://github.com/sandervspl/BuffTimers,World of Warcraft Classic addon to show full buff timers,2022-08-09T10:29:37+00:00,"bcc,classic",352620,XrNkde6a,,True
+BuffTimers,sandervspl/BuffTimers,https://github.com/sandervspl/BuffTimers,World of Warcraft Classic addon to show full buff timers,2022-08-24T22:40:31+00:00,"bcc,classic,wrath",352620,XrNkde6a,,True
 wow-interface-prist,sankooc/wow-interface-prist,https://github.com/sankooc/wow-interface-prist,for monitoring skill casting ,2020-08-31T09:51:59+00:00,classic,,,,False
 SavedInstances,SavedInstances/SavedInstances,https://github.com/SavedInstances/SavedInstances,"Addon that keeps track of the instance/raid lockouts saved against your characters, and related currencies and cooldowns.",2022-08-06T20:28:09+00:00,mainline,13998,RaN0W3Gj,,True
 sInterface,sbaildon/sInterface,https://github.com/sbaildon/sInterface,An opinionated replacement for Blizzard's Interface,2022-05-21T20:59:38+00:00,mainline,,,24674,True
@@ -843,11 +849,11 @@ Immersion,seblindfors/Immersion,https://github.com/seblindfors/Immersion,Immersi
 MethodAltManager,Sefriol/MethodAltManager,https://github.com/Sefriol/MethodAltManager,World of Warcraft Addon for tracking weekly content completion and currencies,2020-01-25T23:28:28+00:00,mainline,,,,False
 SellGrayItems,SellGrayItems/SellGrayItems,https://github.com/SellGrayItems/SellGrayItems,Adds a button to the Merchant frame that sells gray items,2022-07-27T04:47:28+00:00,bcc,,,,True
 CursorMod,sfmict/CursorMod,https://github.com/sfmict/CursorMod,Makes mouse pointer remain on screen while mouselook/steering.,2022-08-20T00:14:37+00:00,mainline,,,,False
-HidingBar,sfmict/HidingBar,https://github.com/sfmict/HidingBar,Adds a custom panel for easy add-on management.,2022-08-20T00:16:42+00:00,mainline,,,,False
+HidingBar,sfmict/HidingBar,https://github.com/sfmict/HidingBar,Adds a custom panel for easy add-on management.,2022-08-21T11:06:13+00:00,mainline,,,,False
 LibSFDropDown,sfmict/LibSFDropDown,https://github.com/sfmict/LibSFDropDown,Library for World of Warcraft,2022-05-20T15:45:34+00:00,"bcc,classic,mainline",,,,False
-MountsJournal,sfmict/MountsJournal,https://github.com/sfmict/MountsJournal,"Addon makes it possible to sort mounts on waterfowl, flying, ground and allows to use in suitable conditions (random mount summoning).",2022-08-20T00:09:18+00:00,mainline,,,,False
+MountsJournal,sfmict/MountsJournal,https://github.com/sfmict/MountsJournal,"Addon makes it possible to sort mounts on waterfowl, flying, ground and allows to use in suitable conditions (random mount summoning).",2022-08-21T10:57:58+00:00,mainline,,,,False
 MountsJournal-ElvUI-Skin,sfmict/MountsJournal-ElvUI-Skin,https://github.com/sfmict/MountsJournal-ElvUI-Skin,This addon reskins the MountsJournal addon for ElvUI.,2022-07-18T00:20:44+00:00,mainline,,,,False
-MountsJournal_Classic,sfmict/MountsJournal_Classic,https://github.com/sfmict/MountsJournal_Classic,"Addon makes it possible to sort mounts on waterfowl, flying, ground and allows to use in suitable conditions (random mount summoning). ",2022-08-13T09:35:03+00:00,wrath,,,,False
+MountsJournal_Classic,sfmict/MountsJournal_Classic,https://github.com/sfmict/MountsJournal_Classic,"Addon makes it possible to sort mounts on waterfowl, flying, ground and allows to use in suitable conditions (random mount summoning). ",2022-08-22T17:57:56+00:00,wrath,,,,False
 AceGUI-3.0_SFX-Widgets,SFX-WoW/AceGUI-3.0_SFX-Widgets,https://github.com/SFX-WoW/AceGUI-3.0_SFX-Widgets,Custom widgets for AceGUI-3.0 and AceConfigDialog-3.0.,2022-08-16T20:18:05+00:00,"bcc,classic,mainline,wrath",340803,RaN0zvKj,25658,True
 Masque,SFX-WoW/Masque,https://github.com/SFX-WoW/Masque,A button-skinning engine for World of Warcraft.,2022-08-16T20:21:01+00:00,"bcc,classic,mainline,wrath",13592,kRNLgpGo,12097,True
 Masque_Apathy,SFX-WoW/Masque_Apathy,https://github.com/SFX-WoW/Masque_Apathy,Apathy skin for Masque.,2022-08-16T20:19:51+00:00,"bcc,classic,mainline,wrath",13593,PANzJ5N4,8870,True
@@ -860,7 +866,7 @@ Masque_LiteStep,SFX-WoW/Masque_LiteStep,https://github.com/SFX-WoW/Masque_LiteSt
 Masque_Onyx,SFX-WoW/Masque_Onyx,https://github.com/SFX-WoW/Masque_Onyx,Onyx skins for Masque.,2022-08-16T20:18:49+00:00,"bcc,classic,mainline,wrath",13600,LvNA7oKo,8900,True
 Masque_Serenity,SFX-WoW/Masque_Serenity,https://github.com/SFX-WoW/Masque_Serenity,Serenity skins for Masque.,2022-08-16T20:18:33+00:00,"bcc,classic,mainline,wrath",13601,kaNePnG2,8875,True
 shadow-and-light,Shadow-and-Light/shadow-and-light,https://github.com/Shadow-and-Light/shadow-and-light,,2022-05-01T23:58:38+00:00,mainline,39618,7x61q261,,True
-pfQuest,shagu/pfQuest,https://github.com/shagu/pfQuest,A Questhelper and Database Addon for World of Warcraft: Vanilla & TBC,2022-07-03T12:04:28+00:00,mainline,,,,False
+pfQuest,shagu/pfQuest,https://github.com/shagu/pfQuest,A Questhelper and Database Addon for World of Warcraft: Vanilla & TBC,2022-08-23T19:04:34+00:00,mainline,,,,False
 Chocobo,SharpWoW/Chocobo,https://github.com/SharpWoW/Chocobo,AddOn for WoW that plays the Chocobo theme when you mount a hawkstrider!,2022-05-07T14:26:47+00:00,"bcc,classic,mainline",27585,rkGrYgKy,20953,True
 KillTrack,SharpWoW/KillTrack,https://github.com/SharpWoW/KillTrack,Tracks any and all mob kills for you. (WoW AddOn),2022-05-08T11:12:37+00:00,"bcc,classic,mainline",33976,5bGoqo60,20509,True
 aux-addon,shirsig/aux-addon,https://github.com/shirsig/aux-addon,"Auction House addOn for Classic (1.13) IMPORTANT: The folder name must be ""aux-addon"" IMPORTANT: The Vanilla (1.12) version moved here https://github.com/shirsig/aux-addon-vanilla",2022-06-27T19:36:03+00:00,bcc,,,,True
@@ -871,13 +877,13 @@ MacroBlocks,Sigmastorm7/MacroBlocks,https://github.com/Sigmastorm7/MacroBlocks,E
 SoundBox,SimiosInc/SoundBox,https://github.com/SimiosInc/SoundBox,Main repository for the SoundBox World of Warcraft Addon,2022-02-15T21:47:18+00:00,"bcc,classic,mainline",,,25924,True
 SoundBox_Latino,SimiosInc/SoundBox_Latino,https://github.com/SimiosInc/SoundBox_Latino,,2021-05-02T09:40:36+00:00,mainline,,,,False
 simc-addon,simulationcraft/simc-addon,https://github.com/simulationcraft/simc-addon,SimulationCraft WoW Addon,2022-06-06T17:30:28+00:00,mainline,,,,True
-NDui,siweia/NDui,https://github.com/siweia/NDui,NDui for World of Warcraft,2022-08-08T07:54:52+00:00,mainline,324377,Xb6X4j6p,24846,True
+NDui,siweia/NDui,https://github.com/siweia/NDui,NDui for World of Warcraft,2022-08-22T11:35:27+00:00,mainline,324377,Xb6X4j6p,24846,True
 GitflowActionTest,Skamer/GitflowActionTest,https://github.com/Skamer/GitflowActionTest,Test for GitFlowActionTest,2020-10-16T20:14:24+00:00,mainline,,,,False
 Syling-Tracker,Skamer/Syling-Tracker,https://github.com/Skamer/Syling-Tracker,,2021-08-19T11:22:51+00:00,mainline,398177,,,True
 WUI,skipscode/WUI,https://github.com/skipscode/WUI,Simple and lightweight addon that do some changes to the default Blizzard UI,2022-06-28T00:41:40+00:00,,,,,False
 MethodAltManager,smashedr/MethodAltManager,https://github.com/smashedr/MethodAltManager,Fork of https://www.curseforge.com/wow/addons/method-alt-manager,2020-05-20T02:40:30+00:00,mainline,,,,False
 BetterZoneStats,SnaBe/BetterZoneStats,https://github.com/SnaBe/BetterZoneStats,An addon for World of Warcraft that displays more zone stats than the default WoW client interface.,2020-02-04T16:54:34+00:00,,,,,False
-Clicked,Snakybo/Clicked,https://github.com/Snakybo/Clicked,A keybind management addon for World of Warcraft.,2022-08-17T19:49:51+00:00,"bcc,classic,mainline",405267,WL6JPYGv,25703,True
+Clicked,Snakybo/Clicked,https://github.com/Snakybo/Clicked,A keybind management addon for World of Warcraft.,2022-08-25T16:09:35+00:00,"bcc,classic,mainline",405267,WL6JPYGv,25703,True
 Announcer,snerfy/Announcer,https://github.com/snerfy/Announcer,Announcer addon for warriors,2021-06-23T16:42:48+00:00,"bcc,classic",,,,True
 ElvUI_ItemCount,solagegrey/ElvUI_ItemCount,https://github.com/solagegrey/ElvUI_ItemCount,ItemCount datatext plugin for ElvUI,2022-08-20T17:11:48+00:00,mainline,55953,,,True
 CraftLog,solidity0815/CraftLog,https://github.com/solidity0815/CraftLog,WOW Addon to log crafted items,2022-05-08T16:47:31+00:00,mainline,,,,False
@@ -897,10 +903,10 @@ prat-3-0,sylvanaar/prat-3-0,https://github.com/sylvanaar/prat-3-0,Prat-3.0 is a 
 regen,sylvanaar/regen,https://github.com/sylvanaar/regen,Mana/Health Regeneration Information Addon,2019-09-02T08:10:38+00:00,classic,338912,,25198,False
 who-lib,sylvanaar/who-lib,https://github.com/sylvanaar/who-lib,Library to manage access to the shared /who system in World of Warcraft,2020-06-08T07:22:54+00:00,mainline,14897,,,False
 wow-instant-messenger,sylvanaar/wow-instant-messenger,https://github.com/sylvanaar/wow-instant-messenger,WIM (WoW Instant Messenger) is a World of Warcraft addon which brings an instant messenger feel to communication in game.,2021-05-19T15:15:54+00:00,mainline,7474,,5342,True
-AddonProfiles,syndenbock/AddonProfiles,https://github.com/syndenbock/AddonProfiles,World of Warcraft addon that allows easy saving and restoring of lists of enabled addons.,2022-06-02T14:51:57+00:00,"bcc,classic,mainline",504844,,,True
-Farmer,syndenbock/Farmer,https://github.com/syndenbock/Farmer,World of Warcraft addon that makes farming fun,2022-06-02T14:43:45+00:00,"bcc,classic,mainline",282961,J96EDgNg,,True
-JustInTime,syndenbock/JustInTime,https://github.com/syndenbock/JustInTime,A World of Warcraft addon to show how long you had to wait for a random group to form,2022-06-02T14:53:38+00:00,mainline,297308,,,True
-MinimapButtonButton,syndenbock/MinimapButtonButton,https://github.com/syndenbock/MinimapButtonButton,A World of Warcraft addon for collecting minimap buttons,2022-08-17T21:19:51+00:00,"bcc,classic,mainline",446096,pkNM4QGz,,True
+AddonProfiles,syndenbock/AddonProfiles,https://github.com/syndenbock/AddonProfiles,World of Warcraft addon that allows easy saving and restoring of lists of enabled addons.,2022-08-25T00:22:46+00:00,"bcc,classic,mainline",504844,,,True
+Farmer,syndenbock/Farmer,https://github.com/syndenbock/Farmer,World of Warcraft addon that makes farming fun,2022-08-25T00:18:44+00:00,"bcc,classic,mainline",282961,J96EDgNg,,True
+JustInTime,syndenbock/JustInTime,https://github.com/syndenbock/JustInTime,A World of Warcraft addon to show how long you had to wait for a random group to form,2022-08-25T00:21:07+00:00,mainline,297308,,,True
+MinimapButtonButton,syndenbock/MinimapButtonButton,https://github.com/syndenbock/MinimapButtonButton,A World of Warcraft addon for collecting minimap buttons,2022-08-25T00:55:34+00:00,"bcc,classic,mainline",446096,pkNM4QGz,,True
 Alts,Talryn/Alts,https://github.com/Talryn/Alts,WoW addon to track main-alt associations.,2022-08-13T04:12:00+00:00,"bcc,classic,mainline,wrath",26572,,24950,True
 AutoCombatLogger,Talryn/AutoCombatLogger,https://github.com/Talryn/AutoCombatLogger,WoW addon that automatically enables or disables combat logging based on location.,2022-05-19T05:02:01+00:00,"bcc,classic,mainline",25333,,24941,True
 CharacterNotes,Talryn/CharacterNotes,https://github.com/Talryn/CharacterNotes,WoW addon to manage notes on characters.,2022-08-14T02:12:19+00:00,"bcc,classic,mainline,wrath",24993,,17406,True
@@ -911,8 +917,8 @@ ShieldTracker,Talryn/ShieldTracker,https://github.com/Talryn/ShieldTracker,WoW a
 Diplomancer,Talyrius/Diplomancer,https://github.com/Talyrius/Diplomancer,WoW Addon — Changes your watched faction reputation based on your current location.,2016-09-18T20:12:12+00:00,mainline,diplomancer,,9643,False
 TooltipToMouse,Tarazhin/TooltipToMouse,https://github.com/Tarazhin/TooltipToMouse,,2021-03-31T22:36:04+00:00,mainline,,,,False
 ShadowlandsSeason4EncounterJournal,teelolws/ShadowlandsSeason4EncounterJournal,https://github.com/teelolws/ShadowlandsSeason4EncounterJournal,"A relatively light addon that adds an extra DropDown option to the Encounter Journal, to pick Season 4 as your ""Expansion"".",2022-08-14T20:36:10+00:00,mainline,655714,,,True
-Plater-Nameplates,Tercioo/Plater-Nameplates,https://github.com/Tercioo/Plater-Nameplates,Source code for World of Warcraft addon Plater Nameplates.,2022-07-14T15:54:42+00:00,"bcc,classic,mainline",100547,kRNLep6o,,True
-AutoTrackSwitcher,ThePettsoN/AutoTrackSwitcher,https://github.com/ThePettsoN/AutoTrackSwitcher,,2022-08-19T23:41:17+00:00,bcc,659020,RaN0Al6j,,True
+Plater-Nameplates,Tercioo/Plater-Nameplates,https://github.com/Tercioo/Plater-Nameplates,Source code for World of Warcraft addon Plater Nameplates.,2022-08-24T07:50:06+00:00,"bcc,classic,mainline,wrath",100547,kRNLep6o,,True
+AutoTrackSwitcher,ThePettsoN/AutoTrackSwitcher,https://github.com/ThePettsoN/AutoTrackSwitcher,,2022-08-25T08:45:38+00:00,bcc,659020,RaN0Al6j,,True
 LFGAnnouncements,ThePettsoN/LFGAnnouncements,https://github.com/ThePettsoN/LFGAnnouncements,,2022-08-13T01:12:30+00:00,bcc,606598,q96dm5KO,,True
 CoreLoot,thomas-frantz/CoreLoot,https://github.com/thomas-frantz/CoreLoot,CoreLoot addon for loot filtering.,2021-02-17T16:22:01+00:00,mainline,,,,False
 HydraUI_LocationPlus,thurin/HydraUI_LocationPlus,https://github.com/thurin/HydraUI_LocationPlus,,2022-04-18T01:14:59+00:00,"bcc,mainline",514624,nQN5LvGB,,True
@@ -927,7 +933,7 @@ mailrobot,trumpetx/mailrobot,https://github.com/trumpetx/mailrobot,,2021-12-21T0
 masterlooterreminder,trumpetx/masterlooterreminder,https://github.com/trumpetx/masterlooterreminder,,2021-05-23T23:28:53+00:00,"bcc,classic",360007,q96dJ7GO,25497,True
 SimpleChatCleaner,trumpetx/SimpleChatCleaner,https://github.com/trumpetx/SimpleChatCleaner,Filter that spam!  Simple Chat Cleaner filters out unwated chat messages from specific or all channels!,2021-06-01T12:44:02+00:00,"bcc,classic",488290,RXKqQdKy,26057,True
 LibClassicSpecs,tstirrat/LibClassicSpecs,https://github.com/tstirrat/LibClassicSpecs,Retail GetSpecialization* methods in Classic,2020-02-26T23:12:35+00:00,classic,363313,,25508,False
-Dominos,tullamods/Dominos,https://github.com/tullamods/Dominos,A main actionbar replacement,2022-08-20T16:40:25+00:00,"bcc,classic,mainline,wrath",,,,True
+Dominos,tullamods/Dominos,https://github.com/tullamods/Dominos,A main actionbar replacement,2022-08-25T22:56:00+00:00,"bcc,classic,mainline,wrath",,,,True
 OmniCC,tullamods/OmniCC,https://github.com/tullamods/OmniCC,Cooldown count for everything,2022-08-14T18:16:31+00:00,"bcc,classic,mainline,wrath",,,,True
 tullaCC,tullamods/tullaCC,https://github.com/tullamods/tullaCC,Minimal addon for displaying cooldown text on buttons,2021-12-28T16:45:51+00:00,"bcc,classic,mainline",,,,True
 tullaCTC,tullamods/tullaCTC,https://github.com/tullamods/tullaCTC,Cooldown Text Colorizer,2022-08-06T16:19:13+00:00,"bcc,classic,mainline,wrath",,,,True
@@ -994,14 +1000,14 @@ CovenantMacro,Witnesscm/CovenantMacro,https://github.com/Witnesscm/CovenantMacro
 Fake_Keystones,Witnesscm/Fake_Keystones,https://github.com/Witnesscm/Fake_Keystones,A simple addon to create fake keystone link with custom affixes.,2022-06-11T18:01:15+00:00,mainline,402362,RqGZaXKd,,True
 HolidayDungeonHelper,Witnesscm/HolidayDungeonHelper,https://github.com/Witnesscm/HolidayDungeonHelper,A simple addon allows you to queue and enter holiday dungeons automatically.,2022-02-11T03:55:53+00:00,mainline,577735,anKWjW6E,,True
 NDui_Plus,Witnesscm/NDui_Plus,https://github.com/Witnesscm/NDui_Plus,NDui plugin,2022-08-14T12:47:11+00:00,mainline,389434,0mKOvP6x,,True
-NDui_Plus_Classic,Witnesscm/NDui_Plus_Classic,https://github.com/Witnesscm/NDui_Plus_Classic,NDui_Plus classic version.,2022-08-11T22:47:20+00:00,"bcc,classic",389434,0mKOvP6x,,True
+NDui_Plus_Classic,Witnesscm/NDui_Plus_Classic,https://github.com/Witnesscm/NDui_Plus_Classic,NDui_Plus classic version.,2022-08-25T12:41:36+00:00,"bcc,classic",389434,0mKOvP6x,,True
 xCT_Classic,Witnesscm/xCT_Classic,https://github.com/Witnesscm/xCT_Classic,xCT+ for WoW Classic,2021-05-31T18:27:15+00:00,classic,xct-plus,,,False
 Chomp,wow-rp-addons/Chomp,https://github.com/wow-rp-addons/Chomp,World of Warcraft addon library for more automated communication handling.,2022-02-26T14:01:54+00:00,mainline,,,,True
 LibRPMedia,wow-rp-addons/LibRPMedia,https://github.com/wow-rp-addons/LibRPMedia,LibRPMedia provides a common database of in-game resources for use by World of Warcraft RP addons.,2022-05-31T15:58:42+00:00,"bcc,classic,mainline",324111,qv6357Gb,25019,True
 XRP,wow-rp-addons/XRP,https://github.com/wow-rp-addons/XRP,XRP Roleplay Profiles is an addon for World of Warcraft character profiles displayed in-game.,2022-06-05T14:03:07+00:00,mainline,78630,,,True
 Rarity,WowRarity/Rarity,https://github.com/WowRarity/Rarity,Collectibles and statistics tracking addon for World of Warcraft: Shadowlands,2022-05-01T03:29:57+00:00,mainline,30801,,,True
 wowrepio-addon,wowrepio/wowrepio-addon,https://github.com/wowrepio/wowrepio-addon,A World of Warcraft addon for social ranking,2021-05-19T04:14:41+00:00,mainline,456155,,25899,True
-WowUp.Addon,WowUp/WowUp.Addon,https://github.com/WowUp/WowUp.Addon,The official WowUp World of Warcraft addon,2022-06-20T07:50:36+00:00,"bcc,classic,mainline",,,,True
+WowUp.Addon,WowUp/WowUp.Addon,https://github.com/WowUp/WowUp.Addon,The official WowUp World of Warcraft addon,2022-08-24T15:19:01+00:00,"bcc,classic,mainline",,,,True
 FunFact,Wutname1/FunFact,https://github.com/Wutname1/FunFact,"Entertain (or annoy) your friends, party, raid, or guild with fun facts!",2022-04-21T14:33:31+00:00,"bcc,classic,mainline",324692,J96EYg6g,,True
 SpartanUI,Wutname1/SpartanUI,https://github.com/Wutname1/SpartanUI,SpartanUI,2022-05-02T02:44:33+00:00,"bcc,classic,mainline",4575,vEGPqeN1,18206,True
 GuildApplicantsFix,Xatan/GuildApplicantsFix,https://github.com/Xatan/GuildApplicantsFix,Guild Applicants Disabled Bug Fix WoW Addon,2022-01-31T10:39:19+00:00,mainline,571301,,26221,True
@@ -1034,7 +1040,7 @@ wow-origins-wishlist,yannlugrin/wow-origins-wishlist,https://github.com/yannlugr
 WoWQuestTTS,z0fa/WoWQuestTTS,https://github.com/z0fa/WoWQuestTTS,,2022-08-03T19:05:01+00:00,mainline,504658,7nGv2eGx,,True
 FadeObjectiveTracker,zaCade/FadeObjectiveTracker,https://github.com/zaCade/FadeObjectiveTracker,A World of Warcraft addon that automatically fades the objective tracker on encounters.,2021-09-11T11:13:18+00:00,"bcc,classic,mainline",,,,True
 FixTransmogOutfits,zaCade/FixTransmogOutfits,https://github.com/zaCade/FixTransmogOutfits,A World of Warcraft addon that fixes the fact outfits don't save properly.,2021-11-21T14:02:19+00:00,mainline,,,,True
-DBM-EpicMusicPack,ZelionGG/DBM-EpicMusicPack,https://github.com/ZelionGG/DBM-EpicMusicPack,Epic Music Pack for DBM Event Sounds.,2022-06-02T09:13:40+00:00,mainline,492590,7x61aB61,,False
+DBM-EpicMusicPack,ZelionGG/DBM-EpicMusicPack,https://github.com/ZelionGG/DBM-EpicMusicPack,Epic Music Pack for DBM Event Sounds.,2022-08-24T08:49:01+00:00,mainline,492590,7x61aB61,,False
 ellidice,zerasul/ellidice,https://github.com/zerasul/ellidice,Ellimecha Dice of Evil,2022-06-01T07:30:07+00:00,mainline,,,,False
 OwnGearScore,ZergRael/OwnGearScore,https://github.com/ZergRael/OwnGearScore,,2021-06-09T22:45:33+00:00,bcc,,,,True
 A-Deal-with-de-Loa---Bwonsamdi,Zottelchen/A-Deal-with-de-Loa---Bwonsamdi,https://github.com/Zottelchen/A-Deal-with-de-Loa---Bwonsamdi,An Addon that plays Bwonsamdi voicelines when you die.,2022-02-27T03:49:44+00:00,mainline,301964,ZQ6a976W,25823,True
