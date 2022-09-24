@@ -18,8 +18,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "black",
-  "isort",
+  "ufmt",
 ]
 
 [project.scripts]
@@ -30,8 +29,4 @@ strict = true
 src = ["collect.py"]
 
 [tool.black]
-line_length = 99
-
-[tool.isort]
-profile = "black"
-line_length = 99
+line-length = 99
