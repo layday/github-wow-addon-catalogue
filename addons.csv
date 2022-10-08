@@ -952,7 +952,6 @@ GitflowActionTest,Skamer/GitflowActionTest,https://github.com/Skamer/GitflowActi
 Syling-Tracker,Skamer/Syling-Tracker,https://github.com/Skamer/Syling-Tracker,,2022-09-11T20:46:44+00:00,mainline,398177,,,True
 WUI,skipscode/WUI,https://github.com/skipscode/WUI,Simple and lightweight addon that do some changes to the default Blizzard UI,2022-10-02T00:54:01+00:00,wrath,395894,,,False
 ImprovedGuildInfoPanel,Slivo-fr/ImprovedGuildInfoPanel,https://github.com/Slivo-fr/ImprovedGuildInfoPanel,Addon for World of Warcraft classic ERA that allow copy from guild information panel,2022-09-14T16:03:23+00:00,classic,676141,RqGZLe6d,,True
-MethodAltManager,smashedr/MethodAltManager,https://github.com/smashedr/MethodAltManager,Fork of https://www.curseforge.com/wow/addons/method-alt-manager,2020-05-20T02:40:30+00:00,mainline,,,,False
 BetterZoneStats,SnaBe/BetterZoneStats,https://github.com/SnaBe/BetterZoneStats,An addon for World of Warcraft that displays more zone stats than the default WoW client interface.,2020-02-04T16:54:34+00:00,,,,,False
 Clicked,Snakybo/Clicked,https://github.com/Snakybo/Clicked,A keybind management addon for World of Warcraft.,2022-09-02T19:18:25+00:00,"bcc,classic,mainline,wrath",405267,WL6JPYGv,25703,True
 Announcer,snerfy/Announcer,https://github.com/snerfy/Announcer,Announcer addon for warriors,2021-06-23T16:42:48+00:00,"bcc,classic",,,,True

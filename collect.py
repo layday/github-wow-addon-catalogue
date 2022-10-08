@@ -37,6 +37,7 @@ EXCLUDES = (
     "JsMacros/",
     "livepeer/",
     "mdd3/WCLRanks-Firemaw-EU-Alliance",
+    "smashedr/MethodAltManager",
     "wagyourtail/JsMacros",
 )
 
