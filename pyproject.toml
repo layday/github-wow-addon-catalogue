@@ -6,12 +6,11 @@ build-backend = "flit_core.buildapi"
 name = "collect"
 version = "0.1.0"
 description = "Script which collects WoW add-on metadata from GitHub"
-requires-python = ">= 3.9"
+requires-python = ">= 3.11"
 license.file = "LICENSE"
 dependencies = [
   "aiohttp",
-  "aiohttp-client-cache",
-  "aiosqlite",
+  "aiohttp-client-cache[aiosqlite]",
   "loguru",
   "yarl",
 ]
@@ -25,8 +24,7 @@ dev = [
 collect = "collect:main"
 
 [tool.pyright]
-strict = true
-src = ["collect.py"]
+strict = ["collect.py"]
 
 [tool.black]
 line-length = 99
