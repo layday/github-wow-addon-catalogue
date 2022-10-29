@@ -356,7 +356,7 @@ async def get_projects(token: str):
     ) as client:
 
         # aiohttp-client-cache opens a new connection for every request
-        # and locks up the db, we'll limit it to 10 concurrent connection
+        # and locks up the db, we'll limit it to 10 concurrent connections
         # for now
         db_semaphore = asyncio.Semaphore(10)
 
