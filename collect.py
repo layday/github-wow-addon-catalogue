@@ -5,14 +5,15 @@ import asyncio
 import csv
 import enum
 import io
+import json
 import os
 import re
 import sys
 from collections.abc import Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager, nullcontext
-from dataclasses import dataclass, fields
-from datetime import datetime, timedelta
-from itertools import cycle
+from dataclasses import dataclass, field, fields
+from datetime import datetime, timedelta, timezone
+from itertools import chain, cycle, dropwhile, pairwise
 from typing import Any, Literal, NewType, Protocol
 from zipfile import ZipFile
 
@@ -28,11 +29,17 @@ USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-
 
 API_URL = URL("https://api.github.com/")
 
+_SEARCH_INTERVAL_HOURS = 2
+
 CACHE_INDEFINITELY = -1
 EXPIRE_URLS = {
-    f"{API_URL.host}/search": timedelta(hours=2),
+    f"{API_URL.host}/search": timedelta(hours=_SEARCH_INTERVAL_HOURS),
     f"{API_URL.host}/repos/*/releases": timedelta(days=1),
 }
+
+MIN_PRUNE_RUNS = 5
+MIN_PRUNE_INTERVAL = timedelta(hours=_SEARCH_INTERVAL_HOURS)
+PRUNE_CUTOFF = timedelta(hours=_SEARCH_INTERVAL_HOURS * MIN_PRUNE_RUNS)
 
 
 class Get(Protocol):
@@ -136,6 +143,7 @@ class Project:
     wago_id: str | None
     wowi_id: str | None
     has_release_json: bool
+    last_seen: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     @classmethod
     def from_csv_row(cls, values: object):
@@ -377,7 +385,7 @@ async def get_projects(token: str):
                 rate_limit
                 if do_rate_limit
                 and not await client.cache.has_url(url)  # pyright: ignore  # fmt: skip
-                else nullcontext
+                else nullcontext[None]
             )
 
             for is_last_attempt in (a == 2 for a in range(3)):
@@ -436,10 +444,45 @@ async def get_projects(token: str):
         return projects
 
 
+def log_run():
+    with open("runs.json", "a+", encoding="utf-8") as runs_json:
+        runs_json.seek(0)
+
+        try:
+            orig_runs = [datetime.fromisoformat(i) for i in json.load(runs_json)]
+        except json.JSONDecodeError:
+            orig_runs = []
+
+        now = datetime.now(timezone.utc)
+
+        runs = dropwhile(lambda i: (now - i) > PRUNE_CUTOFF, orig_runs)
+        combined_runs = set(orig_runs[-MIN_PRUNE_RUNS:])
+        combined_runs.update(chain(runs, (now,)))
+
+        runs_json.truncate(0)
+        json.dump([i.isoformat() for i in sorted(combined_runs)], runs_json, indent=2)
+
+
+def validate_runs(runs: list[str]):
+    if len(runs) < MIN_PRUNE_RUNS:
+        raise ValueError(
+            f"cannot prune add-ons if fewer than {MIN_PRUNE_RUNS} runs have been logged"
+        )
+    elif (
+        sum((b - a) >= MIN_PRUNE_INTERVAL for a, b in pairwise(map(datetime.fromisoformat, runs)))
+        < MIN_PRUNE_RUNS
+    ):
+        raise ValueError(
+            f"cannot prune add-ons if fewer than {MIN_PRUNE_RUNS} runs "
+            f"which are {MIN_PRUNE_INTERVAL} apart have been logged"
+        )
+
+
 @logger.catch
 def main():
     parser = argparse.ArgumentParser(description="Collect WoW add-on metadata from GitHub")
     parser.add_argument("outcsv", nargs="?", default="addons.csv")
+    parser.add_argument("--prune", action="store_true")
     parser.add_argument("--merge", action="store_true")
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
@@ -450,20 +493,43 @@ def main():
         ]
     )
 
-    token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
-    projects = asyncio.run(get_projects(token))
+    if args.prune:
+        with open("runs.json", encoding="utf-8") as runs_json:
+            runs = json.load(runs_json)
+            validate_runs(runs)
 
-    rows = {r.url: Project.to_csv_row(r) for r in projects}
-
-    if args.merge:
-        with open(args.outcsv, "r", encoding="utf-8", newline="") as addons_csv:
+        with open(args.outcsv, "r+", encoding="utf-8", newline="") as addons_csv:
             csv_reader = csv.DictReader(addons_csv)
-            rows = {r["url"]: r for r in csv_reader} | rows
+            projects = list(map(Project.from_csv_row, csv_reader))
+            most_recently_harvested = max(p.last_seen for p in projects)
 
-    with open(args.outcsv, "w", encoding="utf-8", newline="") as addons_csv:
-        csv_writer = csv.DictWriter(addons_csv, project_field_names)
-        csv_writer.writeheader()
-        csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
+            addons_csv.truncate(0)
+
+            csv_writer = csv.DictWriter(addons_csv, project_field_names)
+            csv_writer.writeheader()
+            csv_writer.writerows(
+                Project.to_csv_row(p)
+                for p in projects
+                if (most_recently_harvested - p.last_seen) > PRUNE_CUTOFF
+            )
+
+    else:
+        token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
+        projects = asyncio.run(get_projects(token))
+
+        rows = {r.url: Project.to_csv_row(r) for r in projects}
+
+        if args.merge:
+            with open(args.outcsv, "r", encoding="utf-8", newline="") as addons_csv:
+                csv_reader = csv.DictReader(addons_csv)
+                rows = {r["url"]: r for r in csv_reader} | rows
+
+        with open(args.outcsv, "w", encoding="utf-8", newline="") as addons_csv:
+            csv_writer = csv.DictWriter(addons_csv, project_field_names)
+            csv_writer.writeheader()
+            csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
+
+        log_run()
 
 
 if __name__ == "__main__":
