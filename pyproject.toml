@@ -11,6 +11,7 @@ license.file = "LICENSE"
 dependencies = [
   "aiohttp",
   "aiohttp-client-cache[aiosqlite]",
+  "cattrs",
   "loguru",
   "yarl",
 ]

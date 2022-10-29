@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import csv
+import enum
 import io
 import os
 import re
@@ -10,7 +11,6 @@ from collections.abc import Callable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from enum import Enum
 from itertools import count
 from typing import Any, Literal
 from zipfile import ZipFile
@@ -18,6 +18,8 @@ from zipfile import ZipFile
 import aiohttp
 from aiohttp_client_cache.backends.sqlite import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
+from cattrs import BaseValidationError, Converter
+from cattrs.preconf.json import configure_converter as configure_json_converter
 from loguru import logger
 from yarl import URL
 
@@ -42,34 +44,64 @@ EXCLUDES = (
 )
 
 
-class ReleaseJsonFlavor(str, Enum):
+@enum.global_enum
+class _UnkFlavor(enum.Enum):
+    UNK_FLAVOR = "UNK_FLAVOR"
+
+
+UNK_FLAVOR = _UnkFlavor.UNK_FLAVOR
+
+
+class ReleaseJsonFlavor(enum.StrEnum):
     mainline = "mainline"
     classic = "classic"
     bcc = "bcc"
     wrath = "wrath"
 
-    # TOC aliases
-    vanilla = classic
-    tbc = bcc
+
+@dataclass
+class ReleaseJson:
+    releases: list[ReleaseJsonRelease]
+
+    @classmethod
+    def from_dict(cls, values: object):
+        return _release_json_converter.structure(values, cls)
 
 
-class _UnknownFlavor(Enum):
-    UNK = "UNK"
+@dataclass
+class ReleaseJsonRelease:
+    filename: str
+    nolib: bool
+    metadata: list[ReleaseJsonReleaseMetadata]
 
 
-UNK = _UnknownFlavor.UNK
+@dataclass
+class ReleaseJsonReleaseMetadata:
+    flavor: ReleaseJsonFlavor
+    interface: int
 
-match_top_level_toc_name = re.compile(
-    r"^(?P<name>[^\/]+)[\/](?P=name)(?:[-|_]"
-    rf"(?P<flavor>{'|'.join(map(re.escape, ReleaseJsonFlavor.__members__))}))?"
-    r"\.toc$",
+
+_release_json_converter = Converter()
+
+
+TOC_ALIASES = {
+    **ReleaseJsonFlavor.__members__,
+    "vanilla": ReleaseJsonFlavor.classic,
+    "tbc": ReleaseJsonFlavor.bcc,
+    "wotlkc": ReleaseJsonFlavor.wrath,
+}
+
+TOP_LEVEL_TOC_NAME_PATTERN = re.compile(
+    rf"^(?P<name>[^/]+)[/](?P=name)(?:[-_](?P<flavor>{'|'.join(map(re.escape, TOC_ALIASES))}))?\.toc$",
     flags=re.I,
 )
 
-
 FLAVORS_TO_INTERFACE_RANGES = {
     ReleaseJsonFlavor.mainline: (
-        range(1_00_00, 1_13_00), range(2_00_00, 2_05_00), range(3_00_00, 3_04_00), range(4_00_00, 11_00_00)  # fmt: skip
+        range(1_00_00, 1_13_00),
+        range(2_00_00, 2_05_00),
+        range(3_00_00, 3_04_00),
+        range(4_00_00, 11_00_00),
     ),
     ReleaseJsonFlavor.classic: (range(1_13_00, 2_00_00),),
     ReleaseJsonFlavor.bcc: (range(2_05_00, 3_00_00),),
@@ -107,9 +139,9 @@ def parse_toc_file(contents: str):
 
 
 def is_top_level_addon_toc(zip_path: str):
-    match = match_top_level_toc_name.match(zip_path)
+    match = TOP_LEVEL_TOC_NAME_PATTERN.match(zip_path)
     if match:
-        return ReleaseJsonFlavor.__members__.get(match["flavor"], UNK)
+        return TOC_ALIASES.get(match["flavor"], UNK_FLAVOR)
 
 
 async def find_addon_repos(
@@ -158,7 +190,9 @@ async def extract_project_ids_from_toc_files(get: Get, url: str):
     return project_ids
 
 
-async def extract_game_flavours_from_toc_files(get: Get, release_archives: Sequence[Any]):
+async def extract_game_flavors_from_toc_files(
+    get: Get, release_archives: Sequence[dict[str, Any]]
+):
     for release_archive in release_archives:
         async with get(release_archive["browser_download_url"]) as file_response:
             file = await file_response.read()
@@ -167,11 +201,11 @@ async def extract_game_flavours_from_toc_files(get: Get, release_archives: Seque
             toc_names = [
                 (n, f) for n in addon_zip.namelist() for f in (is_top_level_addon_toc(n),) if f
             ]
-            flavours_from_toc_names = {f for _, f in toc_names if f is not UNK}
-            if flavours_from_toc_names:
-                yield flavours_from_toc_names
+            flavors_from_toc_names = {f for _, f in toc_names if f is not UNK_FLAVOR}
+            if flavors_from_toc_names:
+                yield flavors_from_toc_names
 
-            unk_flavor_toc_names = [n for n, f in toc_names if f is UNK]
+            unk_flavor_toc_names = [n for n, f in toc_names if f is UNK_FLAVOR]
             if unk_flavor_toc_names:
                 tocs = (
                     parse_toc_file(addon_zip.read(n).decode("utf-8-sig"))
@@ -180,13 +214,13 @@ async def extract_game_flavours_from_toc_files(get: Get, release_archives: Seque
                 interface_versions = (
                     int(i) for t in tocs for i in (t.get("Interface"),) if i and i.isdigit()
                 )
-                flavours_from_interface_versions = {
+                flavors_from_interface_versions = {
                     f
                     for v in interface_versions
                     for f, r in FLAVORS_TO_INTERFACE_RANGES.items()
                     if any(v in i for i in r)
                 }
-                yield flavours_from_interface_versions
+                yield flavors_from_interface_versions
 
 
 async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]):
@@ -204,21 +238,31 @@ async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]
             async with get(
                 maybe_release_json_asset["browser_download_url"]
             ) as release_json_response:
-                release_json = await release_json_response.json(content_type=None)
+                release_json_contents = await release_json_response.json(content_type=None)
 
-            flavours = frozenset(
-                ReleaseJsonFlavor(m["flavor"])
-                for r in release_json["releases"]
-                for m in r["metadata"]
-            )
-            project_ids = await extract_project_ids_from_toc_files(
-                get,
-                next(
-                    a["browser_download_url"]
-                    for a in release["assets"]
-                    if a["name"] == release_json["releases"][0]["filename"]
-                ),
-            )
+            try:
+                release_json = ReleaseJson.from_dict(release_json_contents)
+            except BaseValidationError:
+                logger.exception(
+                    f"release.json is malformed: {maybe_release_json_asset['browser_download_url']}"
+                )
+                return
+
+            flavors = frozenset(m.flavor for r in release_json.releases for m in r.metadata)
+            try:
+                project_ids = await extract_project_ids_from_toc_files(
+                    get,
+                    next(
+                        a["browser_download_url"]
+                        for a in release["assets"]
+                        if a["name"] == release_json.releases[0].filename
+                    ),
+                )
+            except StopIteration:
+                logger.warning(
+                    f"release asset does not exist: {release_json.releases[0].filename}"
+                )
+                return
 
         else:
             release_archives = [
@@ -231,10 +275,10 @@ async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]
                 # Not a downloadable add-on
                 return
 
-            flavours = frozenset(
+            flavors = frozenset(
                 {
                     f
-                    async for a in extract_game_flavours_from_toc_files(get, release_archives)
+                    async for a in extract_game_flavors_from_toc_files(get, release_archives)
                     for f in a
                 }
             )
