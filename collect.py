@@ -145,21 +145,32 @@ def is_top_level_addon_toc(zip_path: str):
 
 
 async def find_addon_repos(
-    get: Get, queries_by_kind: Sequence[tuple[Literal["code", "repositories"], str]]
+    get: Get,
+    queries_by_endpoint: Sequence[
+        tuple[Literal["code", "repositories", "user_repositories"], str]
+    ],
 ):
-    for kind, query in queries_by_kind:
-        search_url = (API_URL / "search" / kind).with_query(q=query, per_page=100)
-        while True:
-            async with get(search_url) as response:
-                content = await response.json()
+    for endpoint, query in queries_by_endpoint:
+        if endpoint == "user_repositories":
+            async with get(API_URL / "users" / query / "repos") as response:
+                repos = await response.json()
 
-            for i in content["items"]:
-                yield (i["repository"] if kind == "code" else i)
+            for repo in repos:
+                yield repo
 
-            next_url = response.links.get("next")
-            if next_url is None:
-                break
-            search_url = next_url["url"]
+        else:
+            search_url = (API_URL / "search" / endpoint).with_query(q=query, per_page=100)
+            while True:
+                async with get(search_url, True) as response:
+                    content = await response.json()
+
+                for item in content["items"]:
+                    yield (item["repository"] if endpoint == "code" else item)
+
+                next_url = response.links.get("next")
+                if next_url is None:
+                    break
+                search_url = next_url["url"]
 
 
 async def extract_project_ids_from_toc_files(get: Get, url: str):
