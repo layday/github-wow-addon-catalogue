@@ -272,7 +272,7 @@ async def extract_game_flavors_from_toc_files(
                 yield flavors_from_interface_versions
 
 
-async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]):
+async def parse_repo(get: Get, repo: Mapping[str, Any]):
     async with get(
         (API_URL / "repos" / repo["full_name"] / "releases").with_query(per_page=1)
     ) as releases_response:
@@ -435,9 +435,7 @@ async def get_projects(token: str):
         }
         projects = {
             r
-            for c in asyncio.as_completed(
-                [parse_repo_has_release_json_releases(get, r) for r in deduped_repos.values()]
-            )
+            for c in asyncio.as_completed([parse_repo(get, r) for r in deduped_repos.values()])
             for r in (await c,)
             if r
         }
@@ -508,7 +506,7 @@ def main():
             csv_writer = csv.DictWriter(addons_csv, project_field_names)
             csv_writer.writeheader()
             csv_writer.writerows(
-                Project.to_csv_row(p)
+                p.to_csv_row()
                 for p in projects
                 if (most_recently_harvested - p.last_seen) > PRUNE_CUTOFF
             )
@@ -517,12 +515,12 @@ def main():
         token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
         projects = asyncio.run(get_projects(token))
 
-        rows = {r.url: Project.to_csv_row(r) for r in projects}
+        rows = {p.full_name.lower(): p.to_csv_row() for p in projects}
 
         if args.merge:
             with open(args.outcsv, "r", encoding="utf-8", newline="") as addons_csv:
                 csv_reader = csv.DictReader(addons_csv)
-                rows = {r["url"]: r for r in csv_reader} | rows
+                rows = {r["full_name"].lower(): r for r in csv_reader} | rows
 
         with open(args.outcsv, "w", encoding="utf-8", newline="") as addons_csv:
             csv_writer = csv.DictWriter(addons_csv, project_field_names)
