@@ -7,12 +7,13 @@ import enum
 import io
 import os
 import re
-from collections.abc import Callable, Mapping, Sequence
-from contextlib import AbstractAsyncContextManager, asynccontextmanager
-from dataclasses import dataclass
+import sys
+from collections.abc import Mapping, Sequence
+from contextlib import AbstractAsyncContextManager, asynccontextmanager, nullcontext
+from dataclasses import dataclass, fields
 from datetime import datetime, timedelta
-from itertools import count
-from typing import Any, Literal
+from itertools import cycle
+from typing import Any, Literal, NewType, Protocol
 from zipfile import ZipFile
 
 import aiohttp
@@ -23,14 +24,25 @@ from cattrs.preconf.json import configure_converter as configure_json_converter
 from loguru import logger
 from yarl import URL
 
-API_URL = URL("https://api.github.com/")
-
 USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-addon-catalogue)"
 
-Get = Callable[["str | URL"], AbstractAsyncContextManager[aiohttp.ClientResponse]]
+API_URL = URL("https://api.github.com/")
+
+CACHE_INDEFINITELY = -1
+EXPIRE_URLS = {
+    f"{API_URL.host}/search": timedelta(hours=2),
+    f"{API_URL.host}/repos/*/releases": timedelta(days=1),
+}
 
 
-EXCLUDES = (
+class Get(Protocol):
+    def __call__(
+        self, url: str | URL, do_rate_limit: bool = ...
+    ) -> AbstractAsyncContextManager[aiohttp.ClientResponse]:
+        ...
+
+
+REPO_EXCLUDES = (
     "alchem1ster/AddOns-Update-Tool",
     "BilboTheGreedy/Azerite",
     "DaMitchell/HelloWorld",
@@ -109,23 +121,39 @@ FLAVORS_TO_INTERFACE_RANGES = {
 }
 
 
-@dataclass(frozen=True)
-class ProjectIds:
-    curse_id: str | None
-    wago_id: str | None
-    wowi_id: str | None
+ProjectFlavors = NewType("ProjectFlavors", frozenset[ReleaseJsonFlavor])
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Project:
     name: str
     full_name: str
     url: str
     description: str | None
     last_updated: datetime
-    flavors: frozenset[ReleaseJsonFlavor]
-    ids: ProjectIds
+    flavors: ProjectFlavors
+    curse_id: str | None
+    wago_id: str | None
+    wowi_id: str | None
     has_release_json: bool
+
+    @classmethod
+    def from_csv_row(cls, values: object):
+        return _addons_csv_converter.structure(values, cls)
+
+    def to_csv_row(self):
+        return _addons_csv_converter.unstructure(self)
+
+
+project_field_names = tuple(f.name for f in fields(Project))
+
+_addons_csv_converter = Converter()
+configure_json_converter(_addons_csv_converter)
+_addons_csv_converter.register_unstructure_hook(ProjectFlavors, lambda v: ",".join(sorted(v)))
+_addons_csv_converter.register_structure_hook(
+    ProjectFlavors,
+    lambda v, _: [ReleaseJsonFlavor(f) for f in v.split(",") if f],
+)
 
 
 def parse_toc_file(contents: str):
@@ -184,21 +212,23 @@ async def extract_project_ids_from_toc_files(get: Get, url: str):
             if is_top_level_addon_toc(n)
         ]
 
-    if not unparsed_tocs:
-        return
-
-    tocs = (parse_toc_file(c) for c in unparsed_tocs)
-    toc_ids = (
-        (
-            t.get("X-Curse-Project-ID"),
-            t.get("X-Wago-ID"),
-            t.get("X-WoWI-ID"),
+    if unparsed_tocs:
+        tocs = (parse_toc_file(c) for c in unparsed_tocs)
+        toc_ids = (
+            (
+                t.get("X-Curse-Project-ID"),
+                t.get("X-Wago-ID"),
+                t.get("X-WoWI-ID"),
+            )
+            for t in tocs
         )
-        for t in tocs
-    )
-    project_ids = ProjectIds(*(next(filter(None, s), None) for s in zip(*toc_ids)))
-    logger.info(f"extracted {project_ids}")
-    return project_ids
+        project_ids = (next(filter(None, s), None) for s in zip(*toc_ids))
+        logger.debug(f"extracted {project_ids}")
+
+    else:
+        project_ids = (None,) * 3
+
+    return dict(zip(("curse_id", "wago_id", "wowi_id"), project_ids))
 
 
 async def extract_game_flavors_from_toc_files(
@@ -298,14 +328,14 @@ async def parse_repo_has_release_json_releases(get: Get, repo: Mapping[str, Any]
             )
 
         return Project(
-            repo["name"],
-            repo["full_name"],
-            repo["html_url"],
-            repo["description"],
-            datetime.fromisoformat(f"{release['published_at'].rstrip('Z')}+00:00"),
-            flavours,
-            project_ids or ProjectIds(None, None, None),
-            maybe_release_json_asset is not None,
+            name=repo["name"],
+            full_name=repo["full_name"],
+            url=repo["html_url"],
+            description=repo["description"],
+            last_updated=datetime.fromisoformat(f"{release['published_at'].rstrip('Z')}+00:00"),
+            flavors=ProjectFlavors(flavors),
+            has_release_json=maybe_release_json_asset is not None,
+            **project_ids,
         )
 
 
@@ -313,10 +343,8 @@ async def get_projects(token: str):
     async with CachedSession(
         cache=SQLiteBackend(
             "http-cache.db",
-            urls_expire_after={
-                f"{API_URL.host}/search": timedelta(hours=2),
-                f"{API_URL.host}/repos/*/releases": timedelta(days=1),
-            },
+            expire_after=CACHE_INDEFINITELY,
+            urls_expire_after=EXPIRE_URLS,
         ),
         connector=aiohttp.TCPConnector(limit_per_host=8),
         headers={
@@ -327,46 +355,60 @@ async def get_projects(token: str):
         timeout=aiohttp.ClientTimeout(sock_connect=10, sock_read=10),
     ) as client:
 
+        # aiohttp-client-cache opens a new connection for every request
+        # and locks up the db, we'll limit it to 10 concurrent connection
+        # for now
+        db_semaphore = asyncio.Semaphore(10)
+
         search_lock = asyncio.Lock()
+        iter_search_delay = cycle((0, 5, 10))
 
         @asynccontextmanager
         async def rate_limit():
             async with search_lock:
+                delay = next(iter_search_delay)
+                logger.debug(f"delaying next request by {delay}s")
+                await asyncio.sleep(delay)
                 yield
-                await asyncio.sleep(5)
 
         @asynccontextmanager
-        async def noop():
-            yield
+        async def get(url: str | URL, do_rate_limit: bool = False):
+            rate_limiter = (
+                rate_limit
+                if do_rate_limit
+                and not await client.cache.has_url(url)  # pyright: ignore  # fmt: skip
+                else nullcontext
+            )
 
-        @asynccontextmanager
-        async def get(url: str | URL):
-            for attempt in count(1):
-                async with (
-                    rate_limit() if URL(url).path.startswith("/search") else noop()
-                ), client.get(url) as response:
-                    logger.info(
+            for is_last_attempt in (a == 2 for a in range(3)):
+                async with db_semaphore, rate_limiter(), client.get(url) as response:
+                    logger.debug(
                         f"fetched {response.url}"
                         f"\n\t{response.headers.get('X-RateLimit-Remaining') or '?'} requests remaining"
                     )
+
+                    if is_last_attempt:
+                        response.raise_for_status()
+
                     if response.status == 403:
                         logger.error(await response.text())
-                        sleep_until = datetime.fromtimestamp(
-                            int(response.headers["X-RateLimit-Reset"])
-                        )
-                        sleep_for = max(0, (sleep_until - datetime.now()).total_seconds())
-                        if sleep_for:
+
+                        sleep_until_header = response.headers.get("X-RateLimit-Reset")
+                        if sleep_until_header:
+                            sleep_until = datetime.fromtimestamp(
+                                int(response.headers["X-RateLimit-Reset"])
+                            )
+                            sleep_for = max(0, (sleep_until - datetime.now()).total_seconds())
                             logger.info(
                                 f"rate limited after {response.headers['X-RateLimit-Used']} requests, "
                                 f"sleeping until {sleep_until.time().isoformat()} for {sleep_for}s"
                             )
                             await asyncio.sleep(sleep_for)
-                    else:
-                        if attempt == 3:
-                            response.raise_for_status()
-                        elif not response.ok:
-                            continue
 
+                    elif not response.ok:
+                        continue
+
+                    else:
                         yield response
                         break
 
@@ -381,7 +423,7 @@ async def get_projects(token: str):
                     ("repositories", "topics:>2 topic:world-of-warcraft topic:addon"),
                 ],
             )
-            if not r["full_name"].startswith(EXCLUDES)
+            if not r["full_name"].startswith(REPO_EXCLUDES)
         }
         projects = {
             r
@@ -399,49 +441,28 @@ def main():
     parser = argparse.ArgumentParser(description="Collect WoW add-on metadata from GitHub")
     parser.add_argument("outcsv", nargs="?", default="addons.csv")
     parser.add_argument("--merge", action="store_true")
+    parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
+
+    logger.configure(
+        handlers=[
+            {"sink": sys.stderr, "level": "DEBUG" if args.verbose else "INFO"},
+        ]
+    )
 
     token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
     projects = asyncio.run(get_projects(token))
 
-    rows = {
-        p.url: (
-            p.name,
-            p.full_name,
-            p.url,
-            p.description,
-            p.last_updated.isoformat(),
-            ",".join(sorted(p.flavors)),
-            p.ids.curse_id,
-            p.ids.wago_id,
-            p.ids.wowi_id,
-            p.has_release_json,
-        )
-        for p in projects
-    }
+    rows = {r.url: Project.to_csv_row(r) for r in projects}
 
     if args.merge:
-        with open(args.outcsv, "r", encoding="utf-8", newline="") as csv_file:
-            csv_reader = csv.reader(csv_file)
-            next(csv_reader)  # Skip header.
-            rows = {p[2]: p for p in csv_reader} | rows
+        with open(args.outcsv, "r", encoding="utf-8", newline="") as addons_csv:
+            csv_reader = csv.DictReader(addons_csv)
+            rows = {r["url"]: r for r in csv_reader} | rows
 
-    with open(args.outcsv, "w", encoding="utf-8", newline="") as csv_file:
-        csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(
-            (
-                "name",
-                "full_name",
-                "url",
-                "description",
-                "last_updated",
-                "flavors",
-                "curse_id",
-                "wago_id",
-                "wowi_id",
-                "has_release_json",
-            )
-        )
+    with open(args.outcsv, "w", encoding="utf-8", newline="") as addons_csv:
+        csv_writer = csv.DictWriter(addons_csv, project_field_names)
+        csv_writer.writeheader()
         csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
 
 
