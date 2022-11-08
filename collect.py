@@ -231,7 +231,6 @@ async def extract_project_ids_from_toc_files(get: Get, url: str):
             for t in tocs
         )
         project_ids = (next(filter(None, s), None) for s in zip(*toc_ids))
-        logger.debug(f"extracted {project_ids}")
 
     else:
         project_ids = (None,) * 3
@@ -287,13 +286,19 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
             async with get(
                 maybe_release_json_asset["browser_download_url"]
             ) as release_json_response:
-                release_json_contents = await release_json_response.json(content_type=None)
+                try:
+                    release_json_contents = await release_json_response.json(content_type=None)
+                except json.JSONDecodeError:
+                    logger.exception(
+                        f"release.json is not valid JSON: {maybe_release_json_asset['browser_download_url']}"
+                    )
+                    return
 
             try:
                 release_json = ReleaseJson.from_dict(release_json_contents)
             except BaseValidationError:
                 logger.exception(
-                    f"release.json is malformed: {maybe_release_json_asset['browser_download_url']}"
+                    f"release.json has incorrect schema: {maybe_release_json_asset['browser_download_url']}"
                 )
                 return
 
