@@ -658,8 +658,6 @@ HealBarsClassic,LiuJonathan/HealBarsClassic,https://github.com/LiuJonathan/HealB
 MissionMinder,LobsterBandit/MissionMinder,https://github.com/LobsterBandit/MissionMinder,WoW addon to export adventure table mission data,2022-04-19T00:08:21+00:00,mainline,,,,True,2022-11-08T19:36:31.195427+00:00
 speedy,LobsterBandit/speedy,https://github.com/LobsterBandit/speedy,Track character leveling in real and in-game time,2021-07-20T01:15:00+00:00,bcc,504267,,,True,2022-11-08T19:36:32.322803+00:00
 lowGold,lowlee/lowGold,https://github.com/lowlee/lowGold,WoWAddon - Minimal LibDataBroker-based Gold display,2020-10-20T02:03:37+00:00,mainline,,,17079,False,2022-11-08T19:36:25.150259+00:00
-MikScrollingBattleText,lowlee/MikScrollingBattleText,https://github.com/lowlee/MikScrollingBattleText,,2022-11-02T11:39:51+00:00,mainline,,,,True,2022-11-08T19:36:26.671920+00:00
-MSBTOptions,lowlee/MSBTOptions,https://github.com/lowlee/MSBTOptions,,2022-11-03T06:17:39+00:00,mainline,,,,True,2022-11-08T19:36:30.831076+00:00
 ls_Toasts,ls-/ls_Toasts,https://github.com/ls-/ls_Toasts,Development repository of ls: Toasts,2022-11-03T15:17:26+00:00,mainline,,,,False,2022-11-08T19:36:25.322824+00:00
 ls_UI,ls-/ls_UI,https://github.com/ls-/ls_UI,Development repository of ls: UI,2022-10-31T07:32:11+00:00,mainline,,,,False,2022-11-08T19:36:25.230716+00:00
 theflatdumper,lua-wow-tools/theflatdumper,https://github.com/lua-wow-tools/theflatdumper,,2022-05-23T13:16:02+00:00,"bcc,classic,mainline",,,,True,2022-11-08T19:36:31.308361+00:00
