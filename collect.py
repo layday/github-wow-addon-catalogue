@@ -57,9 +57,12 @@ REPO_EXCLUDES = (
     "hippuli/",
     "JsMacros/",
     "livepeer/",
+    "lowlee/MikScrollingBattleText",
+    "lowlee/MSBTOptions",
     "mdd3/WCLRanks-Firemaw-EU-Alliance",
     "smashedr/MethodAltManager",
     "wagyourtail/JsMacros",
+    "ynazar1/Arh",
 )
 
 
