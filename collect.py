@@ -62,6 +62,7 @@ REPO_EXCLUDES = (
     "mdd3/WCLRanks-Firemaw-EU-Alliance",
     "smashedr/MethodAltManager",
     "wagyourtail/JsMacros",
+    "ynazar1/Arh",
 )
 
 
