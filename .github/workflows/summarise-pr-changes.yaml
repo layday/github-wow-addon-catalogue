@@ -1,0 +1,30 @@
+---
+name: Summarise `addons.csv` changes
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - run: nix profile install nixpkgs#csvdiff nixpkgs#fish
+      - run: |
+          echo "data<<EOF
+          ```
+          "(csvdiff --primary-key 1 --ignore-columns 4,10 (git show origin/main:addons.csv | psub) addons.csv 2>&1 |
+              string collect)"
+          ```
+          EOF" >> $GITHUB_OUTPUT
+        shell: fish {0}
+        id: addons-csv-diff
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: addons-csv-diff
+          message: ${{ steps.addons-csv-diff.outputs.data }}
