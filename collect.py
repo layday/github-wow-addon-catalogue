@@ -162,6 +162,10 @@ _addons_csv_converter = Converter()
 configure_json_converter(_addons_csv_converter)
 _addons_csv_converter.register_unstructure_hook(ProjectFlavors, lambda v: ",".join(sorted(v)))
 _addons_csv_converter.register_structure_hook(
+    bool,
+    lambda v, _: v == "True",
+)
+_addons_csv_converter.register_structure_hook(
     ProjectFlavors,
     lambda v, _: [ReleaseJsonFlavor(f) for f in v.split(",") if f],
 )
