@@ -12,7 +12,7 @@ import re
 import sys
 from collections.abc import Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager, nullcontext
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, fields
 from datetime import datetime, timedelta, timezone
 from itertools import chain, cycle, dropwhile, pairwise
 from typing import Any, Literal, NewType, Protocol
@@ -150,7 +150,7 @@ class Project:
     wago_id: str | None
     wowi_id: str | None
     has_release_json: bool
-    last_seen: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    last_seen: datetime
 
     @classmethod
     def from_csv_row(cls, values: object):
@@ -359,6 +359,7 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
             last_updated=datetime.fromisoformat(f"{release['published_at'].rstrip('Z')}+00:00"),
             flavors=ProjectFlavors(flavors),
             has_release_json=maybe_release_json_asset is not None,
+            last_seen=datetime.now(timezone.utc),
             **project_ids,
         )
 
@@ -468,10 +469,13 @@ def log_run():
             orig_runs = []
 
         now = datetime.now(timezone.utc)
-
-        runs = dropwhile(lambda i: (now - i) > PRUNE_CUTOFF, orig_runs)
-        combined_runs = set(orig_runs[-MIN_PRUNE_RUNS:])
-        combined_runs.update(chain(runs, (now,)))
+        combined_runs = set(
+            chain(
+                orig_runs[-MIN_PRUNE_RUNS:],
+                dropwhile(lambda i: (now - i) > PRUNE_CUTOFF, orig_runs),
+                (now,),
+            )
+        )
 
         runs_json.truncate(0)
         json.dump([i.isoformat() for i in sorted(combined_runs)], runs_json, indent=2)
@@ -492,40 +496,46 @@ def validate_runs(runs: list[str]):
         )
 
 
-def main():
+def make_cli():
     parser = argparse.ArgumentParser(description="Collect WoW add-on metadata from GitHub")
-    parser.add_argument("outcsv", nargs="?", default="addons.csv")
-    parser.add_argument("--prune", action="store_true")
-    parser.add_argument("--merge", action="store_true")
-    parser.add_argument("--verbose", action="store_true")
-    args = parser.parse_args()
+    parser.add_argument("--verbose", action="store_true", help="log more things")
+    subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
+    subcommand_parser = argparse.ArgumentParser(add_help=False)
+    subcommand_parser.add_argument("outcsv", nargs="?", default="addons.csv")
+    collect_parser = subparsers.add_parser(
+        "collect", parents=[subcommand_parser], help="collect add-ons"
+    )
+    collect_parser.add_argument(
+        "--merge", action="store_true", help="merge with existing `outcsv`"
+    )
+    prune_parser = subparsers.add_parser(
+        "prune", parents=[subcommand_parser], help="prune stale add-ons from `outcsv`"
+    )
+    prune_parser.add_argument("--older-than", required=True, help="time delta in days", type=int)
+    return parser
+
+
+
+def _catch_main(fn: Callable[[], None]):
+    def wrapper():
+        try:
+            fn()
+        except BaseException:
+            logger.exception('unhandled exception')
+
+    return wrapper
+
+
+@_catch_main
+def main():
+    args = make_cli().parse_args(["collect"] if not sys.argv[1:] else None)
 
     if not args.verbose:
         structlog.configure(
             wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
         )
 
-    if args.prune:
-        with open("runs.json", encoding="utf-8") as runs_json:
-            runs = json.load(runs_json)
-            validate_runs(runs)
-
-        with open(args.outcsv, "r+", encoding="utf-8", newline="") as addons_csv:
-            csv_reader = csv.DictReader(addons_csv)
-            projects = list(map(Project.from_csv_row, csv_reader))
-            most_recently_harvested = max(p.last_seen for p in projects)
-
-            addons_csv.truncate(0)
-
-            csv_writer = csv.DictWriter(addons_csv, project_field_names)
-            csv_writer.writeheader()
-            csv_writer.writerows(
-                p.to_csv_row()
-                for p in projects
-                if (most_recently_harvested - p.last_seen) > PRUNE_CUTOFF
-            )
-
-    else:
+    if args.subcommand == "collect":
         token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
         projects = asyncio.run(get_projects(token))
 
@@ -542,6 +552,23 @@ def main():
             csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
 
         log_run()
+
+    elif args.subcommand == "prune":
+        with open("runs.json", encoding="utf-8") as runs_json:
+            runs = json.load(runs_json)
+            validate_runs(runs)
+
+        with open(args.outcsv, "r", encoding="utf-8", newline="") as addons_csv:
+            csv_reader = csv.DictReader(addons_csv)
+            projects = list(map(Project.from_csv_row, csv_reader))
+
+        most_recently_harvested = max(p.last_seen for p in projects)
+        cutoff = most_recently_harvested - timedelta(days=args.older_than)
+
+        with open(args.outcsv, "w", encoding="utf-8", newline="") as addons_csv:
+            csv_writer = csv.DictWriter(addons_csv, project_field_names)
+            csv_writer.writeheader()
+            csv_writer.writerows(p.to_csv_row() for p in projects if p.last_seen >= cutoff)
 
 
 if __name__ == "__main__":
