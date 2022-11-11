@@ -6,6 +6,7 @@ import csv
 import enum
 import io
 import json
+import logging
 import os
 import re
 import sys
@@ -18,12 +19,15 @@ from typing import Any, Literal, NewType, Protocol
 from zipfile import ZipFile
 
 import aiohttp
+import structlog
 from aiohttp_client_cache.backends.sqlite import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from cattrs import BaseValidationError, Converter
 from cattrs.preconf.json import configure_converter as configure_json_converter
-from loguru import logger
 from yarl import URL
+
+logger = structlog.get_logger()
+
 
 USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-addon-catalogue)"
 
@@ -488,7 +492,6 @@ def validate_runs(runs: list[str]):
         )
 
 
-@logger.catch
 def main():
     parser = argparse.ArgumentParser(description="Collect WoW add-on metadata from GitHub")
     parser.add_argument("outcsv", nargs="?", default="addons.csv")
@@ -497,11 +500,10 @@ def main():
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 
-    logger.configure(
-        handlers=[
-            {"sink": sys.stderr, "level": "DEBUG" if args.verbose else "INFO"},
-        ]
-    )
+    if not args.verbose:
+        structlog.configure(
+            wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
+        )
 
     if args.prune:
         with open("runs.json", encoding="utf-8") as runs_json:
