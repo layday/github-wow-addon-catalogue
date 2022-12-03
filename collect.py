@@ -10,7 +10,7 @@ import logging
 import os
 import re
 import sys
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager, nullcontext
 from dataclasses import dataclass, fields
 from datetime import datetime, timedelta, timezone
