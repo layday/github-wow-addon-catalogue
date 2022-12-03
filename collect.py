@@ -58,6 +58,7 @@ REPO_EXCLUDES = (
     "BilboTheGreedy/Azerite",
     "Centias/BankItems",
     "DaMitchell/HelloWorld",
+    "dratr/BattlePetCount",
     "HappyRot/AddOns",
     "hippuli/",
     "JsMacros/",
