@@ -56,6 +56,7 @@ class Get(Protocol):
 REPO_EXCLUDES = (
     "alchem1ster/AddOns-Update-Tool",
     "BilboTheGreedy/Azerite",
+    "Centias/BankItems",
     "DaMitchell/HelloWorld",
     "HappyRot/AddOns",
     "hippuli/",
