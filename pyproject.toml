@@ -18,14 +18,31 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+  "ruff",
   "ufmt",
 ]
 
 [project.scripts]
 collect = "collect:main"
 
+[tool.black]
+line-length = 99
+
 [tool.pyright]
 strict = ["collect.py"]
 
-[tool.black]
-line-length = 99
+[tool.ruff]
+select = [
+  "A",
+  "B0",
+  "C",
+  "DTZ",
+  "E",
+  "EM",
+  "F",
+  "M",
+  "U",
+  "W",
+  "Y,
+]
+target-version = "py311"
