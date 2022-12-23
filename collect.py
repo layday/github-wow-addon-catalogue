@@ -11,10 +11,10 @@ import os
 import re
 import sys
 from collections.abc import Callable, Mapping, Sequence
-from contextlib import AbstractAsyncContextManager, asynccontextmanager, nullcontext
+from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from dataclasses import dataclass, fields
 from datetime import datetime, timedelta, timezone
-from itertools import chain, cycle, dropwhile, pairwise
+from itertools import chain, dropwhile, pairwise
 from typing import Any, Literal, NewType, Protocol
 from zipfile import ZipFile
 
@@ -48,7 +48,7 @@ PRUNE_CUTOFF = timedelta(hours=_SEARCH_INTERVAL_HOURS * MIN_PRUNE_RUNS)
 
 class Get(Protocol):
     def __call__(
-        self, url: str | URL, do_rate_limit: bool = ...
+        self, url: str | URL
     ) -> AbstractAsyncContextManager[aiohttp.ClientResponse]:
         ...
 
@@ -210,7 +210,7 @@ async def find_addon_repos(
         else:
             search_url = (API_URL / "search" / endpoint).with_query(q=query, per_page=100)
             while True:
-                async with get(search_url, True) as response:
+                async with get(search_url) as response:
                     content = await response.json()
 
                 for item in content["items"]:
@@ -381,41 +381,20 @@ async def get_projects(token: str):
         },
         timeout=aiohttp.ClientTimeout(sock_connect=10, sock_read=10),
     ) as client:
-
         # aiohttp-client-cache opens a new connection for every request
         # and locks up the db, we'll limit it to 10 concurrent connections
         # for now
         db_semaphore = asyncio.Semaphore(10)
 
-        search_lock = asyncio.Lock()
-        iter_search_delay = cycle((0, 5, 10))
-
         @asynccontextmanager
-        async def rate_limit():
-            async with search_lock:
-                delay = next(iter_search_delay)
-                logger.debug(f"delaying next request by {delay}s")
-                await asyncio.sleep(delay)
-                yield
-
-        @asynccontextmanager
-        async def get(url: str | URL, do_rate_limit: bool = False):
-            rate_limiter = (
-                rate_limit
-                if do_rate_limit
-                and not await client.cache.has_url(url)  # pyright: ignore  # fmt: skip
-                else nullcontext[None]
-            )
-
-            for is_last_attempt in (a == 2 for a in range(3)):
-                async with db_semaphore, rate_limiter(), client.get(url) as response:
+        async def get(url: str | URL):
+            response = None
+            for _ in range(5):
+                async with db_semaphore, client.get(url) as response:
                     logger.debug(
-                        f"fetched {response.url}"
+                        f"fetching {response.url}"
                         f"\n\t{response.headers.get('X-RateLimit-Remaining') or '?'} requests remaining"
                     )
-
-                    if is_last_attempt:
-                        response.raise_for_status()
 
                     if response.status == 403:
                         logger.error(await response.text())
@@ -428,9 +407,9 @@ async def get_projects(token: str):
                             sleep_for = max(0, (sleep_until - datetime.now()).total_seconds())
                             logger.info(
                                 f"rate limited after {response.headers['X-RateLimit-Used']} requests, "
-                                f"sleeping until {sleep_until.time().isoformat()} for {sleep_for}s"
+                                f"sleeping until {sleep_until.time().isoformat()} for ({sleep_for} + 1)s"
                             )
-                            await asyncio.sleep(sleep_for)
+                            await asyncio.sleep(sleep_for + 1)
 
                     elif not response.ok:
                         continue
@@ -438,6 +417,9 @@ async def get_projects(token: str):
                     else:
                         yield response
                         break
+            else:
+                if response:
+                    response.raise_for_status()
 
         deduped_repos = {
             r["full_name"]: r
@@ -517,13 +499,12 @@ def make_cli():
     return parser
 
 
-
 def _catch_main(fn: Callable[[], None]):
     def wrapper():
         try:
             fn()
         except BaseException:
-            logger.exception('unhandled exception')
+            logger.exception("unhandled exception")
 
     return wrapper
 
@@ -544,7 +525,7 @@ def main():
         rows = {p.full_name.lower(): p.to_csv_row() for p in projects}
 
         if args.merge:
-            with open(args.outcsv, "r", encoding="utf-8", newline="") as addons_csv:
+            with open(args.outcsv, encoding="utf-8", newline="") as addons_csv:
                 csv_reader = csv.DictReader(addons_csv)
                 rows = {r["full_name"].lower(): r for r in csv_reader} | rows
 
@@ -560,9 +541,9 @@ def main():
             runs = json.load(runs_json)
             validate_runs(runs)
 
-        with open(args.outcsv, "r", encoding="utf-8", newline="") as addons_csv:
+        with open(args.outcsv, encoding="utf-8", newline="") as addons_csv:
             csv_reader = csv.DictReader(addons_csv)
-            projects = list(map(Project.from_csv_row, csv_reader))
+            projects = [Project.from_csv_row(r) for r in csv_reader if r["last_seen"]]
 
         most_recently_harvested = max(p.last_seen for p in projects)
         cutoff = most_recently_harvested - timedelta(days=args.older_than)
