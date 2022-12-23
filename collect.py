@@ -62,6 +62,7 @@ REPO_EXCLUDES = (
     "HappyRot/AddOns",
     "hippuli/",
     "JsMacros/",
+    "Kirri777/WorldQuestsList",
     "livepeer/",
     "lowlee/MikScrollingBattleText",
     "lowlee/MSBTOptions",
