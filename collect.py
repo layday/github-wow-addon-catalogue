@@ -10,6 +10,7 @@ import logging
 import os
 import re
 import sys
+from collections import defaultdict
 from collections.abc import Callable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from dataclasses import dataclass, fields
@@ -45,11 +46,15 @@ MIN_PRUNE_RUNS = 5
 MIN_PRUNE_INTERVAL = timedelta(hours=_SEARCH_INTERVAL_HOURS)
 PRUNE_CUTOFF = timedelta(hours=_SEARCH_INTERVAL_HOURS * MIN_PRUNE_RUNS)
 
+OTHER_SOURCES = [
+    ("curse", "curse_id"),
+    ("wago", "wago_id"),
+    ("wowi", "wowi_id"),
+]
+
 
 class Get(Protocol):
-    def __call__(
-        self, url: str | URL
-    ) -> AbstractAsyncContextManager[aiohttp.ClientResponse]:
+    def __call__(self, url: str | URL) -> AbstractAsyncContextManager[aiohttp.ClientResponse]:
         ...
 
 
@@ -498,6 +503,9 @@ def make_cli():
         "prune", parents=[subcommand_parser], help="prune stale add-ons from `outcsv`"
     )
     prune_parser.add_argument("--older-than", required=True, help="time delta in days", type=int)
+    prune_parser = subparsers.add_parser(
+        "find-duplicates", parents=[subcommand_parser], help="find add-ons with the same ID"
+    )
     return parser
 
 
@@ -554,6 +562,23 @@ def main():
             csv_writer = csv.DictWriter(addons_csv, project_field_names)
             csv_writer.writeheader()
             csv_writer.writerows(p.to_csv_row() for p in projects if p.last_seen >= cutoff)
+
+    elif args.subcommand == "find-duplicates":
+        with open(args.outcsv, encoding="utf-8", newline="") as addons_csv:
+            csv_reader = csv.DictReader(addons_csv)
+
+            potential_dupes = defaultdict[tuple[str, str], list[str]](list)
+
+            for project in csv_reader:
+                for source, source_id_name in OTHER_SOURCES:
+                    if project[source_id_name]:
+                        potential_dupes[source, project[source_id_name]].append(
+                            project["full_name"]
+                        )
+
+            for (source, source_id), dupes in potential_dupes.items():
+                if len(dupes) > 1:
+                    print(source, source_id, dupes)
 
 
 if __name__ == "__main__":
