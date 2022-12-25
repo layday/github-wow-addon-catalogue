@@ -43,6 +43,6 @@ select = [
   "M",
   "U",
   "W",
-  "Y,
+  "Y",
 ]
 target-version = "py311"
