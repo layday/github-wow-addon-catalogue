@@ -67,6 +67,7 @@ REPO_EXCLUDES = (
     "lowlee/MikScrollingBattleText",
     "lowlee/MSBTOptions",
     "mdd3/WCLRanks-Firemaw-EU-Alliance",
+    "MikeD89/KarazhanChess",
     "smashedr/MethodAltManager",
     "wagyourtail/JsMacros",
     "ynazar1/Arh",
