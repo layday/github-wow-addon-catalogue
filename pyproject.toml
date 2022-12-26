@@ -3,7 +3,7 @@ requires = ["flit-core >= 3.4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "collect"
+name = "cataloguer"
 version = "0.1.0"
 description = "Script which collects WoW add-on metadata from GitHub"
 requires-python = ">= 3.11"
@@ -12,6 +12,7 @@ dependencies = [
   "aiohttp",
   "aiohttp-client-cache[sqlite]",
   "cattrs",
+  "click",
   "structlog",
   "yarl",
 ]
@@ -22,14 +23,11 @@ dev = [
   "ufmt",
 ]
 
-[project.scripts]
-collect = "collect:main"
-
 [tool.black]
 line-length = 99
 
 [tool.pyright]
-strict = ["collect.py"]
+strict = ["cataloguer.py"]
 
 [tool.ruff]
 select = [

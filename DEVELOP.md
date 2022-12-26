@@ -5,4 +5,4 @@
 1. Install this project: `python -m pip install -e .`
 1. Generate a GitHub token and expose it in your environment as
    `RELEASE_JSON_ADDONS_GITHUB_TOKEN`
-1. Run `python -m collect` or just `collect`
+1. Run `python -m cataloguer collect`

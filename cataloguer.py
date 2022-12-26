@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import argparse
 import asyncio
 import csv
 import enum
@@ -9,9 +8,8 @@ import json
 import logging
 import os
 import re
-import sys
 from collections import defaultdict
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from dataclasses import dataclass, fields
 from datetime import datetime, timedelta, timezone
@@ -20,6 +18,7 @@ from typing import Any, Literal, NewType, Protocol
 from zipfile import ZipFile
 
 import aiohttp
+import click
 import structlog
 from aiohttp_client_cache.backends.sqlite import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
@@ -487,99 +486,76 @@ def validate_runs(runs: list[str]):
         )
 
 
-def make_cli():
-    parser = argparse.ArgumentParser(description="Collect WoW add-on metadata from GitHub")
-    parser.add_argument("--verbose", action="store_true", help="log more things")
-    subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
-    subcommand_parser = argparse.ArgumentParser(add_help=False)
-    subcommand_parser.add_argument("outcsv", nargs="?", default="addons.csv")
-    collect_parser = subparsers.add_parser(
-        "collect", parents=[subcommand_parser], help="collect add-ons"
-    )
-    collect_parser.add_argument(
-        "--merge", action="store_true", help="merge with existing `outcsv`"
-    )
-    prune_parser = subparsers.add_parser(
-        "prune", parents=[subcommand_parser], help="prune stale add-ons from `outcsv`"
-    )
-    prune_parser.add_argument("--older-than", required=True, help="time delta in days", type=int)
-    prune_parser = subparsers.add_parser(
-        "find-duplicates", parents=[subcommand_parser], help="find add-ons with the same ID"
-    )
-    return parser
+outcsv_argument = click.argument("outcsv", default="addons.csv")
 
 
-def _catch_main(fn: Callable[[], None]):
-    def wrapper():
-        try:
-            fn()
-        except BaseException:
-            logger.exception("unhandled exception")
-
-    return wrapper
+@click.group(context_settings={"help_option_names": ("-h", "--help")})
+@click.option("--verbose", "-v", is_flag=True, help="log more things")
+def cli(verbose: bool):
+    if verbose:
+        structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(logging.INFO))
 
 
-@_catch_main
-def main():
-    args = make_cli().parse_args(["collect"] if not sys.argv[1:] else None)
+@cli.command
+@outcsv_argument
+@click.option("--merge", is_flag=True, help="merge with existing `OUTCSV`")
+def collect(outcsv: str, merge: bool):
+    token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
+    projects = asyncio.run(get_projects(token))
 
-    if not args.verbose:
-        structlog.configure(
-            wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
-        )
+    rows = {p.full_name.lower(): p.to_csv_row() for p in projects}
 
-    if args.subcommand == "collect":
-        token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
-        projects = asyncio.run(get_projects(token))
-
-        rows = {p.full_name.lower(): p.to_csv_row() for p in projects}
-
-        if args.merge:
-            with open(args.outcsv, encoding="utf-8", newline="") as addons_csv:
-                csv_reader = csv.DictReader(addons_csv)
-                rows = {r["full_name"].lower(): r for r in csv_reader} | rows
-
-        with open(args.outcsv, "w", encoding="utf-8", newline="") as addons_csv:
-            csv_writer = csv.DictWriter(addons_csv, project_field_names)
-            csv_writer.writeheader()
-            csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
-
-        log_run()
-
-    elif args.subcommand == "prune":
-        with open("runs.json", encoding="utf-8") as runs_json:
-            runs = json.load(runs_json)
-            validate_runs(runs)
-
-        with open(args.outcsv, encoding="utf-8", newline="") as addons_csv:
+    if merge:
+        with open(outcsv, encoding="utf-8", newline="") as addons_csv:
             csv_reader = csv.DictReader(addons_csv)
-            projects = [Project.from_csv_row(r) for r in csv_reader if r["last_seen"]]
+            rows = {r["full_name"].lower(): r for r in csv_reader} | rows
 
-        most_recently_harvested = max(p.last_seen for p in projects)
-        cutoff = most_recently_harvested - timedelta(days=args.older_than)
+    with open(outcsv, "w", encoding="utf-8", newline="") as addons_csv:
+        csv_writer = csv.DictWriter(addons_csv, project_field_names)
+        csv_writer.writeheader()
+        csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
 
-        with open(args.outcsv, "w", encoding="utf-8", newline="") as addons_csv:
-            csv_writer = csv.DictWriter(addons_csv, project_field_names)
-            csv_writer.writeheader()
-            csv_writer.writerows(p.to_csv_row() for p in projects if p.last_seen >= cutoff)
+    log_run()
 
-    elif args.subcommand == "find-duplicates":
-        with open(args.outcsv, encoding="utf-8", newline="") as addons_csv:
-            csv_reader = csv.DictReader(addons_csv)
 
-            potential_dupes = defaultdict[tuple[str, str], list[str]](list)
+@cli.command
+@outcsv_argument
+@click.option("--older-than", required=True, type=int, help="time delta in days")
+def prune(outcsv: str, older_than: int):
+    with open("runs.json", encoding="utf-8") as runs_json:
+        runs = json.load(runs_json)
+        validate_runs(runs)
 
-            for project in csv_reader:
-                for source, source_id_name in OTHER_SOURCES:
-                    if project[source_id_name]:
-                        potential_dupes[source, project[source_id_name]].append(
-                            project["full_name"]
-                        )
+    with open(outcsv, encoding="utf-8", newline="") as addons_csv:
+        csv_reader = csv.DictReader(addons_csv)
+        projects = [Project.from_csv_row(r) for r in csv_reader if r["last_seen"]]
 
-            for (source, source_id), dupes in potential_dupes.items():
-                if len(dupes) > 1:
-                    print(source, source_id, dupes)
+    most_recently_harvested = max(p.last_seen for p in projects)
+    cutoff = most_recently_harvested - timedelta(days=older_than)
+
+    with open(outcsv, "w", encoding="utf-8", newline="") as addons_csv:
+        csv_writer = csv.DictWriter(addons_csv, project_field_names)
+        csv_writer.writeheader()
+        csv_writer.writerows(p.to_csv_row() for p in projects if p.last_seen >= cutoff)
+
+
+@cli.command
+@outcsv_argument
+def find_duplicates(outcsv: str):
+    with open(outcsv, encoding="utf-8", newline="") as addons_csv:
+        csv_reader = csv.DictReader(addons_csv)
+
+        potential_dupes = defaultdict[tuple[str, str], list[str]](list)
+
+        for project in csv_reader:
+            for source, source_id_name in OTHER_SOURCES:
+                if project[source_id_name]:
+                    potential_dupes[source, project[source_id_name]].append(project["full_name"])
+
+        for (source, source_id), dupes in potential_dupes.items():
+            if len(dupes) > 1:
+                print(source, source_id, dupes)
 
 
 if __name__ == "__main__":
-    main()
+    cli()
