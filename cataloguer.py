@@ -70,7 +70,6 @@ REPO_EXCLUDES = (
     "livepeer/",
     "lowlee/MikScrollingBattleText",
     "lowlee/MSBTOptions",
-    "mdd3/WCLRanks-Firemaw-EU-Alliance",
     "MikeD89/KarazhanChess",
     "smashedr/MethodAltManager",
     "wagyourtail/JsMacros",
