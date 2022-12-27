@@ -9,7 +9,7 @@ import logging
 import os
 import re
 from collections import defaultdict
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from dataclasses import dataclass, fields
 from datetime import datetime, timedelta, timezone
@@ -77,14 +77,6 @@ REPO_EXCLUDES = (
 )
 
 
-@enum.global_enum
-class _UnkFlavor(enum.Enum):
-    UNK_FLAVOR = "UNK_FLAVOR"
-
-
-UNK_FLAVOR = _UnkFlavor.UNK_FLAVOR
-
-
 class ReleaseJsonFlavor(enum.StrEnum):
     mainline = "mainline"
     classic = "classic"
@@ -129,16 +121,14 @@ TOP_LEVEL_TOC_NAME_PATTERN = re.compile(
     flags=re.I,
 )
 
-FLAVORS_TO_INTERFACE_RANGES = {
-    ReleaseJsonFlavor.mainline: (
-        range(1_00_00, 1_13_00),
-        range(2_00_00, 2_05_00),
-        range(3_00_00, 3_04_00),
-        range(4_00_00, 11_00_00),
-    ),
-    ReleaseJsonFlavor.classic: (range(1_13_00, 2_00_00),),
-    ReleaseJsonFlavor.bcc: (range(2_05_00, 3_00_00),),
-    ReleaseJsonFlavor.wrath: (range(3_04_00, 4_00_00),),
+INTERFACE_RANGES_TO_FLAVORS = {
+    range(1_00_00, 1_13_00): ReleaseJsonFlavor.mainline,
+    range(1_13_00, 2_00_00): ReleaseJsonFlavor.classic,
+    range(2_00_00, 2_05_00): ReleaseJsonFlavor.mainline,
+    range(2_05_00, 3_00_00): ReleaseJsonFlavor.bcc,
+    range(3_00_00, 3_04_00): ReleaseJsonFlavor.mainline,
+    range(3_04_00, 4_00_00): ReleaseJsonFlavor.wrath,
+    range(4_00_00, 11_00_00): ReleaseJsonFlavor.mainline,
 }
 
 
@@ -192,10 +182,12 @@ def parse_toc_file(contents: str):
     }
 
 
-def is_top_level_addon_toc(zip_path: str):
-    match = TOP_LEVEL_TOC_NAME_PATTERN.match(zip_path)
-    if match:
-        return TOC_ALIASES.get(match["flavor"], UNK_FLAVOR)
+def interface_numbers_to_flavours(interface_numbers: Iterable[int]):
+    for interface_number in interface_numbers:
+        for interface_range, flavor in INTERFACE_RANGES_TO_FLAVORS.items():
+            if interface_number in interface_range:
+                yield flavor
+                break
 
 
 async def find_addon_repos(
@@ -227,19 +219,20 @@ async def find_addon_repos(
                 search_url = next_url["url"]
 
 
-async def extract_project_ids_from_toc_files(get: Get, url: str):
+async def extract_project_ids_from_toc_files(get: Get, url: str, filename: str):
     async with get(url) as file_response:
         file = await file_response.read()
 
     with ZipFile(io.BytesIO(file)) as addon_zip:
-        unparsed_tocs = [
+        toc_file_contents = [
             addon_zip.read(n).decode("utf-8-sig")
             for n in addon_zip.namelist()
-            if is_top_level_addon_toc(n)
+            for m in (TOP_LEVEL_TOC_NAME_PATTERN.match(n),)
+            if m and filename.startswith(m["name"])
         ]
 
-    if unparsed_tocs:
-        tocs = (parse_toc_file(c) for c in unparsed_tocs)
+    if toc_file_contents:
+        tocs = (parse_toc_file(c) for c in toc_file_contents)
         toc_ids = (
             (
                 t.get("X-Curse-Project-ID"),
@@ -251,42 +244,36 @@ async def extract_project_ids_from_toc_files(get: Get, url: str):
         project_ids = (next(filter(None, s), None) for s in zip(*toc_ids))
 
     else:
+        logger.warning(f"unable to find conformant TOC files in {url}")
         project_ids = (None,) * 3
 
     return dict(zip(("curse_id", "wago_id", "wowi_id"), project_ids))
 
 
-async def extract_game_flavors_from_toc_files(
-    get: Get, release_archives: Sequence[dict[str, Any]]
-):
+async def extract_game_flavors_from_tocs(get: Get, release_archives: Sequence[dict[str, Any]]):
     for release_archive in release_archives:
         async with get(release_archive["browser_download_url"]) as file_response:
             file = await file_response.read()
 
         with ZipFile(io.BytesIO(file)) as addon_zip:
             toc_names = [
-                (n, f) for n in addon_zip.namelist() for f in (is_top_level_addon_toc(n),) if f
+                (n, TOC_ALIASES.get(m["flavor"]))
+                for n in addon_zip.namelist()
+                for m in (TOP_LEVEL_TOC_NAME_PATTERN.match(n),)
+                if m
             ]
-            flavors_from_toc_names = {f for _, f in toc_names if f is not UNK_FLAVOR}
-            if flavors_from_toc_names:
-                yield flavors_from_toc_names
+            yield (f for _, f in toc_names if f is not None)
 
-            unk_flavor_toc_names = [n for n, f in toc_names if f is UNK_FLAVOR]
-            if unk_flavor_toc_names:
+            flavorless_toc_names = [n for n, f in toc_names if f is None]
+            if flavorless_toc_names:
                 tocs = (
                     parse_toc_file(addon_zip.read(n).decode("utf-8-sig"))
-                    for n in unk_flavor_toc_names
+                    for n in flavorless_toc_names
                 )
-                interface_versions = (
+                interface_numbers = (
                     int(i) for t in tocs for i in (t.get("Interface"),) if i and i.isdigit()
                 )
-                flavors_from_interface_versions = {
-                    f
-                    for v in interface_versions
-                    for f, r in FLAVORS_TO_INTERFACE_RANGES.items()
-                    if any(v in i for i in r)
-                }
-                yield flavors_from_interface_versions
+                yield interface_numbers_to_flavours(interface_numbers)
 
 
 async def parse_repo(get: Get, repo: Mapping[str, Any]):
@@ -321,19 +308,19 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
                 return
 
             flavors = frozenset(m.flavor for r in release_json.releases for m in r.metadata)
+            release_json_release = release_json.releases[0]
             try:
                 project_ids = await extract_project_ids_from_toc_files(
                     get,
                     next(
                         a["browser_download_url"]
                         for a in release["assets"]
-                        if a["name"] == release_json.releases[0].filename
+                        if a["name"] == release_json_release.filename
                     ),
+                    release_json_release.filename,
                 )
             except StopIteration:
-                logger.warning(
-                    f"release asset does not exist: {release_json.releases[0].filename}"
-                )
+                logger.warning(f"release asset does not exist: {release_json_release.filename}")
                 return
 
         else:
@@ -348,14 +335,11 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
                 return
 
             flavors = frozenset(
-                {
-                    f
-                    async for a in extract_game_flavors_from_toc_files(get, release_archives)
-                    for f in a
-                }
+                {f async for a in extract_game_flavors_from_tocs(get, release_archives) for f in a}
             )
+            release_archive = release_archives[0]
             project_ids = await extract_project_ids_from_toc_files(
-                get, release_archives[0]["browser_download_url"]
+                get, release_archive["browser_download_url"], release_archive["name"]
             )
 
         return Project(
