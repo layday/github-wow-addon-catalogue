@@ -59,6 +59,7 @@ class Get(Protocol):
 
 REPO_EXCLUDES = (
     "alchem1ster/AddOns-Update-Tool",  # Not an add-on
+    "alchem1ster/AddOnsFixer",  # Not an add-on
     "BilboTheGreedy/Azerite",  # Not an add-on
     "Centias/BankItems",  # Fork
     "DaMitchell/HelloWorld",
