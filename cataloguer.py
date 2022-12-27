@@ -491,7 +491,7 @@ outcsv_argument = click.argument("outcsv", default="addons.csv")
 @click.group(context_settings={"help_option_names": ("-h", "--help")})
 @click.option("--verbose", "-v", is_flag=True, help="log more things")
 def cli(verbose: bool):
-    if verbose:
+    if not verbose:
         structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(logging.INFO))
 
 
