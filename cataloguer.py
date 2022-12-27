@@ -58,22 +58,22 @@ class Get(Protocol):
 
 
 REPO_EXCLUDES = (
-    "alchem1ster/AddOns-Update-Tool",
-    "BilboTheGreedy/Azerite",
-    "Centias/BankItems",
+    "alchem1ster/AddOns-Update-Tool",  # Not an add-on
+    "BilboTheGreedy/Azerite",  # Not an add-on
+    "Centias/BankItems",  # Fork
     "DaMitchell/HelloWorld",
-    "dratr/BattlePetCount",
-    "HappyRot/AddOns",
-    "hippuli/",
-    "JsMacros/",
-    "Kirri777/WorldQuestsList",
-    "livepeer/",
-    "lowlee/MikScrollingBattleText",
-    "lowlee/MSBTOptions",
-    "MikeD89/KarazhanChess",
-    "smashedr/MethodAltManager",
-    "wagyourtail/JsMacros",
-    "ynazar1/Arh",
+    "dratr/BattlePetCount",  # Fork
+    "HappyRot/AddOns",  # Compilation
+    "hippuli/",  # Fork galore
+    "JsMacros/",  # Minecraft stuff
+    "Kirri777/WorldQuestsList",  # Fork
+    "livepeer/",  # Minecraft stuff
+    "lowlee/MikScrollingBattleText",  # Fork
+    "lowlee/MSBTOptions",  # Fork
+    "MikeD89/KarazhanChess",  # Hijacking BigWigs' TOC IDs, probably by accident
+    "smashedr/MethodAltManager",  # Fork
+    "wagyourtail/JsMacros",  # More Minecraft stuff
+    "ynazar1/Arh",  # Fork
 )
 
 
