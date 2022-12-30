@@ -231,7 +231,7 @@ async def extract_project_ids_from_toc_files(get: Get, url: str, filename: str):
             addon_zip.read(n).decode("utf-8-sig")
             for n in addon_zip.namelist()
             for m in (TOP_LEVEL_TOC_NAME_PATTERN.match(n),)
-            if m and filename.startswith(m["name"])
+            if m and filename.startswith(m["name"].lstrip("!_"))
         ]
 
     if toc_file_contents:
