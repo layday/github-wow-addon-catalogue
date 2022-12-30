@@ -118,7 +118,9 @@ TOC_ALIASES = {
 }
 
 TOP_LEVEL_TOC_NAME_PATTERN = re.compile(
-    rf"^(?P<name>[^/]+)[/](?P=name)(?:[-_](?P<flavor>{'|'.join(map(re.escape, TOC_ALIASES))}))?\.toc$",
+    (
+        rf"^(?P<name>[^/]+)[/](?P=name)(?:[-_](?P<flavor>{'|'.join(map(re.escape, TOC_ALIASES))}))?\.toc$"
+    ),
     flags=re.I,
 )
 
@@ -296,7 +298,8 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
                     release_json_contents = await release_json_response.json(content_type=None)
                 except json.JSONDecodeError:
                     logger.exception(
-                        f"release.json is not valid JSON: {maybe_release_json_asset['browser_download_url']}"
+                        "release.json is not valid JSON:"
+                        f" {maybe_release_json_asset['browser_download_url']}"
                     )
                     return
 
@@ -304,7 +307,8 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
                 release_json = ReleaseJson.from_dict(release_json_contents)
             except BaseValidationError:
                 logger.exception(
-                    f"release.json has incorrect schema: {maybe_release_json_asset['browser_download_url']}"
+                    "release.json has incorrect schema:"
+                    f" {maybe_release_json_asset['browser_download_url']}"
                 )
                 return
 
@@ -371,19 +375,19 @@ async def get_projects(token: str):
         },
         timeout=aiohttp.ClientTimeout(sock_connect=10, sock_read=10),
     ) as client:
-        # aiohttp-client-cache opens a new connection for every request
-        # and locks up the db, we'll limit it to 10 concurrent connections
-        # for now
-        db_semaphore = asyncio.Semaphore(10)
 
         @asynccontextmanager
         async def get(url: str | URL):
-            response = None
             for _ in range(5):
-                async with db_semaphore, client.get(url) as response:
+                async with client.get(url) as response:
                     logger.debug(
                         f"fetching {response.url}"
-                        f"\n\t{response.headers.get('X-RateLimit-Remaining') or '?'} requests remaining"
+                        + (
+                            f"\n\t{response.headers['X-RateLimit-Remaining'] or '?'} requests"
+                            " remaining"
+                            if "X-RateLimit-Remaining" in response.headers
+                            else ""
+                        )
                     )
 
                     if response.status == 403:
@@ -396,20 +400,24 @@ async def get_projects(token: str):
                             )
                             sleep_for = max(0, (sleep_until - datetime.now()).total_seconds())
                             logger.info(
-                                f"rate limited after {response.headers['X-RateLimit-Used']} requests, "
-                                f"sleeping until {sleep_until.time().isoformat()} for ({sleep_for} + 1)s"
+                                "rate limited after"
+                                f" {response.headers['X-RateLimit-Used']} requests, sleeping until"
+                                f" {sleep_until.time().isoformat()} for ({sleep_for} + 1)s"
                             )
                             await asyncio.sleep(sleep_for + 1)
 
                     elif not response.ok:
+                        logger.debug(
+                            f"request errored with status {response.status}; sleeping for 3s"
+                        )
+                        await asyncio.sleep(3)
                         continue
 
                     else:
                         yield response
                         break
             else:
-                if response:
-                    response.raise_for_status()
+                response.raise_for_status()  # pyright: ignore[reportUnboundVariable]
 
         deduped_repos = {
             r["full_name"]: r
