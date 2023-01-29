@@ -6,7 +6,7 @@ build-backend = "flit_core.buildapi"
 name = "cataloguer"
 version = "0.1.0"
 description = "Script which collects WoW add-on metadata from GitHub"
-requires-python = ">= 3.11"
+requires-python = ">= 3.10"
 license.file = "LICENSE"
 dependencies = [
   "aiohttp",
