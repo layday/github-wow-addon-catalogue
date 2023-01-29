@@ -10,7 +10,7 @@ requires-python = ">= 3.11"
 license.file = "LICENSE"
 dependencies = [
   "aiohttp",
-  "aiohttp-client-cache[sqlite]",
+  "aiohttp-client-cache[sqlite] >= 0.8.0",
   "cattrs",
   "click",
   "structlog",
