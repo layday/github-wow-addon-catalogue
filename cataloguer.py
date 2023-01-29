@@ -78,7 +78,7 @@ REPO_EXCLUDES = (
 )
 
 
-class ReleaseJsonFlavor(enum.StrEnum):
+class ReleaseJsonFlavor(str, enum.Enum):
     mainline = "mainline"
     classic = "classic"
     bcc = "bcc"
