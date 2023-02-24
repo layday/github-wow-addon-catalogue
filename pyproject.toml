@@ -19,8 +19,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+  "black",
   "ruff",
-  "ufmt",
 ]
 
 [tool.black]
@@ -31,16 +31,18 @@ strict = ["cataloguer.py"]
 
 [tool.ruff]
 select = [
-  "A",
-  "B0",
-  "C",
-  "DTZ",
-  "E",
-  "EM",
-  "F",
-  "M",
-  "U",
-  "W",
-  "Y",
+  "A",    # flake8-builtins
+  "B0",   # flake8-bugbear excl. opinionated rules
+  "C4",   # flake8-comprehensions
+  "DTZ",  # flake8-datetimez
+  "E",    # pycodestyle
+  "F",    # pyflakes
+  "I",    # isort
+  "PGH",  # pygrep-hooks
+  "PIE",  # flake8-pie
+  "RUF",  # ruff
+  "UP",   # pyupgrade
+  "W",    # pycodestyle
 ]
+line-length = 99
 target-version = "py311"
