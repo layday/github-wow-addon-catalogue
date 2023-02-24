@@ -165,6 +165,7 @@ REPO_EXCLUDES = (
     "lowlee/MikScrollingBattleText",  # Fork
     "lowlee/MSBTOptions",  # Fork
     "MikeD89/KarazhanChess",  # Hijacking BigWigs' TOC IDs, probably by accident
+    "Oppzippy/HuokanGoldLogger",  # Archived
     "smashedr/MethodAltManager",  # Fork
     "wagyourtail/JsMacros",  # More Minecraft stuff
     "ynazar1/Arh",  # Fork
