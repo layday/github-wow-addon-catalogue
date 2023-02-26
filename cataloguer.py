@@ -48,6 +48,7 @@ class _SQLiteSimpleCache(BaseCache):
             yield
         except BaseException:
             self._db_connection.rollback()
+            raise
         else:
             self._db_connection.commit()
 
