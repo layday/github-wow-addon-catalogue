@@ -157,7 +157,7 @@ REPO_EXCLUDES = (
     "alchem1ster/AddOnsFixer",  # Not an add-on
     "BilboTheGreedy/Azerite",  # Not an add-on
     "Centias/BankItems",  # Fork
-    "DaMitchell/HelloWorld",
+    "DaMitchell/HelloWorld",  # Dummy add-on
     "dratr/BattlePetCount",  # Fork
     "HappyRot/AddOns",  # Compilation
     "hippuli/",  # Fork galore
@@ -168,6 +168,7 @@ REPO_EXCLUDES = (
     "lowlee/MSBTOptions",  # Fork
     "MikeD89/KarazhanChess",  # Hijacking BigWigs' TOC IDs, probably by accident
     "Oppzippy/HuokanGoldLogger",  # Archived
+    "pinged-eu/wow-addon-helloworld",  # Dummy add-on
     "smashedr/MethodAltManager",  # Fork
     "wagyourtail/JsMacros",  # More Minecraft stuff
     "ynazar1/Arh",  # Fork

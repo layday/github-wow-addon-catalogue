@@ -936,7 +936,6 @@ Fizzle,phyber/Fizzle,https://github.com/phyber/Fizzle,Show item durability and q
 ItemStackSize,phyber/ItemStackSize,https://github.com/phyber/ItemStackSize,Shows the maximum size of a stack of items in the item tooltip in World of Warcraft.,2021-06-05T12:32:55+00:00,"bcc,classic,mainline",,,,True,2023-03-18T14:51:21.539701+00:00
 ManaPerc,phyber/ManaPerc,https://github.com/phyber/ManaPerc,Shows mana usage as a percentage in a spells tooltip.,2019-09-30T18:30:46+00:00,"classic,mainline",8094,,,False,2023-03-18T14:51:10.237108+00:00
 XPBarNone,phyber/XPBarNone,https://github.com/phyber/XPBarNone,XP bar for World of Warcraft,2022-12-28T21:23:21+00:00,"bcc,classic,mainline",14910,,4849,True,2023-03-18T14:51:12.844228+00:00
-wow-addon-helloworld,pinged-eu/wow-addon-helloworld,https://github.com/pinged-eu/wow-addon-helloworld,A dummy WoW addon to test github deployment with WoWUp.,2023-03-05T08:55:48+00:00,mainline,,,,True,2023-03-18T14:51:13.540185+00:00
 HandyNotes_Argus,Pingumania/HandyNotes_Argus,https://github.com/Pingumania/HandyNotes_Argus,,2022-02-23T16:01:01+00:00,mainline,,,,True,2023-03-18T14:51:12.438724+00:00
 Kui_Nameplates_Mania,Pingumania/Kui_Nameplates_Mania,https://github.com/Pingumania/Kui_Nameplates_Mania,,2022-02-23T15:31:23+00:00,"bcc,classic,mainline",,,,True,2022-11-11T21:53:41.530585+00:00
 Kui_Pingumania,Pingumania/Kui_Pingumania,https://github.com/Pingumania/Kui_Pingumania,,2022-02-23T15:31:23+00:00,"bcc,classic,mainline",,,,True,2022-12-03T09:51:41.940505+00:00
