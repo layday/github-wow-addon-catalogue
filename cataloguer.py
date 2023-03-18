@@ -36,8 +36,8 @@ def get_sqlite_cache(db_path: str, cache: CacheBackend):
     with sqlite3.connect(db_path) as db_connection:
         db_connection.execute("PRAGMA journal_mode = wal")
         db_connection.execute("PRAGMA synchronous = normal")
-        cache.responses = _SQLiteSimpleCache().prepare("responses", db_connection)
-        cache.redirects = _SQLitePickleCache().prepare("redirects", db_connection)
+        cache.responses = _SQLitePickleCache().prepare("responses", db_connection)
+        cache.redirects = _SQLiteSimpleCache().prepare("redirects", db_connection)
         yield cache
 
 
@@ -72,7 +72,8 @@ class _SQLiteSimpleCache(BaseCache):
         return value
 
     async def delete(self, key: str) -> None:
-        raise NotImplementedError
+        with self._transact():
+            self._db_connection.execute(f'DELETE FROM "{self.table_name}" WHERE key = ?', (key,))
 
     async def bulk_delete(self, keys: object) -> None:
         raise NotImplementedError
