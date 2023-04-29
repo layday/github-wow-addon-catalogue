@@ -159,6 +159,7 @@ REPO_EXCLUDES = (
     "Centias/BankItems",  # Fork
     "DaMitchell/HelloWorld",  # Dummy add-on
     "dratr/BattlePetCount",  # Fork
+    "gorilla-devs/",  # Minecraft stuff
     "HappyRot/AddOns",  # Compilation
     "hippuli/",  # Fork galore
     "JsMacros/",  # Minecraft stuff
