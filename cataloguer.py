@@ -171,6 +171,7 @@ REPO_EXCLUDES = (
     "MikeD89/KarazhanChess",  # Hijacking BigWigs' TOC IDs, probably by accident
     "Oppzippy/HuokanGoldLogger",  # Archived
     "pinged-eu/wow-addon-helloworld",  # Dummy add-on
+    "rePublic-Studios/rPLauncher",  # Minecraft stuff
     "smashedr/MethodAltManager",  # Fork
     "unix/curseforge-release",  # Template
     "wagyourtail/JsMacros",  # More Minecraft stuff
