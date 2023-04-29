@@ -170,6 +170,7 @@ REPO_EXCLUDES = (
     "Oppzippy/HuokanGoldLogger",  # Archived
     "pinged-eu/wow-addon-helloworld",  # Dummy add-on
     "smashedr/MethodAltManager",  # Fork
+    "unix/curseforge-release",  # Template
     "wagyourtail/JsMacros",  # More Minecraft stuff
     "ynazar1/Arh",  # Fork
 )
