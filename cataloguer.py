@@ -159,9 +159,11 @@ REPO_EXCLUDES = (
     "Centias/BankItems",  # Fork
     "DaMitchell/HelloWorld",  # Dummy add-on
     "dratr/BattlePetCount",  # Fork
+    "gorilla-devs/",  # Minecraft stuff
     "HappyRot/AddOns",  # Compilation
     "hippuli/",  # Fork galore
     "JsMacros/",  # Minecraft stuff
+    "juraj-hrivnak/Underdog",  # Minecraft stuff
     "Kirri777/WorldQuestsList",  # Fork
     "livepeer/",  # Minecraft stuff
     "lowlee/MikScrollingBattleText",  # Fork
@@ -169,7 +171,9 @@ REPO_EXCLUDES = (
     "MikeD89/KarazhanChess",  # Hijacking BigWigs' TOC IDs, probably by accident
     "Oppzippy/HuokanGoldLogger",  # Archived
     "pinged-eu/wow-addon-helloworld",  # Dummy add-on
+    "rePublic-Studios/rPLauncher",  # Minecraft stuff
     "smashedr/MethodAltManager",  # Fork
+    "unix/curseforge-release",  # Template
     "wagyourtail/JsMacros",  # More Minecraft stuff
     "ynazar1/Arh",  # Fork
 )
