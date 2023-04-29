@@ -163,6 +163,7 @@ REPO_EXCLUDES = (
     "HappyRot/AddOns",  # Compilation
     "hippuli/",  # Fork galore
     "JsMacros/",  # Minecraft stuff
+    "juraj-hrivnak/Underdog",  # Minecraft stuff
     "Kirri777/WorldQuestsList",  # Fork
     "livepeer/",  # Minecraft stuff
     "lowlee/MikScrollingBattleText",  # Fork
