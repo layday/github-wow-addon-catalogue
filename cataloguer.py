@@ -155,6 +155,7 @@ class Get(Protocol):
 REPO_EXCLUDES = (
     "alchem1ster/AddOns-Update-Tool",  # Not an add-on
     "alchem1ster/AddOnsFixer",  # Not an add-on
+    "Aviana/",
     "BilboTheGreedy/Azerite",  # Not an add-on
     "Centias/BankItems",  # Fork
     "DaMitchell/HelloWorld",  # Dummy add-on
@@ -169,12 +170,15 @@ REPO_EXCLUDES = (
     "lowlee/MikScrollingBattleText",  # Fork
     "lowlee/MSBTOptions",  # Fork
     "MikeD89/KarazhanChess",  # Hijacking BigWigs' TOC IDs, probably by accident
+    "ogri-la/elvui",  # Mirror
+    "ogri-la/tukui",  # Mirror
     "Oppzippy/HuokanGoldLogger",  # Archived
     "pinged-eu/wow-addon-helloworld",  # Dummy add-on
     "rePublic-Studios/rPLauncher",  # Minecraft stuff
     "smashedr/MethodAltManager",  # Fork
     "unix/curseforge-release",  # Template
     "wagyourtail/JsMacros",  # More Minecraft stuff
+    "WowUp/WowUp"  # Not an add-on
     "ynazar1/Arh",  # Fork
 )
 

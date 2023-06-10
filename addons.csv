@@ -84,8 +84,6 @@ AstralAnalytics,astralguild/AstralAnalytics,https://github.com/astralguild/Astra
 AstralKeys,astralguild/AstralKeys,https://github.com/astralguild/AstralKeys,,2023-06-06T18:02:51+00:00,mainline,265199,baNDZoKo,,True,2023-06-10T08:29:54.145891+00:00
 AstralMailer,astralguild/AstralMailer,https://github.com/astralguild/AstralMailer,,2023-03-26T17:04:07+00:00,mainline,634319,xZKxgp6k,,True,2023-04-17T09:37:18.564725+00:00
 AstralSharedMedia,astralguild/AstralSharedMedia,https://github.com/astralguild/AstralSharedMedia,,2023-03-26T17:03:32+00:00,mainline,628753,LvNA0BGo,,True,2023-04-17T09:37:16.489005+00:00
-LunaUnitFrames,Aviana/LunaUnitFrames,https://github.com/Aviana/LunaUnitFrames,Unit Frames for WoW Classic,2023-01-25T17:55:14+00:00,wrath,,,,True,2023-06-10T08:29:58.962149+00:00
-YaHT,Aviana/YaHT,https://github.com/Aviana/YaHT,Yet another Hunter Timer for WoW Classic,2021-06-19T07:30:34+00:00,bcc,,,,False,2023-06-10T08:29:56.493904+00:00
 AdiBags_Bound,AvyAddons/AdiBags_Bound,https://github.com/AvyAddons/AdiBags_Bound,"Filters for BoE, BoA, and BoP categories in AdiBags.",2023-05-13T17:56:06+00:00,"classic,mainline,wrath",620793,2jK8W06y,,True,2023-06-10T08:30:02.135020+00:00
 AdiBags_Dragonflight,AvyAddons/AdiBags_Dragonflight,https://github.com/AvyAddons/AdiBags_Dragonflight,AdiBags filter for common Dragonflight items.,2023-05-10T17:23:57+00:00,mainline,695224,RqGZWoNd,,True,2023-06-10T08:30:03.367295+00:00
 AdiBags_Dragonflight_Crafting,AvyAddons/AdiBags_Dragonflight_Crafting,https://github.com/AvyAddons/AdiBags_Dragonflight_Crafting,Filters for Dragonflight Crafting categories in AdiBags. ,2023-05-06T16:32:14+00:00,mainline,694788,7x61bvK1,,True,2023-06-10T08:29:55.029874+00:00
@@ -920,8 +918,6 @@ TalentLoadoutManager,Numynum/TalentLoadoutManager,https://github.com/Numynum/Tal
 Nys_ToDoList,Ny0n/Nys_ToDoList,https://github.com/Ny0n/Nys_ToDoList,WoW addon that creates a simple in-game To-Do list,2023-06-09T09:14:41+00:00,"bcc,classic,mainline,wrath",320655,,,True,2023-06-10T08:30:01.907365+00:00
 Oaks-Loot-Priority-Tooltips,Oakflesh/Oaks-Loot-Priority-Tooltips,https://github.com/Oakflesh/Oaks-Loot-Priority-Tooltips,,2020-12-09T02:00:15+00:00,classic,,,,False,2023-04-17T09:37:22.350157+00:00
 Obscurity-Raid-Callouts,obscurelyme/Obscurity-Raid-Callouts,https://github.com/obscurelyme/Obscurity-Raid-Callouts,This is a simple backend addon for raid leads and raid assitants to perform real time speech to text/visual cues during raid and dungeon boss encounters.,2022-07-24T23:36:28+00:00,mainline,648869,anKWpLGE,,True,2023-04-17T09:37:57.471979+00:00
-elvui,ogri-la/elvui,https://github.com/ogri-la/elvui,,2023-06-03T13:27:51+00:00,"classic,mainline,wrath",,,,True,2023-06-10T08:29:52.166960+00:00
-tukui,ogri-la/tukui,https://github.com/ogri-la/tukui,,2023-06-03T13:28:26+00:00,"classic,mainline,wrath",,,,True,2023-06-10T08:29:57.696593+00:00
 wow-linked-text,olivernybo/wow-linked-text,https://github.com/olivernybo/wow-linked-text,A World of Warcraft addon to click links in all chats.,2020-03-06T10:30:31+00:00,mainline,,,,False,2023-06-10T08:29:56.483676+00:00
 AutoPotion,ollidiemaus/AutoPotion,https://github.com/ollidiemaus/AutoPotion,,2023-06-01T08:42:26+00:00,"classic,mainline",312940,yQKybBG7,,True,2023-06-10T08:30:01.835240+00:00
 PeaMacros,oneCof5/PeaMacros,https://github.com/oneCof5/PeaMacros,An addon for World of Warcraft to set personal action bar preferences,2020-12-30T16:48:29+00:00,mainline,428079,,,False,2023-06-10T08:29:53.153904+00:00
@@ -1314,7 +1310,6 @@ LibRPMedia,wow-rp-addons/LibRPMedia,https://github.com/wow-rp-addons/LibRPMedia,
 XRP,wow-rp-addons/XRP,https://github.com/wow-rp-addons/XRP,XRP Roleplay Profiles is an addon for World of Warcraft character profiles displayed in-game.,2023-05-06T09:58:12+00:00,mainline,78630,,,True,2023-06-10T08:30:01.055852+00:00
 Rarity,WowRarity/Rarity,https://github.com/WowRarity/Rarity,Collectibles and statistics tracking addon for World of Warcraft: Dragonflight,2023-03-30T07:38:21+00:00,mainline,30801,,,True,2023-06-10T08:29:55.328794+00:00
 wowrepio-addon,wowrepio/wowrepio-addon,https://github.com/wowrepio/wowrepio-addon,A World of Warcraft addon for social ranking,2021-05-19T04:14:41+00:00,mainline,456155,,25899,True,2023-06-10T08:29:53.502073+00:00
-WowUp,WowUp/WowUp,https://github.com/WowUp/WowUp,WowUp the World of Warcraft addon updater,2023-06-06T18:24:28+00:00,,,,,False,2023-06-10T08:29:58.926433+00:00
 WowUp.Addon,WowUp/WowUp.Addon,https://github.com/WowUp/WowUp.Addon,The official WowUp World of Warcraft addon,2023-05-10T16:02:38+00:00,"classic,mainline,wrath",,,,True,2023-06-10T08:29:59.196253+00:00
 FunFact,Wutname1/FunFact,https://github.com/Wutname1/FunFact,"Entertain (or annoy) your friends, party, raid, or guild with fun facts!",2023-03-12T22:54:48+00:00,"classic,mainline,wrath",324692,J96EYg6g,,True,2023-06-10T08:29:57.287673+00:00
 SpartanUI,Wutname1/SpartanUI,https://github.com/Wutname1/SpartanUI,SpartanUI,2023-05-26T05:50:35+00:00,mainline,4575,vEGPqeN1,18206,True,2023-06-10T08:29:58.183200+00:00
