@@ -541,6 +541,8 @@ async def get_projects(token: str):
                         ("code", "path:.github/workflows bigwigsmods packager"),
                         ("code", "path:.github/workflows CF_API_KEY"),
                         ("repositories", "topic:wow-addon"),
+                        ("repositories", "topic:world-of-warcraft-addon"),
+                        ("repositories", "topic:warcraft-addon"),
                         ("repositories", "topics:>2 topic:world-of-warcraft topic:addon"),
                     ],
                 )
