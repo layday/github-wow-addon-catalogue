@@ -178,7 +178,7 @@ REPO_EXCLUDES = (
     "smashedr/MethodAltManager",  # Fork
     "unix/curseforge-release",  # Template
     "wagyourtail/JsMacros",  # More Minecraft stuff
-    "WowUp/WowUp"  # Not an add-on
+    "WowUp/WowUp",  # Not an add-on
     "ynazar1/Arh",  # Fork
 )
 
