@@ -33,99 +33,6 @@ if TYPE_CHECKING:
 logger = structlog.get_logger()
 
 
-@contextmanager
-def get_sqlite_cache(db_path: str, cache: CacheBackend):
-    with sqlite3.connect(db_path) as db_connection:
-        db_connection.execute("PRAGMA journal_mode = wal")
-        db_connection.execute("PRAGMA synchronous = normal")
-        cache.responses = _SQLitePickleCache().prepare("responses", db_connection)
-        cache.redirects = _SQLiteSimpleCache().prepare("redirects", db_connection)
-        yield cache
-
-
-class _SQLiteSimpleCache(BaseCache):
-    @contextmanager
-    def _transact(self):
-        try:
-            yield
-        except BaseException:
-            self._db_connection.rollback()
-            raise
-        else:
-            self._db_connection.commit()
-
-    def prepare(self, table_name: str, db_connection: sqlite3.Connection):
-        self.table_name = table_name
-        self._db_connection = db_connection
-        self._db_connection.execute(
-            f'CREATE TABLE IF NOT EXISTS "{self.table_name}" (key PRIMARY KEY, value)'
-        )
-        return self
-
-    async def clear(self) -> None:
-        raise NotImplementedError
-
-    async def contains(self, key: str):
-        cursor = self._db_connection.execute(
-            f'SELECT 1 FROM "{self.table_name}" WHERE key = ?',
-            (key,),
-        )
-        (value,) = cursor.fetchone() or (0,)
-        return value
-
-    async def delete(self, key: str) -> None:
-        with self._transact():
-            self._db_connection.execute(f'DELETE FROM "{self.table_name}" WHERE key = ?', (key,))
-
-    async def bulk_delete(self, keys: object) -> None:
-        raise NotImplementedError
-
-    async def keys(self):
-        cursor = self._db_connection.execute(f'SELECT key FROM "{self.table_name}"')
-        for (value,) in cursor:
-            yield value
-
-    async def read(self, key: str):
-        cursor = self._db_connection.execute(
-            f'SELECT value FROM "{self.table_name}" WHERE key = ?',
-            (key,),
-        )
-        (value,) = cursor.fetchone() or (None,)
-        return value
-
-    async def size(self):
-        cursor = self._db_connection.execute(f'SELECT COUNT(key) FROM "{self.table_name}"')
-        (value,) = cursor.fetchone()
-        return value
-
-    async def values(self):
-        cursor = self._db_connection.execute(f'SELECT value FROM "{self.table_name}"')
-        for (value,) in cursor:
-            yield value
-
-    async def write(self, key: str, item: Any):
-        with self._transact():
-            self._db_connection.execute(
-                f'INSERT OR REPLACE INTO "{self.table_name}" (key, value) VALUES (?, ?)',
-                (key, item),
-            )
-
-
-class _SQLitePickleCache(_SQLiteSimpleCache):
-    async def read(self, key: str):
-        return self.deserialize(await super().read(key))
-
-    async def values(self):
-        cursor = self._db_connection.execute(f'SELECT value FROM "{self.table_name}"')
-        for (value,) in cursor:
-            yield self.deserialize(value)
-
-    async def write(self, key: str, item: Any):
-        encoded_item = self.serialize(item)
-        if encoded_item:
-            await super().write(key, memoryview(encoded_item))
-
-
 USER_AGENT = "github-wow-addon-catalogue (+https://github.com/layday/github-wow-addon-catalogue)"
 
 API_URL = URL("https://api.github.com/")
@@ -480,9 +387,102 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
         )
 
 
+@contextmanager
+def _get_sqlite_cache(db_path: str, cache: CacheBackend):
+    class _SQLiteSimpleCache(BaseCache):
+        @contextmanager
+        def _transact(self):
+            try:
+                yield
+            except BaseException:
+                self._db_connection.rollback()
+                raise
+            else:
+                self._db_connection.commit()
+
+        def prepare(self, table_name: str, db_connection: sqlite3.Connection):
+            self.table_name = table_name
+            self._db_connection = db_connection
+            self._db_connection.execute(
+                f'CREATE TABLE IF NOT EXISTS "{self.table_name}" (key PRIMARY KEY, value)'
+            )
+            return self
+
+        async def clear(self) -> None:
+            raise NotImplementedError
+
+        async def contains(self, key: str):
+            cursor = self._db_connection.execute(
+                f'SELECT 1 FROM "{self.table_name}" WHERE key = ?',
+                (key,),
+            )
+            (value,) = cursor.fetchone() or (0,)
+            return value
+
+        async def delete(self, key: str) -> None:
+            with self._transact():
+                self._db_connection.execute(
+                    f'DELETE FROM "{self.table_name}" WHERE key = ?', (key,)
+                )
+
+        async def bulk_delete(self, keys: object) -> None:
+            raise NotImplementedError
+
+        async def keys(self):
+            cursor = self._db_connection.execute(f'SELECT key FROM "{self.table_name}"')
+            for (value,) in cursor:
+                yield value
+
+        async def read(self, key: str):
+            cursor = self._db_connection.execute(
+                f'SELECT value FROM "{self.table_name}" WHERE key = ?',
+                (key,),
+            )
+            (value,) = cursor.fetchone() or (None,)
+            return value
+
+        async def size(self):
+            cursor = self._db_connection.execute(f'SELECT COUNT(key) FROM "{self.table_name}"')
+            (value,) = cursor.fetchone()
+            return value
+
+        async def values(self):
+            cursor = self._db_connection.execute(f'SELECT value FROM "{self.table_name}"')
+            for (value,) in cursor:
+                yield value
+
+        async def write(self, key: str, item: Any):
+            with self._transact():
+                self._db_connection.execute(
+                    f'INSERT OR REPLACE INTO "{self.table_name}" (key, value) VALUES (?, ?)',
+                    (key, item),
+                )
+
+    class _SQLitePickleCache(_SQLiteSimpleCache):
+        async def read(self, key: str):
+            return self.deserialize(await super().read(key))
+
+        async def values(self):
+            cursor = self._db_connection.execute(f'SELECT value FROM "{self.table_name}"')
+            for (value,) in cursor:
+                yield self.deserialize(value)
+
+        async def write(self, key: str, item: Any):
+            encoded_item = self.serialize(item)
+            if encoded_item:
+                await super().write(key, memoryview(encoded_item))
+
+    with sqlite3.connect(db_path) as db_connection:
+        db_connection.execute("PRAGMA journal_mode = wal")
+        db_connection.execute("PRAGMA synchronous = normal")
+        cache.responses = _SQLitePickleCache().prepare("responses", db_connection)
+        cache.redirects = _SQLiteSimpleCache().prepare("redirects", db_connection)
+        yield cache
+
+
 @asynccontextmanager
 async def _make_http_client(token: str):
-    with get_sqlite_cache(
+    with _get_sqlite_cache(
         "http-cache.db",
         CacheBackend(
             expire_after=CACHE_INDEFINITELY,
