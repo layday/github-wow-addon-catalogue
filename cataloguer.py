@@ -15,7 +15,7 @@ from contextlib import AbstractAsyncContextManager, asynccontextmanager, context
 from dataclasses import dataclass, fields
 from datetime import UTC, datetime, timedelta
 from itertools import chain, dropwhile, pairwise
-from typing import Any, Literal, NewType, Protocol
+from typing import TYPE_CHECKING, Any, Literal, NewType, Protocol
 from zipfile import ZipFile
 
 import aiohttp
@@ -26,6 +26,9 @@ from aiohttp_client_cache.cache_control import ExpirationPatterns
 from aiohttp_client_cache.session import CachedSession
 from cattrs import BaseValidationError, Converter
 from yarl import URL
+
+if TYPE_CHECKING:
+    from _typeshed import OpenTextMode
 
 logger = structlog.get_logger()
 
@@ -636,6 +639,12 @@ def validate_runs(runs: list[str]):
 outcsv_argument = click.argument("outcsv", default="addons.csv")
 
 
+@contextmanager
+def _with_outcsv(outcsv: str, mode: OpenTextMode = "r"):
+    with open(outcsv, mode, encoding="utf-8", newline="") as file:
+        yield file
+
+
 @click.group(context_settings={"help_option_names": ("-h", "--help")})
 @click.option("--verbose", "-v", is_flag=True, help="log more things")
 def cli(verbose: bool):
@@ -653,12 +662,12 @@ def collect(outcsv: str, merge: bool):
     rows = {p.full_name.lower(): p.to_csv_row() for p in projects}
 
     if merge:
-        with open(outcsv, encoding="utf-8", newline="") as addons_csv:
-            csv_reader = csv.DictReader(addons_csv)
+        with _with_outcsv(outcsv) as outcsv_file:
+            csv_reader = csv.DictReader(outcsv_file)
             rows = {r["full_name"].lower(): r for r in csv_reader} | rows
 
-    with open(outcsv, "w", encoding="utf-8", newline="") as addons_csv:
-        csv_writer = csv.DictWriter(addons_csv, PROJECT_FIELD_NAMES)
+    with _with_outcsv(outcsv, "w") as outcsv_file:
+        csv_writer = csv.DictWriter(outcsv_file, PROJECT_FIELD_NAMES)
         csv_writer.writeheader()
         csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
 
@@ -673,8 +682,8 @@ def prune(outcsv: str, older_than: int):
         runs = json.load(runs_json)
         validate_runs(runs)
 
-    with open(outcsv, encoding="utf-8", newline="") as addons_csv:
-        csv_reader = csv.DictReader(addons_csv)
+    with _with_outcsv(outcsv) as outcsv_file:
+        csv_reader = csv.DictReader(outcsv_file)
         projects = list(map(Project.from_csv_row, csv_reader))
 
     most_recently_harvested = max(p.last_seen for p in projects)
@@ -687,8 +696,8 @@ def prune(outcsv: str, older_than: int):
         )
     )
 
-    with open(outcsv, "w", encoding="utf-8", newline="") as addons_csv:
-        csv_writer = csv.DictWriter(addons_csv, PROJECT_FIELD_NAMES)
+    with _with_outcsv(outcsv, "w") as outcsv_file:
+        csv_writer = csv.DictWriter(outcsv_file, PROJECT_FIELD_NAMES)
         csv_writer.writeheader()
         csv_writer.writerows(p.to_csv_row() for p in projects if p.full_name not in repos_to_prune)
 
@@ -696,8 +705,8 @@ def prune(outcsv: str, older_than: int):
 @cli.command
 @outcsv_argument
 def find_duplicates(outcsv: str):
-    with open(outcsv, encoding="utf-8", newline="") as addons_csv:
-        csv_reader = csv.DictReader(addons_csv)
+    with _with_outcsv(outcsv) as outcsv_file:
+        csv_reader = csv.DictReader(outcsv_file)
 
         potential_dupes = defaultdict[tuple[str, str], list[str]](list)
 
