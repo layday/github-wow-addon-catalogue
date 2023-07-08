@@ -25,7 +25,6 @@ from aiohttp_client_cache import BaseCache, CacheBackend
 from aiohttp_client_cache.cache_control import ExpirationPatterns
 from aiohttp_client_cache.session import CachedSession
 from cattrs import BaseValidationError, Converter
-from cattrs.preconf.json import configure_converter as configure_json_converter
 from yarl import URL
 
 logger = structlog.get_logger()
@@ -248,6 +247,8 @@ INTERFACE_RANGES_TO_FLAVORS = {
 
 ProjectFlavors = NewType("ProjectFlavors", frozenset[ReleaseJsonFlavor])
 
+UNDATED_DATE = datetime(1, 1, 1, tzinfo=UTC)
+
 
 @dataclass(frozen=True, kw_only=True)
 class Project:
@@ -271,10 +272,15 @@ class Project:
         return _addons_csv_converter.unstructure(self)
 
 
-project_field_names = tuple(f.name for f in fields(Project))
+PROJECT_FIELD_NAMES = tuple(f.name for f in fields(Project))
 
 _addons_csv_converter = Converter()
-configure_json_converter(_addons_csv_converter)
+_addons_csv_converter.register_unstructure_hook(
+    datetime, lambda v: "" if v == UNDATED_DATE else v.isoformat()
+)
+_addons_csv_converter.register_structure_hook(
+    datetime, lambda v, _: UNDATED_DATE if v == "" else datetime.fromisoformat(v)
+)
 _addons_csv_converter.register_unstructure_hook(ProjectFlavors, lambda v: ",".join(sorted(v)))
 _addons_csv_converter.register_structure_hook(
     bool,
@@ -471,7 +477,8 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
         )
 
 
-async def get_projects(token: str):
+@asynccontextmanager
+async def _make_http_client(token: str):
     with get_sqlite_cache(
         "http-cache.db",
         CacheBackend(
@@ -491,9 +498,9 @@ async def get_projects(token: str):
         ) as client:
 
             @asynccontextmanager
-            async def get(url: str | URL):
+            async def get(url: str | URL, **kwargs: Any):
                 for _ in range(5):
-                    async with client.get(url) as response:
+                    async with client.get(url, **kwargs) as response:
                         logger.debug(
                             f"fetching {response.url}"
                             + (
@@ -537,28 +544,56 @@ async def get_projects(token: str):
                 else:
                     response.raise_for_status()  # pyright: ignore[reportUnboundVariable]
 
-            deduped_repos = {
-                r["full_name"]: r
-                async for r in find_addon_repos(
-                    get,
-                    [
-                        ("code", "path:.github/workflows bigwigsmods packager"),
-                        ("code", "path:.github/workflows CF_API_KEY"),
-                        ("repositories", "topic:wow-addon"),
-                        ("repositories", "topic:world-of-warcraft-addon"),
-                        ("repositories", "topic:warcraft-addon"),
-                        ("repositories", "topics:>2 topic:world-of-warcraft topic:addon"),
-                    ],
-                )
-                if not r["full_name"].startswith(REPO_EXCLUDES)
-            }
-            projects = {
-                r
-                for c in asyncio.as_completed([parse_repo(get, r) for r in deduped_repos.values()])
-                for r in (await c,)
-                if r
-            }
-            return projects
+            yield (client, get)
+
+
+async def get_projects(token: str):
+    async with _make_http_client(token) as (_, get):
+        deduped_repos = {
+            r["full_name"]: r
+            async for r in find_addon_repos(
+                get,
+                [
+                    ("code", "path:.github/workflows bigwigsmods packager"),
+                    ("code", "path:.github/workflows CF_API_KEY"),
+                    ("repositories", "topic:wow-addon"),
+                    ("repositories", "topic:world-of-warcraft-addon"),
+                    ("repositories", "topic:warcraft-addon"),
+                    ("repositories", "topics:>2 topic:world-of-warcraft topic:addon"),
+                ],
+            )
+            if not r["full_name"].startswith(REPO_EXCLUDES)
+        }
+        projects = {
+            r
+            for c in asyncio.as_completed([parse_repo(get, r) for r in deduped_repos.values()])
+            for r in (await c,)
+            if r
+        }
+        return projects
+
+
+async def check_prune_candidates_exist(token: str, candidates: Iterable[str]):
+    async with _make_http_client(token) as (client, get):
+
+        async def get_repo_status(candidate: str):
+            async with client.head(API_URL / "repos" / candidate, expire_after=0) as head_response:
+                if head_response.status < 300:
+                    return (candidate, True)
+                elif head_response.status < 400:
+                    async with get(head_response.url, expire_after=0) as get_response:
+                        repo = await get_response.json()
+                        return (candidate, repo["full_name"])
+                else:
+                    return (candidate, False)
+
+        repo_statuses = {
+            f
+            for c in asyncio.as_completed([get_repo_status(f) for f in candidates])
+            for (f, s) in (await c,)
+            if not s
+        }
+        return repo_statuses
 
 
 def log_run():
@@ -623,7 +658,7 @@ def collect(outcsv: str, merge: bool):
             rows = {r["full_name"].lower(): r for r in csv_reader} | rows
 
     with open(outcsv, "w", encoding="utf-8", newline="") as addons_csv:
-        csv_writer = csv.DictWriter(addons_csv, project_field_names)
+        csv_writer = csv.DictWriter(addons_csv, PROJECT_FIELD_NAMES)
         csv_writer.writeheader()
         csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
 
@@ -640,15 +675,22 @@ def prune(outcsv: str, older_than: int):
 
     with open(outcsv, encoding="utf-8", newline="") as addons_csv:
         csv_reader = csv.DictReader(addons_csv)
-        projects = [Project.from_csv_row(r) for r in csv_reader if r["last_seen"]]
+        projects = list(map(Project.from_csv_row, csv_reader))
 
     most_recently_harvested = max(p.last_seen for p in projects)
     cutoff = most_recently_harvested - timedelta(days=older_than)
 
+    token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
+    repos_to_prune = asyncio.run(
+        check_prune_candidates_exist(
+            token, (p.full_name for p in projects if p.last_seen < cutoff)
+        )
+    )
+
     with open(outcsv, "w", encoding="utf-8", newline="") as addons_csv:
-        csv_writer = csv.DictWriter(addons_csv, project_field_names)
+        csv_writer = csv.DictWriter(addons_csv, PROJECT_FIELD_NAMES)
         csv_writer.writeheader()
-        csv_writer.writerows(p.to_csv_row() for p in projects if p.last_seen >= cutoff)
+        csv_writer.writerows(p.to_csv_row() for p in projects if p.full_name not in repos_to_prune)
 
 
 @cli.command
