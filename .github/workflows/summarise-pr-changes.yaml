@@ -20,7 +20,7 @@ jobs:
       - run: |
           echo "data<<EOF
           ```diff
-          "(csvdiff --primary-key 1 --ignore-columns 4,10 (git show origin/main:addons.csv | psub) addons.csv 2>&1 |
+          "(csvdiff --primary-key 1 --ignore-columns 5,11 (git show origin/main:addons.csv | psub) addons.csv 2>&1 |
               string collect)"
           ```
           EOF" >> $GITHUB_OUTPUT

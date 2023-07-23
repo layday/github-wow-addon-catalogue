@@ -162,6 +162,7 @@ UNDATED_DATE = datetime(1, 1, 1, tzinfo=UTC)
 
 @dataclass(frozen=True, kw_only=True)
 class Project:
+    id: str = ""  # noqa: A003
     name: str
     full_name: str
     url: str
@@ -375,6 +376,7 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
             )
 
         return Project(
+            id=repo["id"],
             name=repo["name"],
             full_name=repo["full_name"],
             url=repo["html_url"],
