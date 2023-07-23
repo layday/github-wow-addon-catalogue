@@ -389,7 +389,7 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
 
 @contextmanager
 def _get_sqlite_cache(db_path: str, cache: CacheBackend):
-    class _SQLiteSimpleCache(BaseCache):
+    class SQLiteSimpleCache(BaseCache):
         @contextmanager
         def _transact(self):
             try:
@@ -458,7 +458,7 @@ def _get_sqlite_cache(db_path: str, cache: CacheBackend):
                     (key, item),
                 )
 
-    class _SQLitePickleCache(_SQLiteSimpleCache):
+    class SQLitePickleCache(SQLiteSimpleCache):
         async def read(self, key: str):
             return self.deserialize(await super().read(key))
 
@@ -475,8 +475,8 @@ def _get_sqlite_cache(db_path: str, cache: CacheBackend):
     with sqlite3.connect(db_path) as db_connection:
         db_connection.execute("PRAGMA journal_mode = wal")
         db_connection.execute("PRAGMA synchronous = normal")
-        cache.responses = _SQLitePickleCache().prepare("responses", db_connection)
-        cache.redirects = _SQLiteSimpleCache().prepare("redirects", db_connection)
+        cache.responses = SQLitePickleCache().prepare("responses", db_connection)
+        cache.redirects = SQLiteSimpleCache().prepare("redirects", db_connection)
         yield cache
 
 
