@@ -157,8 +157,6 @@ INTERFACE_RANGES_TO_FLAVORS = {
 
 ProjectFlavors = NewType("ProjectFlavors", frozenset[ReleaseJsonFlavor])
 
-UNDATED_DATE = datetime(1, 1, 1, tzinfo=UTC)
-
 
 @dataclass(frozen=True, kw_only=True)
 class Project:
@@ -186,12 +184,8 @@ class Project:
 PROJECT_FIELD_NAMES = tuple(f.name for f in fields(Project))
 
 _addons_csv_converter = Converter()
-_addons_csv_converter.register_unstructure_hook(
-    datetime, lambda v: "" if v == UNDATED_DATE else v.isoformat()
-)
-_addons_csv_converter.register_structure_hook(
-    datetime, lambda v, _: UNDATED_DATE if v == "" else datetime.fromisoformat(v)
-)
+_addons_csv_converter.register_unstructure_hook(datetime, lambda v: v.isoformat())
+_addons_csv_converter.register_structure_hook(datetime, lambda v, _: datetime.fromisoformat(v))
 _addons_csv_converter.register_unstructure_hook(ProjectFlavors, lambda v: ",".join(sorted(v)))
 _addons_csv_converter.register_structure_hook(
     bool,
