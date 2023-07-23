@@ -162,7 +162,7 @@ UNDATED_DATE = datetime(1, 1, 1, tzinfo=UTC)
 
 @dataclass(frozen=True, kw_only=True)
 class Project:
-    id: str = ""  # noqa: A003
+    id: str  # noqa: A003
     name: str
     full_name: str
     url: str
