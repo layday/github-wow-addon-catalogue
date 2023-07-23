@@ -578,25 +578,21 @@ async def get_projects(token: str):
         return projects
 
 
-async def check_prune_candidates_exist(token: str, candidates: Iterable[str]):
-    async with _make_http_client(token) as (client, get):
+async def get_pruned_or_updates_projects(token: str, prune_candidates: Iterable[str]):
+    async with _make_http_client(token) as (_, get):
 
-        async def get_repo_status(candidate: str):
-            async with client.head(API_URL / "repos" / candidate, expire_after=0) as head_response:
-                if head_response.status < 300:
-                    return (candidate, True)
-                elif head_response.status < 400:
-                    async with get(head_response.url, expire_after=0) as get_response:
-                        repo = await get_response.json()
-                        return (candidate, repo["full_name"])
-                else:
-                    return (candidate, False)
+        async def get_repo(candidate: str):
+            try:
+                async with get(API_URL / "repos" / candidate) as get_response:
+                    repo = await get_response.json()
+                    return (candidate, (await parse_repo(get, repo)) or False)
+            except aiohttp.ClientResponseError:
+                return (candidate, False)
 
-        repo_statuses = {
-            f
-            for c in asyncio.as_completed([get_repo_status(f) for f in candidates])
+        repo_statuses: dict[str, Project | Literal[False]] = {
+            f: s
+            for c in asyncio.as_completed([get_repo(f) for f in prune_candidates])
             for (f, s) in (await c,)
-            if not s
         }
         return repo_statuses
 
@@ -679,7 +675,7 @@ def collect(outcsv: str, merge: bool):
 @cli.command
 @outcsv_argument
 @click.option("--older-than", required=True, type=int, help="time delta in days")
-def prune(outcsv: str, older_than: int):
+def prune_or_update(outcsv: str, older_than: int):
     with open("runs.json", encoding="utf-8") as runs_json:
         runs = json.load(runs_json)
         validate_runs(runs)
@@ -693,7 +689,7 @@ def prune(outcsv: str, older_than: int):
 
     token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
     repos_to_prune = asyncio.run(
-        check_prune_candidates_exist(
+        get_pruned_or_updates_projects(
             token, (p.full_name for p in projects if p.last_seen < cutoff)
         )
     )
@@ -701,7 +697,15 @@ def prune(outcsv: str, older_than: int):
     with _with_outcsv(outcsv, "w") as outcsv_file:
         csv_writer = csv.DictWriter(outcsv_file, PROJECT_FIELD_NAMES)
         csv_writer.writeheader()
-        csv_writer.writerows(p.to_csv_row() for p in projects if p.full_name not in repos_to_prune)
+        csv_writer.writerows(
+            i.to_csv_row()
+            for p in projects
+            for r in (repos_to_prune.get(p.full_name),)
+            for i in (r if r is not None else p,)
+            if i is not False
+        )
+
+    log_run()
 
 
 @cli.command
