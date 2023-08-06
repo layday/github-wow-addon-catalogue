@@ -24,6 +24,9 @@ dev = [
   "ruff",
 ]
 
+[project.entry-points."pipx.run"]
+cataloguer = "cataloguer:cli"
+
 [tool.black]
 line-length = 99
 
@@ -59,15 +62,3 @@ format.sequence = [
   "_isort",
 ]
 lint = "ruff --format grouped --show-source $__POE_TARGET"
-
-[tool.poe.tasks.install]
-shell = """
-set -e
-
-rm -rf venv
-python -m venv venv
-venv/bin/python -m pip install -e .[dev]
-"""
-
-[tool.poe.tasks.run]
-cmd = "venv/bin/python -m cataloguer collect --merge"
