@@ -85,6 +85,7 @@ REPO_EXCLUDES = (
     "pinged-eu/wow-addon-helloworld",  # Dummy add-on
     "rePublic-Studios/rPLauncher",  # Minecraft stuff
     "smashedr/MethodAltManager",  # Fork
+    "szjunklol/Accountant",  # Fork
     "unix/curseforge-release",  # Template
     "wagyourtail/JsMacros",  # More Minecraft stuff
     "WowUp/WowUp",  # Not an add-on
