@@ -11,6 +11,7 @@ license.file = "LICENSE"
 dependencies = [
   "aiohttp",
   "aiohttp-client-cache >= 0.8.0",
+  "attrs",
   "cattrs",
   "click",
   "structlog",

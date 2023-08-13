@@ -12,7 +12,6 @@ import sqlite3
 from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager, contextmanager
-from dataclasses import dataclass, fields
 from datetime import UTC, datetime, timedelta
 from itertools import chain, dropwhile, pairwise
 from typing import TYPE_CHECKING, Any, Literal, NewType, Protocol
@@ -24,6 +23,7 @@ import structlog
 from aiohttp_client_cache import BaseCache, CacheBackend
 from aiohttp_client_cache.cache_control import ExpirationPatterns
 from aiohttp_client_cache.session import CachedSession
+from attrs import field, fields, frozen
 from cattrs import BaseValidationError, Converter
 from yarl import URL
 
@@ -99,7 +99,7 @@ class ReleaseJsonFlavor(enum.StrEnum):
     wrath = "wrath"
 
 
-@dataclass
+@frozen
 class ReleaseJson:
     releases: list[ReleaseJsonRelease]
 
@@ -108,14 +108,14 @@ class ReleaseJson:
         return _release_json_converter.structure(values, cls)
 
 
-@dataclass
+@frozen
 class ReleaseJsonRelease:
     filename: str
     nolib: bool
     metadata: list[ReleaseJsonReleaseMetadata]
 
 
-@dataclass
+@frozen
 class ReleaseJsonReleaseMetadata:
     flavor: ReleaseJsonFlavor
     interface: int
@@ -158,9 +158,9 @@ INTERFACE_RANGES_TO_FLAVORS = {
 ProjectFlavors = NewType("ProjectFlavors", frozenset[ReleaseJsonFlavor])
 
 
-@dataclass(frozen=True, kw_only=True)
+@frozen(frozen=True, kw_only=True)
 class Project:
-    id: str  # noqa: A003
+    id: str = field(converter=str)  # noqa: A003
     name: str
     full_name: str
     url: str
@@ -651,17 +651,19 @@ def collect(outcsv: str, merge: bool):
     token = os.environ["RELEASE_JSON_ADDONS_GITHUB_TOKEN"]
     projects = asyncio.run(get_projects(token))
 
-    rows = {p.full_name.lower(): p.to_csv_row() for p in projects}
-
     if merge:
         with _with_outcsv(outcsv) as outcsv_file:
             csv_reader = csv.DictReader(outcsv_file)
-            rows = {r["full_name"].lower(): r for r in csv_reader} | rows
+            rows = {r["id"]: r for r in csv_reader}
+    else:
+        rows = {}
+
+    rows |= {(r := p.to_csv_row())["id"]: r for p in projects}
 
     with _with_outcsv(outcsv, "w") as outcsv_file:
         csv_writer = csv.DictWriter(outcsv_file, PROJECT_FIELD_NAMES)
         csv_writer.writeheader()
-        csv_writer.writerows(r for _, r in sorted(rows.items(), key=lambda r: r[0].lower()))
+        csv_writer.writerows(sorted(rows.values(), key=lambda r: r["full_name"].lower()))
 
     log_run()
 
