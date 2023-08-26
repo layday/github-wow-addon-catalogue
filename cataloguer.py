@@ -303,85 +303,98 @@ async def extract_game_flavors_from_tocs(get: Get, release_archives: Sequence[di
 
 
 async def parse_repo(get: Get, repo: Mapping[str, Any]):
-    async with get(
-        (API_URL / "repos" / repo["full_name"] / "releases").with_query(per_page=1)
-    ) as releases_response:
-        releases = await releases_response.json()
+    release = None
 
-    if releases:
-        (release,) = releases
-        maybe_release_json_asset = next(
-            (a for a in release["assets"] if a["name"] == "release.json"), None
-        )
-        if maybe_release_json_asset is not None:
-            async with get(
-                maybe_release_json_asset["browser_download_url"]
-            ) as release_json_response:
-                try:
-                    release_json_contents = await release_json_response.json(content_type=None)
-                except json.JSONDecodeError:
-                    logger.exception(
-                        "release.json is not valid JSON:"
-                        f" {maybe_release_json_asset['browser_download_url']}"
-                    )
-                    return
+    try:
+        async with get(
+            API_URL / "repos" / repo["full_name"] / "releases" / "latest"
+        ) as release_response:
+            release = await release_response.json()
 
+    except aiohttp.ClientResponseError as client_error:
+        if client_error.status != 404:
+            raise
+
+        async with get(
+            (API_URL / "repos" / repo["full_name"] / "releases").with_query(per_page=1)
+        ) as releases_response:
+            releases = await releases_response.json()
+            if releases:
+                [release] = releases
+
+    if release is None:
+        return
+
+    maybe_release_json_asset = next(
+        (a for a in release["assets"] if a["name"] == "release.json"), None
+    )
+    if maybe_release_json_asset is not None:
+        async with get(maybe_release_json_asset["browser_download_url"]) as release_json_response:
             try:
-                release_json = ReleaseJson.from_dict(release_json_contents)
-            except BaseValidationError:
+                release_json_contents = await release_json_response.json(content_type=None)
+            except json.JSONDecodeError:
                 logger.exception(
-                    "release.json has incorrect schema:"
+                    "release.json is not valid JSON:"
                     f" {maybe_release_json_asset['browser_download_url']}"
                 )
                 return
 
-            flavors = frozenset(m.flavor for r in release_json.releases for m in r.metadata)
-            release_json_release = release_json.releases[0]
-            try:
-                project_ids = await extract_project_ids_from_toc_files(
-                    get,
-                    next(
-                        a["browser_download_url"]
-                        for a in release["assets"]
-                        if a["name"] == release_json_release.filename
-                    ),
-                    release_json_release.filename,
-                )
-            except StopIteration:
-                logger.warning(f"release asset does not exist: {release_json_release.filename}")
-                return
-
-        else:
-            release_archives = [
-                a
-                for a in release["assets"]
-                if a["content_type"] in {"application/zip", "application/x-zip-compressed"}
-                and a["name"].endswith(".zip")
-            ]
-            if not release_archives:
-                # Not a downloadable add-on
-                return
-
-            flavors = frozenset(
-                {f async for a in extract_game_flavors_from_tocs(get, release_archives) for f in a}
+        try:
+            release_json = ReleaseJson.from_dict(release_json_contents)
+        except BaseValidationError:
+            logger.exception(
+                "release.json has incorrect schema:"
+                f" {maybe_release_json_asset['browser_download_url']}"
             )
-            release_archive = release_archives[0]
+            return
+
+        flavors = frozenset(m.flavor for r in release_json.releases for m in r.metadata)
+        release_json_release = release_json.releases[0]
+        try:
             project_ids = await extract_project_ids_from_toc_files(
-                get, release_archive["browser_download_url"], release_archive["name"]
+                get,
+                next(
+                    a["browser_download_url"]
+                    for a in release["assets"]
+                    if a["name"] == release_json_release.filename
+                ),
+                release_json_release.filename,
             )
+        except StopIteration:
+            logger.warning(f"release asset does not exist: {release_json_release.filename}")
+            return
 
-        return Project(
-            id=repo["id"],
-            name=repo["name"],
-            full_name=repo["full_name"],
-            url=repo["html_url"],
-            description=repo["description"],
-            last_updated=datetime.fromisoformat(f"{release['published_at'].rstrip('Z')}+00:00"),
-            flavors=ProjectFlavors(flavors),
-            has_release_json=maybe_release_json_asset is not None,
-            last_seen=datetime.now(UTC),
-            **project_ids,
+    else:
+        release_archives = [
+            a
+            for a in release["assets"]
+            if a["content_type"] in {"application/zip", "application/x-zip-compressed"}
+            and a["name"].endswith(".zip")
+        ]
+        if not release_archives:
+            # Not a downloadable add-on
+            return
+
+        flavors = frozenset(
+            {f async for a in extract_game_flavors_from_tocs(get, release_archives) for f in a}
         )
+        release_archive = release_archives[0]
+        project_ids = await extract_project_ids_from_toc_files(
+            get, release_archive["browser_download_url"], release_archive["name"]
+        )
+
+    return Project(
+        id=repo["id"],
+        name=repo["name"],
+        full_name=repo["full_name"],
+        url=repo["html_url"],
+        description=repo["description"],
+        last_updated=datetime.fromisoformat(f"{release['published_at'].rstrip('Z')}+00:00"),
+        flavors=ProjectFlavors(flavors),
+        has_release_json=maybe_release_json_asset is not None,
+        last_seen=datetime.now(UTC),
+        **project_ids,
+    )
 
 
 @contextmanager
@@ -530,6 +543,9 @@ async def _make_http_client(token: str):
                                     f" ({sleep_for} + 1)s"
                                 )
                                 await asyncio.sleep(sleep_for + 1)
+
+                        elif response.status == 404:
+                            response.raise_for_status()
 
                         elif not response.ok:
                             logger.debug(
