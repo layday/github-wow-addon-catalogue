@@ -20,7 +20,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "black",
   "poethepoet",
   "ruff",
 ]
@@ -56,10 +55,10 @@ target-version = "py311"
 __POE_TARGET = "cataloguer.py"
 
 [tool.poe.tasks]
-_black = "black $__POE_TARGET"
+_black = "ruff format $__POE_TARGET"
 _isort = "ruff --select I --fix $__POE_TARGET"
 format.sequence = [
   "_black",
   "_isort",
 ]
-lint = "ruff --format grouped --show-source $__POE_TARGET"
+lint = "ruff --output-format grouped --show-source $__POE_TARGET"
