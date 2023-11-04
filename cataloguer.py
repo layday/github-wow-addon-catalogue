@@ -66,6 +66,7 @@ REPO_EXCLUDES = (
     "alchem1ster/AddOnsFixer",  # Not an add-on
     "Aviana/",
     "BilboTheGreedy/Azerite",  # Not an add-on
+    "blazer404/TargetCharmsRe",  # Fork
     "Centias/BankItems",  # Fork
     "DaMitchell/HelloWorld",  # Dummy add-on
     "dratr/BattlePetCount",  # Fork

@@ -146,7 +146,6 @@ id,name,full_name,url,description,last_updated,flavors,curse_id,wago_id,wowi_id,
 54476594,Transcriptor,BigWigsMods/Transcriptor,https://github.com/BigWigsMods/Transcriptor,Logging utility for boss encounters.,2023-10-11T12:55:03+00:00,"bcc,classic,mainline,wrath",14837,0mKOx1Gx,,True,2023-11-04T08:40:20.920999+00:00
 204846943,uGain,blacha/uGain,https://github.com/blacha/uGain,,2023-08-26T22:21:17+00:00,"bcc,classic,wrath",487894,kaNeBk62,,True,2023-11-04T08:38:44.414590+00:00
 326003609,Blade,BladeAddon/Blade,https://github.com/BladeAddon/Blade,,2022-12-17T10:37:03+00:00,mainline,714501,,,True,2023-11-04T08:37:29.504561+00:00
-711412095,TargetCharmsRe,blazer404/TargetCharmsRe,https://github.com/blazer404/TargetCharmsRe,Fixes for WoW TargetCharms Addon,2023-10-31T18:39:30+00:00,mainline,,,,False,2023-11-04T08:40:08.337037+00:00
 207923725,AdiBags_BankStack,bloerwald/AdiBags_BankStack,https://github.com/bloerwald/AdiBags_BankStack,Adds the BankStack minimap button to AdiBags bag buttons,2023-05-23T15:34:02+00:00,mainline,865195,rN4VVAKD,,True,2023-11-04T08:38:39.021865+00:00
 622864995,FlaresThatWork,bloerwald/FlaresThatWork,https://github.com/bloerwald/FlaresThatWork,Fork of FlaresThatWork with changes for 10.x compatibility.,2023-04-03T09:24:15+00:00,mainline,,,,True,2023-11-04T08:52:01.269115+00:00
 586208500,BlokyUI,BlokyUI/BlokyUI,https://github.com/BlokyUI/BlokyUI,,2023-07-12T08:31:28+00:00,mainline,794581,,,True,2023-11-04T08:52:01.881826+00:00
