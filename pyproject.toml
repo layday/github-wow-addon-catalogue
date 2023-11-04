@@ -27,13 +27,13 @@ dev = [
 [project.entry-points."pipx.run"]
 cataloguer = "cataloguer:cli"
 
-[tool.black]
-line-length = 99
-
 [tool.pyright]
 strict = ["cataloguer.py"]
 
 [tool.ruff]
+line-length = 99
+
+[tool.ruff.lint]
 select = [
   "A",    # flake8-builtins
   "B0",   # flake8-bugbear excl. opinionated rules
@@ -48,8 +48,6 @@ select = [
   "UP",   # pyupgrade
   "W",    # pycodestyle
 ]
-line-length = 99
-target-version = "py311"
 
 [tool.poe.env]
 __POE_TARGET = "cataloguer.py"
