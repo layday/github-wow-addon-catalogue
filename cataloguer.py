@@ -75,7 +75,7 @@ REPO_EXCLUDES = (
     "hippuli/",  # Fork galore
     "JsMacros/",  # Minecraft stuff
     "juraj-hrivnak/Underdog",  # Minecraft stuff
-    "kamoo1/TSM-Backend",  # Not an add-on
+    "kamoo1/Kamoo-s-TSM-App",  # Not an add-on
     "Kirri777/WorldQuestsList",  # Fork
     "livepeer/",  # Minecraft stuff
     "lowlee/MikScrollingBattleText",  # Fork
