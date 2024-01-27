@@ -1320,7 +1320,6 @@ id,name,full_name,url,description,last_updated,flavors,curse_id,wago_id,wowi_id,
 583990503,quickdelete,tyyrenn/quickdelete,https://github.com/tyyrenn/quickdelete,Quickly delete items with zero typing,2023-05-03T02:20:55+00:00,mainline,784719,WYK9yVKL,,True,2023-11-04T08:52:04.957045+00:00
 149365464,DungeonWatchDog,unix/DungeonWatchDog,https://github.com/unix/DungeonWatchDog,A dungeon finder filter with World of Warcraft,2020-11-10T08:14:23+00:00,mainline,,,,False,2024-01-27T09:55:24.803748+00:00
 152586163,Nioro,unix/Nioro,https://github.com/unix/Nioro,Blizzard Raid frame enhancement.,2020-10-15T11:34:17+00:00,mainline,,,,False,2023-11-04T08:52:04.963974+00:00
-740386081,AddOns,unrealshape/AddOns,https://github.com/unrealshape/AddOns,,2024-01-27T00:45:14+00:00,mainline,,,,False,2024-01-27T09:53:40.532714+00:00
 70966394,ItemNameLocalized,Urkaz/ItemNameLocalized,https://github.com/Urkaz/ItemNameLocalized,[WoW Addon] Display on the item and spell tooltips the name in another language.,2020-12-13T07:54:31+00:00,mainline,,,,False,2024-01-27T09:55:58.785501+00:00
 133276035,Annene,Urtgard/Annene,https://github.com/Urtgard/Annene,,2023-07-16T15:55:35+00:00,mainline,92404,x61zxxK1,23879,True,2023-11-04T08:52:04.976853+00:00
 133277044,Hide-Chat-In-Combat,Urtgard/Hide-Chat-In-Combat,https://github.com/Urtgard/Hide-Chat-In-Combat,,2021-04-05T18:31:40+00:00,mainline,82271,,23878,False,2023-11-04T08:52:05.506865+00:00
