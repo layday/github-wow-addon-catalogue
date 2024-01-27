@@ -164,7 +164,7 @@ ProjectFlavors = NewType("ProjectFlavors", frozenset[ReleaseJsonFlavor])
 
 @frozen(frozen=True, kw_only=True)
 class Project:
-    id: str = field(converter=str)  # noqa: A003
+    id: str = field(converter=str)
     name: str
     full_name: str
     url: str
@@ -545,7 +545,7 @@ async def _make_http_client(token: str):
                             yield response
                             break
                 else:
-                    response.raise_for_status()  # pyright: ignore[reportUnboundVariable]
+                    response.raise_for_status()  # pyright: ignore[reportPossiblyUnboundVariable]
 
             yield (client, get)
 
