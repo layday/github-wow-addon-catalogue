@@ -89,6 +89,10 @@ REPO_EXCLUDES = (
     "szjunklol/Accountant",  # Fork
     "unix/curseforge-release",  # Template
     "unrealshape/AddOns",  # Add-on compilation
+    "vicitafirea/InterfaceColors-Addon",  # Custom client add-on
+    "vicitafirea/TimeOfDayIndicator-AddOn",  # Custom client add-on
+    "vicitafirea/TurtleHardcoreMessages-AddOn",  # Custom client add-on
+    "vicitafirea/WarcraftUI-UpperBar-AddOn",  # Custom client add-on
     "wagyourtail/JsMacros",  # More Minecraft stuff
     "WowUp/WowUp",  # Not an add-on
     "ynazar1/Arh",  # Fork
