@@ -57,8 +57,7 @@ OTHER_SOURCES = [
 
 
 class Get(Protocol):
-    def __call__(self, url: str | URL) -> AbstractAsyncContextManager[aiohttp.ClientResponse]:
-        ...
+    def __call__(self, url: str | URL) -> AbstractAsyncContextManager[aiohttp.ClientResponse]: ...
 
 
 REPO_EXCLUDES = (
