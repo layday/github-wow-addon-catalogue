@@ -101,6 +101,7 @@ class ReleaseJsonFlavor(enum.StrEnum):
     classic = "classic"
     bcc = "bcc"
     wrath = "wrath"
+    cata = "cata"
 
 
 @frozen
@@ -155,6 +156,7 @@ INTERFACE_RANGES_TO_FLAVORS = {
     range(2_05_00, 3_00_00): ReleaseJsonFlavor.bcc,
     range(3_00_00, 3_04_00): ReleaseJsonFlavor.mainline,
     range(3_04_00, 4_00_00): ReleaseJsonFlavor.wrath,
+    range(4_04_00, 5_00_00): ReleaseJsonFlavor.cata,
     range(4_00_00, 11_00_00): ReleaseJsonFlavor.mainline,
 }
 
