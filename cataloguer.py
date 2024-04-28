@@ -8,7 +8,6 @@ import json
 import logging
 import os
 import re
-import sqlite3
 from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager, contextmanager
@@ -404,23 +403,24 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
         )
 
 
-@contextmanager
-def _get_sqlite_cache(db_path: str, cache: CacheBackend):
-    class SQLiteSimpleCache(BaseCache):
-        @contextmanager
-        def _transact(self):
-            try:
-                yield
-            except BaseException:
-                self._db_connection.rollback()
-                raise
-            else:
-                self._db_connection.commit()
+@asynccontextmanager
+async def _get_sqlite_cache(db_path: str, cache: CacheBackend):
+    import anysqlite
 
-        def prepare(self, table_name: str, db_connection: sqlite3.Connection):
+    @asynccontextmanager
+    async def transact():
+        try:
+            yield
+        except BaseException:
+            await connection.rollback()
+            raise
+        else:
+            await connection.commit()
+
+    class SQLiteSimpleCache(BaseCache):
+        async def prepare(self, table_name: str):
             self.table_name = table_name
-            self._db_connection = db_connection
-            self._db_connection.execute(
+            await connection.execute(
                 f'CREATE TABLE IF NOT EXISTS "{self.table_name}" (key PRIMARY KEY, value)'
             )
             return self
@@ -429,48 +429,43 @@ def _get_sqlite_cache(db_path: str, cache: CacheBackend):
             raise NotImplementedError
 
         async def contains(self, key: str):
-            cursor = self._db_connection.execute(
-                f'SELECT 1 FROM "{self.table_name}" WHERE key = ?',
-                (key,),
+            cursor = await connection.execute(
+                f'SELECT 1 FROM "{self.table_name}" WHERE key = ?', (key,)
             )
-            (value,) = cursor.fetchone() or (0,)
-            return value
+            return bool(cursor.fetchone())
 
         async def delete(self, key: str) -> None:
-            with self._transact():
-                self._db_connection.execute(
-                    f'DELETE FROM "{self.table_name}" WHERE key = ?', (key,)
-                )
+            async with transact():
+                await connection.execute(f'DELETE FROM "{self.table_name}" WHERE key = ?', (key,))
 
         async def bulk_delete(self, keys: object) -> None:
             raise NotImplementedError
 
         async def keys(self):
-            cursor = self._db_connection.execute(f'SELECT key FROM "{self.table_name}"')
-            for (value,) in cursor:
+            cursor = await connection.execute(f'SELECT key FROM "{self.table_name}"')
+            for (value,) in await cursor.fetchall():
                 yield value
 
         async def read(self, key: str):
-            cursor = self._db_connection.execute(
-                f'SELECT value FROM "{self.table_name}" WHERE key = ?',
-                (key,),
+            cursor = await connection.execute(
+                f'SELECT value FROM "{self.table_name}" WHERE key = ?', (key,)
             )
-            (value,) = cursor.fetchone() or (None,)
+            (value,) = await cursor.fetchone() or (None,)
             return value
 
         async def size(self):
-            cursor = self._db_connection.execute(f'SELECT COUNT(key) FROM "{self.table_name}"')
-            (value,) = cursor.fetchone()
+            cursor = await connection.execute(f'SELECT COUNT(key) FROM "{self.table_name}"')
+            (value,) = await cursor.fetchone()
             return value
 
         async def values(self):
-            cursor = self._db_connection.execute(f'SELECT value FROM "{self.table_name}"')
-            for (value,) in cursor:
+            cursor = await connection.execute(f'SELECT value FROM "{self.table_name}"')
+            for (value,) in await cursor.fetchall():
                 yield value
 
         async def write(self, key: str, item: Any):
-            with self._transact():
-                self._db_connection.execute(
+            async with transact():
+                await connection.execute(
                     f'INSERT OR REPLACE INTO "{self.table_name}" (key, value) VALUES (?, ?)',
                     (key, item),
                 )
@@ -480,8 +475,8 @@ def _get_sqlite_cache(db_path: str, cache: CacheBackend):
             return self.deserialize(await super().read(key))
 
         async def values(self):
-            cursor = self._db_connection.execute(f'SELECT value FROM "{self.table_name}"')
-            for (value,) in cursor:
+            cursor = await connection.execute(f'SELECT value FROM "{self.table_name}"')
+            for (value,) in await cursor.fetchall():
                 yield self.deserialize(value)
 
         async def write(self, key: str, item: Any):
@@ -489,24 +484,30 @@ def _get_sqlite_cache(db_path: str, cache: CacheBackend):
             if encoded_item:
                 await super().write(key, memoryview(encoded_item))
 
-    with sqlite3.connect(db_path) as db_connection:
-        db_connection.execute("PRAGMA journal_mode = wal")
-        db_connection.execute("PRAGMA synchronous = normal")
-        cache.responses = SQLitePickleCache().prepare("responses", db_connection)
-        cache.redirects = SQLiteSimpleCache().prepare("redirects", db_connection)
+    connection = await anysqlite.connect(db_path)
+    try:
+        await connection.execute("PRAGMA journal_mode = wal")
+        await connection.execute("PRAGMA synchronous = normal")
+
+        cache.responses = await SQLitePickleCache().prepare("responses")
+        cache.redirects = await SQLiteSimpleCache().prepare("redirects")
+
         yield cache
+    finally:
+        await connection.close()
 
 
 @asynccontextmanager
 async def _make_http_client(token: str):
-    with _get_sqlite_cache(
-        "http-cache.db",
-        CacheBackend(
-            expire_after=CACHE_INDEFINITELY,
-            urls_expire_after=EXPIRE_URLS,
-        ),
-    ) as cache:
-        async with CachedSession(
+    async with (
+        _get_sqlite_cache(
+            "http-cache.db",
+            CacheBackend(
+                expire_after=CACHE_INDEFINITELY,
+                urls_expire_after=EXPIRE_URLS,
+            ),
+        ) as cache,
+        CachedSession(
             cache=cache,
             connector=aiohttp.TCPConnector(limit_per_host=8),
             headers={
@@ -515,56 +516,57 @@ async def _make_http_client(token: str):
                 "User-Agent": USER_AGENT,
             },
             timeout=aiohttp.ClientTimeout(sock_connect=10, sock_read=10),
-        ) as client:
+        ) as client,
+    ):
 
-            @asynccontextmanager
-            async def get(url: str | URL, **kwargs: Any):
-                for _ in range(5):
-                    async with client.get(url, **kwargs) as response:
-                        logger.debug(
-                            f"fetching {response.url}"
-                            + (
-                                f"\n\t{response.headers['X-RateLimit-Remaining'] or '?'} requests"
-                                " remaining"
-                                if "X-RateLimit-Remaining" in response.headers
-                                else ""
-                            )
+        @asynccontextmanager
+        async def get(url: str | URL, **kwargs: Any):
+            for _ in range(5):
+                async with client.get(url, **kwargs) as response:
+                    logger.debug(
+                        f"fetching {response.url}"
+                        + (
+                            f"\n\t{response.headers['X-RateLimit-Remaining'] or '?'} requests"
+                            " remaining"
+                            if "X-RateLimit-Remaining" in response.headers
+                            else ""
                         )
+                    )
 
-                        if response.status == 403:
-                            logger.error(await response.text())
+                    if response.status == 403:
+                        logger.error(await response.text())
 
-                            sleep_until_header = response.headers.get("X-RateLimit-Reset")
-                            if sleep_until_header:
-                                sleep_until = datetime.fromtimestamp(  # noqa: DTZ006
-                                    int(response.headers["X-RateLimit-Reset"])
-                                )
-                                sleep_for = max(
-                                    0,
-                                    (sleep_until - datetime.now()).total_seconds(),  # noqa: DTZ005
-                                )
-                                logger.info(
-                                    "rate limited after"
-                                    f" {response.headers['X-RateLimit-Used']} requests, sleeping"
-                                    f" until {sleep_until.time().isoformat()} for"
-                                    f" ({sleep_for} + 1)s"
-                                )
-                                await asyncio.sleep(sleep_for + 1)
-
-                        elif not response.ok:
-                            logger.debug(
-                                f"request errored with status {response.status}; sleeping for 3s"
+                        sleep_until_header = response.headers.get("X-RateLimit-Reset")
+                        if sleep_until_header:
+                            sleep_until = datetime.fromtimestamp(  # noqa: DTZ006
+                                int(response.headers["X-RateLimit-Reset"])
                             )
-                            await asyncio.sleep(3)
-                            continue
+                            sleep_for = max(
+                                0,
+                                (sleep_until - datetime.now()).total_seconds(),  # noqa: DTZ005
+                            )
+                            logger.info(
+                                "rate limited after"
+                                f" {response.headers['X-RateLimit-Used']} requests, sleeping"
+                                f" until {sleep_until.time().isoformat()} for"
+                                f" ({sleep_for} + 1)s"
+                            )
+                            await asyncio.sleep(sleep_for + 1)
 
-                        else:
-                            yield response
-                            break
-                else:
-                    response.raise_for_status()  # pyright: ignore[reportPossiblyUnboundVariable]
+                    elif not response.ok:
+                        logger.debug(
+                            f"request errored with status {response.status}; sleeping for 3s"
+                        )
+                        await asyncio.sleep(3)
+                        continue
 
-            yield (client, get)
+                    else:
+                        yield response
+                        break
+            else:
+                response.raise_for_status()  # pyright: ignore[reportPossiblyUnboundVariable]
+
+        yield (client, get)
 
 
 async def get_projects(token: str):
