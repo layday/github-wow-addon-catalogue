@@ -216,6 +216,14 @@ def parse_toc_file(contents: str):
     }
 
 
+def extract_interface_numbers(interfaces: str):
+    for interface in interfaces.split(","):
+        try:
+            yield int(interface)
+        except ValueError:
+            continue
+
+
 def interface_numbers_to_flavours(interface_numbers: Iterable[int]):
     for interface_number in interface_numbers:
         for interface_range, flavor in INTERFACE_RANGES_TO_FLAVORS.items():
@@ -305,7 +313,11 @@ async def extract_game_flavors_from_tocs(get: Get, release_archives: Sequence[di
                     for n in flavorless_toc_names
                 )
                 interface_numbers = (
-                    int(i) for t in tocs for i in (t.get("Interface"),) if i and i.isdigit()
+                    i
+                    for t in tocs
+                    for s in (t.get("Interface"),)
+                    if s
+                    for i in extract_interface_numbers(s)
                 )
                 yield interface_numbers_to_flavours(interface_numbers)
 
