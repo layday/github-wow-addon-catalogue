@@ -12,7 +12,7 @@ from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence
 from contextlib import AbstractAsyncContextManager, asynccontextmanager, contextmanager
 from datetime import UTC, datetime, timedelta
-from itertools import chain, dropwhile, pairwise
+from itertools import chain, dropwhile
 from typing import TYPE_CHECKING, Any, Literal, NewType, Protocol
 from zipfile import ZipFile
 
@@ -45,7 +45,6 @@ EXPIRE_URLS: ExpirationPatterns = {
 }
 
 MIN_PRUNE_RUNS = 5
-MIN_PRUNE_INTERVAL = timedelta(hours=_SEARCH_INTERVAL_HOURS)
 PRUNE_CUTOFF = timedelta(hours=_SEARCH_INTERVAL_HOURS * MIN_PRUNE_RUNS)
 
 OTHER_SOURCES = [
@@ -639,21 +638,6 @@ def log_run():
         json.dump([i.isoformat() for i in sorted(combined_runs)], runs_json, indent=2)
 
 
-def validate_runs(runs: list[str]):
-    if len(runs) < MIN_PRUNE_RUNS:
-        raise ValueError(
-            f"cannot prune add-ons if fewer than {MIN_PRUNE_RUNS} runs have been logged"
-        )
-    elif (
-        sum((b - a) >= MIN_PRUNE_INTERVAL for a, b in pairwise(map(datetime.fromisoformat, runs)))
-        < MIN_PRUNE_RUNS
-    ):
-        raise ValueError(
-            f"cannot prune add-ons if fewer than {MIN_PRUNE_RUNS} runs "
-            f"which are {MIN_PRUNE_INTERVAL} apart have been logged"
-        )
-
-
 outcsv_argument = click.argument("outcsv", default="addons.csv")
 
 
@@ -698,10 +682,6 @@ def collect(outcsv: str, merge: bool):
 @outcsv_argument
 @click.option("--older-than", required=True, type=int, help="time delta in days")
 def prune_or_update(outcsv: str, older_than: int):
-    with open("runs.json", encoding="utf-8") as runs_json:
-        runs = json.load(runs_json)
-        validate_runs(runs)
-
     with _with_outcsv(outcsv) as outcsv_file:
         csv_reader = csv.DictReader(outcsv_file)
         projects = list(map(Project.from_csv_row, csv_reader))
