@@ -97,6 +97,7 @@ REPO_EXCLUDES = (
     "ynazar1/Arh",  # Fork
     "WOWRainbowUI/RainbowUI-Retail",  # Massive add-on bundle (from torkus)
     "WOWRainbowUI/RainbowUI-Era",  # Massive add-on bundle (from torkus)
+    "XiconQoo/RETabBinder",  # Fork for dead version of the game
 )
 
 
