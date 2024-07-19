@@ -69,6 +69,7 @@ REPO_EXCLUDES = (
     "DaMitchell/HelloWorld",  # Dummy add-on
     "dratr/BattlePetCount",  # Fork
     "gorilla-devs/",  # Minecraft stuff
+    "layday/wow-addon-template",  # Template
     "HappyRot/AddOns",  # Compilation
     "hippuli/",  # Fork galore
     "JsMacros/",  # Minecraft stuff
@@ -95,6 +96,8 @@ REPO_EXCLUDES = (
     "wagyourtail/JsMacros",  # More Minecraft stuff
     "WowUp/WowUp",  # Not an add-on
     "ynazar1/Arh",  # Fork
+    "WOWRainbowUI/RainbowUI-Retail",  # Massive add-on bundle (from torkus)
+    "WOWRainbowUI/RainbowUI-Era",  # Massive add-on bundle (from torkus)
 )
 
 
