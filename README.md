@@ -18,4 +18,5 @@ Derivatives of this catalogue are used by the following add-on managers:
 
 * [instawow](https://github.com/layday/instawow)
 * [strongbox](https://github.com/ogri-la/strongbox)
+  (via [ogri-la/github-wow-addon-catalogue-go](https://github.com/ogri-la/github-wow-addon-catalogue-go))
 * [CurseBreaker](https://github.com/AcidWeb/CurseBreaker)
