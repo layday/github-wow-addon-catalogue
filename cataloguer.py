@@ -67,14 +67,15 @@ REPO_EXCLUDES = (
     "Centias/BankItems",  # Fork
     "DaMitchell/HelloWorld",  # Dummy add-on
     "dratr/BattlePetCount",  # Fork
+    "Expensify/App",  # Not an add-on
     "gorilla-devs/",  # Minecraft stuff
-    "layday/wow-addon-template",  # Template
     "HappyRot/AddOns",  # Compilation
     "hippuli/",  # Fork galore
     "JsMacros/",  # Minecraft stuff
     "juraj-hrivnak/Underdog",  # Minecraft stuff
     "kamoo1/Kamoo-s-TSM-App",  # Not an add-on
     "Kirri777/WorldQuestsList",  # Fork
+    "layday/wow-addon-template",  # Template
     "livepeer/",  # Minecraft stuff
     "lowlee/MikScrollingBattleText",  # Fork
     "lowlee/MSBTOptions",  # Fork
@@ -93,11 +94,11 @@ REPO_EXCLUDES = (
     "vicitafirea/TurtleHardcoreMessages-AddOn",  # Custom client add-on
     "vicitafirea/WarcraftUI-UpperBar-AddOn",  # Custom client add-on
     "wagyourtail/JsMacros",  # More Minecraft stuff
-    "WowUp/WowUp",  # Not an add-on
-    "ynazar1/Arh",  # Fork
-    "WOWRainbowUI/RainbowUI-Retail",  # Massive add-on bundle (from torkus)
     "WOWRainbowUI/RainbowUI-Era",  # Massive add-on bundle (from torkus)
+    "WOWRainbowUI/RainbowUI-Retail",  # Massive add-on bundle (from torkus)
+    "WowUp/WowUp",  # Not an add-on
     "XiconQoo/RETabBinder",  # Fork for dead version of the game
+    "ynazar1/Arh",  # Fork
 )
 
 
