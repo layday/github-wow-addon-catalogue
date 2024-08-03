@@ -9,9 +9,8 @@ description = "Script which collects WoW add-on metadata from GitHub"
 requires-python = ">= 3.11"
 license.file = "LICENSE"
 dependencies = [
-  "aiohttp-client-cache >= 0.8.0",
+  "aiohttp-client-cache[sqlite]",
   "aiohttp",
-  "anysqlite",
   "attrs",
   "cattrs",
   "click",

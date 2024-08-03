@@ -10,7 +10,12 @@ import os
 import re
 from collections import defaultdict
 from collections.abc import Iterable, Mapping, Sequence
-from contextlib import AbstractAsyncContextManager, asynccontextmanager, contextmanager
+from contextlib import (
+    AbstractAsyncContextManager,
+    AsyncExitStack,
+    asynccontextmanager,
+    contextmanager,
+)
 from datetime import UTC, datetime, timedelta
 from itertools import chain, dropwhile
 from typing import TYPE_CHECKING, Any, Literal, NewType, Protocol
@@ -19,7 +24,7 @@ from zipfile import ZipFile
 import aiohttp
 import click
 import structlog
-from aiohttp_client_cache import BaseCache, CacheBackend
+from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.cache_control import ExpirationPatterns
 from aiohttp_client_cache.session import CachedSession
 from attrs import field, fields, frozen
@@ -408,120 +413,27 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
 
 
 @asynccontextmanager
-async def _get_sqlite_cache(db_path: str, cache: CacheBackend):
-    import anysqlite
-
-    @asynccontextmanager
-    async def transact():
-        try:
-            yield
-        except BaseException:
-            await connection.rollback()
-            raise
-        else:
-            await connection.commit()
-
-    class SQLiteSimpleCache(BaseCache):
-        async def prepare(self, table_name: str):
-            self.table_name = table_name
-            await connection.execute(
-                f'CREATE TABLE IF NOT EXISTS "{self.table_name}" (key PRIMARY KEY, value)'
-            )
-            return self
-
-        async def clear(self) -> None:
-            raise NotImplementedError
-
-        async def contains(self, key: str):
-            cursor = await connection.execute(
-                f'SELECT 1 FROM "{self.table_name}" WHERE key = ?', (key,)
-            )
-            return bool(cursor.fetchone())
-
-        async def delete(self, key: str) -> None:
-            async with transact():
-                await connection.execute(f'DELETE FROM "{self.table_name}" WHERE key = ?', (key,))
-
-        async def bulk_delete(self, keys: object) -> None:
-            raise NotImplementedError
-
-        async def keys(self):
-            cursor = await connection.execute(f'SELECT key FROM "{self.table_name}"')
-            for (value,) in await cursor.fetchall():
-                yield value
-
-        async def read(self, key: str):
-            cursor = await connection.execute(
-                f'SELECT value FROM "{self.table_name}" WHERE key = ?', (key,)
-            )
-            (value,) = await cursor.fetchone() or (None,)
-            return value
-
-        async def size(self):
-            cursor = await connection.execute(f'SELECT COUNT(key) FROM "{self.table_name}"')
-            (value,) = await cursor.fetchone()
-            return value
-
-        async def values(self):
-            cursor = await connection.execute(f'SELECT value FROM "{self.table_name}"')
-            for (value,) in await cursor.fetchall():
-                yield value
-
-        async def write(self, key: str, item: Any):
-            async with transact():
-                await connection.execute(
-                    f'INSERT OR REPLACE INTO "{self.table_name}" (key, value) VALUES (?, ?)',
-                    (key, item),
-                )
-
-    class SQLitePickleCache(SQLiteSimpleCache):
-        async def read(self, key: str):
-            return self.deserialize(await super().read(key))
-
-        async def values(self):
-            cursor = await connection.execute(f'SELECT value FROM "{self.table_name}"')
-            for (value,) in await cursor.fetchall():
-                yield self.deserialize(value)
-
-        async def write(self, key: str, item: Any):
-            encoded_item = self.serialize(item)
-            if encoded_item:
-                await super().write(key, memoryview(encoded_item))
-
-    connection = await anysqlite.connect(db_path)
-    try:
-        await connection.execute("PRAGMA journal_mode = wal")
-        await connection.execute("PRAGMA synchronous = normal")
-
-        cache.responses = await SQLitePickleCache().prepare("responses")
-        cache.redirects = await SQLiteSimpleCache().prepare("redirects")
-
-        yield cache
-    finally:
-        await connection.close()
-
-
-@asynccontextmanager
 async def _make_http_client(token: str):
-    async with (
-        _get_sqlite_cache(
-            "http-cache.db",
-            CacheBackend(
-                expire_after=CACHE_INDEFINITELY,
-                urls_expire_after=EXPIRE_URLS,
-            ),
-        ) as cache,
-        CachedSession(
-            cache=cache,
-            connector=aiohttp.TCPConnector(limit_per_host=8),
-            headers={
-                "Accept": "application/vnd.github.v3+json",
-                "Authorization": f"token {token}",
-                "User-Agent": USER_AGENT,
-            },
-            timeout=aiohttp.ClientTimeout(sock_connect=10, sock_read=10),
-        ) as client,
-    ):
+    async with AsyncExitStack() as stack:
+        cache_backend = SQLiteBackend(
+            autoclose=False,
+            cache_name="http-cache.db",
+            expire_after=CACHE_INDEFINITELY,
+            urls_expire_after=EXPIRE_URLS,
+        )
+        client = await stack.enter_async_context(
+            CachedSession(
+                cache=cache_backend,
+                connector=aiohttp.TCPConnector(limit_per_host=8),
+                headers={
+                    "Accept": "application/vnd.github.v3+json",
+                    "Authorization": f"token {token}",
+                    "User-Agent": USER_AGENT,
+                },
+                timeout=aiohttp.ClientTimeout(sock_connect=10, sock_read=10),
+            )
+        )
+        stack.push_async_callback(cache_backend.close)
 
         @asynccontextmanager
         async def get(url: str | URL, **kwargs: Any):
