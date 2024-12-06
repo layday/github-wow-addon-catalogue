@@ -9,7 +9,7 @@ import logging
 import os
 import re
 from collections import defaultdict
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Iterable, Iterator, Mapping, Sequence
 from contextlib import (
     AbstractAsyncContextManager,
     AsyncExitStack,
@@ -17,7 +17,6 @@ from contextlib import (
     contextmanager,
 )
 from datetime import UTC, datetime, timedelta
-from itertools import chain, dropwhile
 from typing import TYPE_CHECKING, Any, Literal, NewType, Protocol
 from zipfile import ZipFile
 
@@ -48,9 +47,6 @@ EXPIRE_URLS: ExpirationPatterns = {
     f"{API_URL.host}/search": timedelta(hours=_SEARCH_INTERVAL_HOURS),
     f"{API_URL.host}/repos/*/releases": timedelta(days=1),
 }
-
-MIN_PRUNE_RUNS = 5
-PRUNE_CUTOFF = timedelta(hours=_SEARCH_INTERVAL_HOURS * MIN_PRUNE_RUNS)
 
 OTHER_SOURCES = [
     ("curse", "curse_id"),
@@ -147,7 +143,7 @@ TOC_ALIASES = {
     "wotlkc": ReleaseJsonFlavor.wrath,
 }
 
-TOP_LEVEL_TOC_NAME_PATTERN = re.compile(
+top_level_toc_name_pattern = re.compile(
     rf"""
         ^
         (?P<name>[^/]+)
@@ -269,20 +265,22 @@ async def find_addon_repos(
                 search_url = next_url["url"]
 
 
-async def extract_project_ids_from_toc_files(get: Get, url: str, filename: str):
+async def extract_project_ids_from_toc_files(get: Get, url: str, zip_filename: str):
     async with get(url) as file_response:
         file = await file_response.read()
 
+    def is_valid_toc(toc_filename: str):
+        match = top_level_toc_name_pattern.match(toc_filename)
+        if match:
+            return zip_filename.startswith(match["name"].lstrip("!_"))
+
     with ZipFile(io.BytesIO(file)) as addon_zip:
-        toc_file_contents = [
-            addon_zip.read(n).decode("utf-8-sig")
-            for n in addon_zip.namelist()
-            for m in (TOP_LEVEL_TOC_NAME_PATTERN.match(n),)
-            if m and filename.startswith(m["name"].lstrip("!_"))
+        toc_files_contents = [
+            addon_zip.read(n).decode("utf-8-sig") for n in addon_zip.namelist() if is_valid_toc(n)
         ]
 
-    if toc_file_contents:
-        tocs = (parse_toc_file(c) for c in toc_file_contents)
+    if toc_files_contents:
+        tocs = (parse_toc_file(c) for c in toc_files_contents)
         toc_ids = (
             (
                 t.get("X-Curse-Project-ID"),
@@ -291,7 +289,8 @@ async def extract_project_ids_from_toc_files(get: Get, url: str, filename: str):
             )
             for t in tocs
         )
-        project_ids = (next(filter(None, s), None) for s in zip(*toc_ids))
+        toc_ids_by_source: Iterator[tuple[str, ...]] = zip(*toc_ids)
+        project_ids = (next(filter(None, s), None) for s in toc_ids_by_source)
 
     else:
         logger.warning(f"unable to find conformant TOC files in {url}")
@@ -309,7 +308,7 @@ async def extract_game_flavors_from_tocs(get: Get, release_archives: Sequence[di
             toc_names = [
                 (n, TOC_ALIASES.get(m["flavor"]))
                 for n in addon_zip.namelist()
-                for m in (TOP_LEVEL_TOC_NAME_PATTERN.match(n),)
+                for m in (top_level_toc_name_pattern.match(n),)
                 if m
             ]
             yield (f for _, f in toc_names if f is not None)
@@ -530,28 +529,6 @@ async def get_pruned_or_updates_projects(token: str, prune_candidates: Iterable[
         return repo_statuses
 
 
-def log_run():
-    with open("runs.json", "a+", encoding="utf-8") as runs_json:
-        runs_json.seek(0)
-
-        try:
-            orig_runs = [datetime.fromisoformat(i) for i in json.load(runs_json)]
-        except json.JSONDecodeError:
-            orig_runs = []
-
-        now = datetime.now(UTC)
-        combined_runs = set(
-            chain(
-                orig_runs[-MIN_PRUNE_RUNS:],
-                dropwhile(lambda i: (now - i) > PRUNE_CUTOFF, orig_runs),
-                (now,),
-            )
-        )
-
-        runs_json.truncate(0)
-        json.dump([i.isoformat() for i in sorted(combined_runs)], runs_json, indent=2)
-
-
 outcsv_argument = click.argument("outcsv", default="addons.csv")
 
 
@@ -589,8 +566,6 @@ def collect(outcsv: str, merge: bool):
         csv_writer.writeheader()
         csv_writer.writerows(sorted(rows.values(), key=lambda r: r["full_name"].lower()))
 
-    log_run()
-
 
 @cli.command
 @outcsv_argument
@@ -620,8 +595,6 @@ def prune_or_update(outcsv: str, older_than: int):
             for i in (r if r is not None else p,)
             if i is not False
         )
-
-    log_run()
 
 
 @cli.command
