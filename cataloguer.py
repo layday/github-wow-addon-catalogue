@@ -109,6 +109,7 @@ class ReleaseJsonFlavor(enum.StrEnum):
     bcc = "bcc"
     wrath = "wrath"
     cata = "cata"
+    mists = "mists"
 
 
 @frozen
@@ -149,7 +150,7 @@ top_level_toc_name_pattern = re.compile(
         (?P<name>[^/]+)
         [/]
         (?P=name)
-        (?:[-_](?P<flavor>{'|'.join(map(re.escape, TOC_ALIASES))}))?
+        (?:[-_](?P<flavor>{"|".join(map(re.escape, TOC_ALIASES))}))?
         \.toc
         $
     """,
@@ -164,7 +165,8 @@ INTERFACE_RANGES_TO_FLAVORS = {
     range(3_00_00, 3_04_00): ReleaseJsonFlavor.mainline,
     range(3_04_00, 4_00_00): ReleaseJsonFlavor.wrath,
     range(4_04_00, 5_00_00): ReleaseJsonFlavor.cata,
-    range(4_00_00, 11_00_00): ReleaseJsonFlavor.mainline,
+    range(5_05_00, 6_00_00): ReleaseJsonFlavor.mists,
+    range(6_00_00, 11_00_00): ReleaseJsonFlavor.mainline,
 }
 
 
