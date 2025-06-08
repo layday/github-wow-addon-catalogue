@@ -414,7 +414,7 @@ async def _make_http_client(token: str):
     from aiohttp_client_cache import CacheBackend
     from aiohttp_client_cache.session import CachedSession
 
-    from _http_cache import make_cache
+    from ._http_cache import make_cache
 
     async with AsyncExitStack() as exit_stack:
         cache_backend = CacheBackend(
