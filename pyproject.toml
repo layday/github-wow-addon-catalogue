@@ -6,7 +6,7 @@ build-backend = "flit_core.buildapi"
 name = "cataloguer"
 version = "0.1.0"
 description = "Script which collects WoW add-on metadata from GitHub"
-requires-python = ">= 3.11"
+requires-python = ">= 3.12"
 license.file = "LICENSE"
 dependencies = [
   "aiohttp",
@@ -19,45 +19,34 @@ dependencies = [
   "yarl",
 ]
 
-[project.optional-dependencies]
-dev = [
-  "poethepoet",
-  "ruff",
-]
-
-[project.entry-points."pipx.run"]
-cataloguer = "cataloguer:cli"
-
-[tool.pyright]
-strict = ["cataloguer.py"]
+[dependency-groups]
+dev = ["basedpyright", { include-group = "lint" }, { include-group = "typing" }]
+format = ["ruff"]
+lint = [{ include-group = "format" }]
+typing = ["diskcache-stubs"]
 
 [tool.ruff]
 line-length = 99
 
 [tool.ruff.lint]
 select = [
-  "A",    # flake8-builtins
-  "B0",   # flake8-bugbear excl. opinionated rules
-  "C4",   # flake8-comprehensions
-  "DTZ",  # flake8-datetimez
-  "E",    # pycodestyle
-  "F",    # pyflakes
-  "I",    # isort
-  "PGH",  # pygrep-hooks
-  "PIE",  # flake8-pie
-  "RUF",  # ruff
-  "UP",   # pyupgrade
-  "W",    # pycodestyle
+  "ASYNC", # flake8-async
+  "B0",    # flake8-bugbear (without opinionated rules)
+  "C4",    # flake8-comprehensions
+  "DTZ",   # flake8-datetimez
+  "E",     # pycodestyle
+  "F",     # pyflakes
+  "I",     # isort
+  "PGH",   # pygrep-hooks
+  "PIE",   # flake8-pie
+  "PT",    # flake8-pytest-style
+  "RUF",   # ruff
+  "TRY",   # tryceratops
+  "UP",    # pyupgrade
+  "W",     # pycodestyle
+  "YTT",   # flake8-2020
 ]
 
-[tool.poe.env]
-__POE_TARGET = "cataloguer.py"
-
-[tool.poe.tasks]
-_black = "ruff format $__POE_TARGET"
-_isort = "ruff --select I --fix $__POE_TARGET"
-format.sequence = [
-  "_black",
-  "_isort",
-]
-lint = "ruff --output-format grouped --show-source $__POE_TARGET"
+[tool.pyright]
+typeCheckingMode = "strict"
+# strict = ["cataloguer.py"]

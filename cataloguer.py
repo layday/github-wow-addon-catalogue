@@ -9,7 +9,7 @@ import logging
 import os
 import re
 from collections import defaultdict
-from collections.abc import Iterable, Iterator, Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from contextlib import (
     AbstractAsyncContextManager,
     AsyncExitStack,
@@ -289,7 +289,7 @@ async def extract_project_ids_from_toc_files(get: Get, url: str, zip_filename: s
             )
             for t in tocs
         )
-        toc_ids_by_source: Iterator[tuple[str, ...]] = zip(*toc_ids)
+        toc_ids_by_source: zip[tuple[str, ...]] = zip(*toc_ids)
         project_ids = (next(filter(None, s), None) for s in toc_ids_by_source)
 
     else:
@@ -518,7 +518,9 @@ async def get_projects(token: str):
         return projects
 
 
-async def get_pruned_or_updates_projects(token: str, prune_candidates: Iterable[str]):
+async def get_pruned_or_updates_projects(
+    token: str, prune_candidates: Iterable[str]
+) -> Mapping[str, Project | Literal[False]]:
     async with _make_http_client(token) as (_, get):
 
         async def get_repo(candidate: str):
@@ -529,12 +531,11 @@ async def get_pruned_or_updates_projects(token: str, prune_candidates: Iterable[
             except aiohttp.ClientResponseError:
                 return (candidate, False)
 
-        repo_statuses: dict[str, Project | Literal[False]] = {
+        return {
             f: s
-            for c in asyncio.as_completed([get_repo(f) for f in prune_candidates])
+            for c in asyncio.as_completed(get_repo(f) for f in prune_candidates)
             for (f, s) in (await c,)
         }
-        return repo_statuses
 
 
 outcsv_argument = click.argument("outcsv", default="addons.csv")
