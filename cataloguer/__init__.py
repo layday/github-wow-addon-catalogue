@@ -80,7 +80,7 @@ _SEARCH_INTERVAL_HOURS = 2
 _CACHE_INDEFINITELY = -1
 _EXPIRE_URLS: ExpirationPatterns = {
     f"{_API_URL.host}/search": dt.timedelta(hours=_SEARCH_INTERVAL_HOURS),
-    f"{_API_URL.host}/repos/*/releases": dt.timedelta(days=1),
+    f"{_API_URL.host}/repos/*/releases": dt.timedelta(hours=1),
 }
 
 
