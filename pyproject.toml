@@ -13,7 +13,6 @@ dependencies = [
   "aiohttp-client-cache",
   "attrs",
   "cattrs",
-  "click",
   "diskcache",
   "structlog",
   "yarl",
