@@ -167,7 +167,7 @@ INTERFACE_RANGES_TO_FLAVORS = {
     range(4_04_00, 5_00_00): ReleaseJsonFlavor.cata,
     range(5_00_00, 5_05_00): ReleaseJsonFlavor.mainline,
     range(5_05_00, 6_00_00): ReleaseJsonFlavor.mists,
-    range(6_00_00, 11_00_00): ReleaseJsonFlavor.mainline,
+    range(6_00_00, 12_00_00): ReleaseJsonFlavor.mainline,
 }
 
 
