@@ -46,6 +46,7 @@ REPO_EXCLUDES = (
     "livepeer/",  # Minecraft stuff
     "lowlee/MikScrollingBattleText",  # Fork
     "lowlee/MSBTOptions",  # Fork
+    "Mctalian/wow-build-tools",  # Not an add-on
     "medi8tor/Addons",  # Add-on pack
     "MikeD89/KarazhanChess",  # Hijacking BigWigs' TOC IDs, probably by accident
     "ogri-la/elvui",  # Mirror
