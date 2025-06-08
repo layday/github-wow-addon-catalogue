@@ -23,9 +23,7 @@ from zipfile import ZipFile
 import aiohttp
 import click
 import structlog
-from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.cache_control import ExpirationPatterns
-from aiohttp_client_cache.session import CachedSession
 from attrs import field, fields, frozen
 from cattrs import BaseValidationError, Converter
 from yarl import URL
@@ -415,14 +413,23 @@ async def parse_repo(get: Get, repo: Mapping[str, Any]):
 
 @asynccontextmanager
 async def _make_http_client(token: str):
-    async with AsyncExitStack() as stack:
-        cache_backend = SQLiteBackend(
+    from aiohttp_client_cache import CacheBackend
+    from aiohttp_client_cache.session import CachedSession
+
+    from _http_cache import make_cache
+
+    async with AsyncExitStack() as exit_stack:
+        cache_backend = CacheBackend(
             autoclose=False,
             cache_name="http-cache.db",
             expire_after=CACHE_INDEFINITELY,
             urls_expire_after=EXPIRE_URLS,
+            timeout=20,
         )
-        client = await stack.enter_async_context(
+        cache_backend.responses, cache_backend.redirects = await exit_stack.enter_async_context(
+            make_cache()
+        )
+        client = await exit_stack.enter_async_context(
             CachedSession(
                 cache=cache_backend,
                 connector=aiohttp.TCPConnector(limit_per_host=8),
@@ -434,7 +441,6 @@ async def _make_http_client(token: str):
                 timeout=aiohttp.ClientTimeout(sock_connect=10, sock_read=10),
             )
         )
-        stack.push_async_callback(cache_backend.close)
 
         @asynccontextmanager
         async def get(url: str | URL, **kwargs: Any):
