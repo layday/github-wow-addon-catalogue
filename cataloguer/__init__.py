@@ -35,6 +35,7 @@ REPO_EXCLUDES = (
     "DaMitchell/HelloWorld",  # Dummy add-on
     "dratr/BattlePetCount",  # Fork
     "Expensify/App",  # Not an add-on
+    "ftsef/queue-pop-notification",  # Not an add-on
     "gorilla-devs/",  # Minecraft stuff
     "HappyRot/AddOns",  # Compilation
     "hippuli/",  # Fork galore
