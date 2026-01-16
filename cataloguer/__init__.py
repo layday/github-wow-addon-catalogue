@@ -96,6 +96,7 @@ class ReleaseJsonFlavor(enum.StrEnum):
     wrath = "wrath"
     cata = "cata"
     mists = "mists"
+    titan = "titan"
 
 
 @frozen
