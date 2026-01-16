@@ -476,7 +476,7 @@ async def _make_http_client(token: str):
                             )
                             await asyncio.sleep(sleep_for + 1)
 
-                    elif not response.ok:
+                    elif response.status != 404 and not response.ok:
                         logger.debug(
                             f"request errored with status {response.status}; sleeping for 3s"
                         )
