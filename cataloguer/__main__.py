@@ -27,7 +27,7 @@ def main():
         description="Harvester for World of Warcraft add-ons hosted in GitHub.",
     )
     if sys.version_info >= (3, 14):
-        make_parser = partial(make_parser, color=True, suggest_on_error=True)
+        make_parser = partial(make_parser, suggest_on_error=True)
 
     main_parser = make_parser()
     main_parser.add_argument("-v", "--verbose", action="store_true", help="log more things")
