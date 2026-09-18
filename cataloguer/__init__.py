@@ -97,6 +97,7 @@ class ReleaseJsonFlavor(enum.StrEnum):
     cata = "cata"
     mists = "mists"
     titan = "titan"
+    forever = "forever"
 
 
 @frozen
@@ -125,6 +126,7 @@ _TOC_ALIASES = {
     "vanilla": ReleaseJsonFlavor.classic,
     "tbc": ReleaseJsonFlavor.bcc,
     "wotlkc": ReleaseJsonFlavor.wrath,
+    "camelot": ReleaseJsonFlavor.forever,
 }
 
 _top_level_toc_name_pattern = re.compile(
@@ -142,7 +144,8 @@ _top_level_toc_name_pattern = re.compile(
 
 INTERFACE_RANGES_TO_FLAVORS = {
     range(1_00_00, 1_13_00): ReleaseJsonFlavor.mainline,
-    range(1_13_00, 2_00_00): ReleaseJsonFlavor.classic,
+    range(1_13_00, 1_60_00): ReleaseJsonFlavor.classic,
+    range(1_60_00, 2_00_00): ReleaseJsonFlavor.forever,
     range(2_00_00, 2_05_00): ReleaseJsonFlavor.mainline,
     range(2_05_00, 3_00_00): ReleaseJsonFlavor.bcc,
     range(3_00_00, 3_04_00): ReleaseJsonFlavor.mainline,
