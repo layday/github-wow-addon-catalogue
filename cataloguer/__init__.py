@@ -34,27 +34,33 @@ REPO_EXCLUDES = (
     "Centias/BankItems",  # Fork
     "DaMitchell/HelloWorld",  # Dummy add-on
     "dratr/BattlePetCount",  # Fork
+    "erikg/WoWStatTracker",  # Not an add-on
     "Expensify/App",  # Not an add-on
     "ftsef/queue-pop-notification",  # Not an add-on
     "gorilla-devs/",  # Minecraft stuff
     "HappyRot/AddOns",  # Compilation
     "hippuli/",  # Fork galore
+    "itzg/mc-image-helper",  # Not an add-on
     "JsMacros/",  # Minecraft stuff
     "juraj-hrivnak/Underdog",  # Minecraft stuff
     "kamoo1/Kamoo-s-TSM-App",  # Not an add-on
     "Kirri777/WorldQuestsList",  # Fork
     "layday/wow-addon-template",  # Template
+    "link-fgfgui/mod-downloader",  # Not an add-on
     "livepeer/",  # Minecraft stuff
     "lowlee/MikScrollingBattleText",  # Fork
     "lowlee/MSBTOptions",  # Fork
+    "McTalian-WoW-Addons/wow-build-tools",  # Not an add-on
     "Mctalian/wow-build-tools",  # Not an add-on
     "medi8tor/Addons",  # Add-on pack
     "MikeD89/KarazhanChess",  # Hijacking BigWigs' TOC IDs, probably by accident
+    "MinecraftLabs/beyond-adventures-modpack",  # Not an add-on
     "ogri-la/elvui",  # Mirror
     "ogri-la/tukui",  # Mirror
     "Oppzippy/HuokanGoldLogger",  # Archived
     "pinged-eu/wow-addon-helloworld",  # Dummy add-on
     "rePublic-Studios/rPLauncher",  # Minecraft stuff
+    "Rmkrs/WowSync",  # Not an add-on
     "smashedr/MethodAltManager",  # Fork
     "szjunklol/Accountant",  # Fork
     "unix/curseforge-release",  # Template
@@ -63,12 +69,14 @@ REPO_EXCLUDES = (
     "vicitafirea/TimeOfDayIndicator-AddOn",  # Custom client add-on
     "vicitafirea/TurtleHardcoreMessages-AddOn",  # Custom client add-on
     "vicitafirea/WarcraftUI-UpperBar-AddOn",  # Custom client add-on
+    "VM-Chinese-translate-group/FTB-Skies-2-Chinese",  # Not an add-on
     "wagyourtail/JsMacros",  # More Minecraft stuff
     "WOWRainbowUI/RainbowUI-Era",  # Massive add-on bundle (from torkus)
     "WOWRainbowUI/RainbowUI-Retail",  # Massive add-on bundle (from torkus)
     "WowUp/WowUp",  # Not an add-on
     "XiconQoo/RETabBinder",  # Fork for dead version of the game
     "ynazar1/Arh",  # Fork
+    "yuanzhou029/APK",  # Not an add-on
 )
 
 
